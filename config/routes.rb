@@ -4,4 +4,7 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
   root 'static_pages#top'
+    
+  resources :users
+  
 end

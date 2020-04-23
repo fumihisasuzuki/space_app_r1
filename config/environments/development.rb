@@ -53,5 +53,18 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   
   # deviseの設定
-  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+  # default url
+  config.action_mailer.default_url_options = {  host: 'https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com/' }
+  # config.action_mailer.default_url_options = {  host: 'localhost', port: 8080 }
+  # mail setting
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :user_name => "fumihisa.suzuki0918@gmail.com",
+    :password => "esrigopyiygkuffv",
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 end
