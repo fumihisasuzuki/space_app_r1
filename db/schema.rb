@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20200423021729) do
     t.string "web_search_url", default: "https://www.google.co.jp/", null: false
     t.string "train_search_url", default: "https://transit.yahoo.co.jp/", null: false
     t.integer "days_before", default: 1, null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

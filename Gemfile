@@ -20,6 +20,9 @@ gem 'devise' # 簡単に認証機能を実装
 gem 'omniauth' # 元締め
 gem 'omniauth-line' # 既に登録済みのLINEアカウントを利用して、あるサービスに登録する事ができる仕組みを提供しているプロトコル
 
+# 環境変数の設定
+gem 'dotenv-rails'
+
 group :development, :test do
   gem 'sqlite3'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
