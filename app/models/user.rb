@@ -18,7 +18,7 @@ class User < ApplicationRecord
   end
   
   # SNSログインに必要。 
-  has_many :social_profiles, dependent: :destroy
+#  has_many :social_profiles, dependent: :destroy
   def social_profile(provider)
     social_profiles.select{ |sp| sp.provider == provider.to_s }.first
   end

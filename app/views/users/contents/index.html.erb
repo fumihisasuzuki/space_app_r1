@@ -21,6 +21,7 @@
           <tr>
             <td colspan="1">ID番号</td>
             <td colspan="1">名前</td>
+            <td colspan="1">メールアドレス</td>
             <td colspan="1">ユーザーの削除</td>
           </tr>
         </thead>
@@ -29,9 +30,10 @@
             <tr>
               <td><%= user.id %></td>
               <td><%= link_to user.user_name, edit_user_registration_path(user) %></td>
+              <td><%= link_to user.email, edit_user_registration_path(user) %></td>
               <td>
                 <%= link_to "削除", 
-                  user_registration_path(user), 
+                  user_registration_path(id: user.id), 
                   method: :delete, 
                   data: {confirm: "「#{user.user_name}」の情報を全て削除します。よろしいですか？"}, 
                   class: "btn btn-primary"

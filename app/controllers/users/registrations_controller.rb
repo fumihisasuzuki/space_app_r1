@@ -25,9 +25,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+#    debugger
+    if params[:id].blank? || params[:id] == resource.id.to_s
+      super
+    else
+      @user = User.find(params[:id])
+      @user.destroy
+      flash[:success] = @user.user_name + 'を削除しました。'
+      redirect_to users_contents_index_url
+    end
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
