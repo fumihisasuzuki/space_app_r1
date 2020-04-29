@@ -16,7 +16,7 @@
                 <li><%= link_to "お気に入り", root_path %></li>
                 <li><%= link_to "過去のイベント", root_path %></li>
               <% end %>
-              <li><%= link_to "アカウント", edit_user_path(current_user) %></li>
+              <li><%= link_to "アカウント", edit_user_registration_path %></li>
               <li class="divider"></li>
               <li><%= link_to "ログアウト", destroy_user_session_path, method: :delete %></li>
             </ul>

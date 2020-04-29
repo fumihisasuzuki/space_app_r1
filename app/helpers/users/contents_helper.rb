@@ -1,0 +1,2 @@
+module Users::ContentsHelper
+end

@@ -1,0 +1,47 @@
+<% provide(:title, 'Users') %>
+<div class="container">
+  <h1>ユーザ一覧</h1>
+  <div class="row">
+    <div class="col-md-3 col-md-offset-9">
+      <%= form_with url: users_contents_index_path, method: :get, local: true do |f| %>
+        <%= f.label "ユーザー名検索", class: "label-serch" %>
+        <div style="display:inline-flex">
+          <%= f.search_field :searchword, class: "form-control-serch", placeholder: "キーワードを入力..." %>
+          <%= f.submit "検索", class: "btn btn-primary btn-serch" %>
+        </div>
+      <% end %>
+      <%= form_with url: users_contents_index_path, method: :get, local: true do |f| %>
+        <%= f.submit "検索結果をリセット（全員表示）", class: "btn btn-primary btn-serch" %>
+      <% end %>
+    </div>
+    <div class="col-md-6 col-md-offset-3">
+      <%= will_paginate @users %>
+      <table class="table table-hover" id="table-users">
+        <thead>
+          <tr>
+            <td colspan="1">ID番号</td>
+            <td colspan="1">名前</td>
+            <td colspan="1">ユーザーの削除</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= user.id %></td>
+              <td><%= link_to user.user_name, edit_user_registration_path(user) %></td>
+              <td>
+                <%= link_to "削除", 
+                  user_registration_path(user), 
+                  method: :delete, 
+                  data: {confirm: "「#{user.user_name}」の情報を全て削除します。よろしいですか？"}, 
+                  class: "btn btn-primary"
+                %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= will_paginate @users %>
+    </div>
+  </div>
+</div>

@@ -11,15 +11,31 @@ class ApplicationController < ActionController::Base
 
   # 現在のユーザーを取得します。
   def set_user
+#    debugger
     if user_signed_in?
-      @user_status = "logged-in-user"
-      @home_page_path = root_path
-      @home_page_name = 'ホーム'
+      @user = current_user
+#      if params[:user_id].present?
+#        @user = User.find(params[:user_id])
+#      elsif params[:id].present?
+#        @user = User.find(params[:id])
+#      end
+      
+      if current_user.admin?
+        @user_status = "admin-user"
+        @home_page_name = 'ユーザーリスト'
+        @home_page_path = users_contents_index_path
+      else
+        @user_status = "logged-in-user"
+        @home_page_name = 'ホーム'
+        @home_page_path = users_contents_show_path
+      end
     else
       @user_status = "guest-user"
-      @home_page_path = root_path
       @home_page_name = 'ログイン'
+      @home_page_path = root_path
     end
+    
+#    debugger
     
 =begin
     if user_signed_in?

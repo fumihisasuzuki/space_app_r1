@@ -1,0 +1,17 @@
+<% provide(:title, current_user.user_name) %>
+<div>
+  <table class="table table-bordered table-condensed" id="user-table">
+    <tr>
+      <td>氏名: <%= current_user.user_name %></td>
+      <td>管理者: <%= current_user.admin %></td>
+      <td>E-mail: <%= current_user.email %></td>
+      <td>インターネット検索: <%= current_user.web_search_url %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>プロバイダー: <%= current_user.provider %></td>
+      <td>直前日数: <%= current_user.days_before %>日</td>
+      <td>路線検索: <%= current_user.train_search_url %></td>
+    </tr>
+  </table>
+</div>

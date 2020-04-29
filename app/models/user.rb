@@ -10,6 +10,13 @@ class User < ApplicationRecord
          :trackable,
          :omniauthable, omniauth_providers: [:line]
          
+  
+  # ユーザー検索機能。
+  def User.search(search)
+    return User.all unless search
+    User.where(['name LIKE ?', "%#{search}%"])
+  end
+  
   # SNSログインに必要。 
   has_many :social_profiles, dependent: :destroy
   def social_profile(provider)
