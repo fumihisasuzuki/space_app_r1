@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
     
   # 変数セット
   before_action :set_user
+  before_action :configure_permitted_parameters, if: :devise_controller?
   
   $days_of_the_week = %w{日 月 火 水 木 金 土}
   
@@ -14,11 +15,6 @@ class ApplicationController < ActionController::Base
 #    debugger
     if user_signed_in?
       @user = current_user
-#      if params[:user_id].present?
-#        @user = User.find(params[:user_id])
-#      elsif params[:id].present?
-#        @user = User.find(params[:id])
-#      end
       
       if current_user.admin?
         @user_status = "admin-user"
@@ -35,30 +31,15 @@ class ApplicationController < ActionController::Base
       @home_page_path = root_path
     end
     
-#    debugger
-    
-=begin
-    if user_signed_in?
-      if params[:user_id].present?
-        @user = User.find(params[:user_id])
-      elsif params[:id].present?
-        @user = User.find(params[:id])
-      end
-      if current_user.admin?
-        @user_status = "admin-user"
-        @home_page_path = users_path
-        @home_page_name = 'ユーザーリスト'
-      else
-        @user_status = "logged-in-user"
-        @home_page_path = user_path(current_user)
-        @home_page_name = 'ホーム'
-      end
-    else
-      @user_status = "guest-user"
-      @home_page_path = root_path
-      @home_page_name = 'ログイン'
-    end
-=end
+  end
+  
+  protected
+
+  def configure_permitted_parameters
+    added_attrs = [ :email, :user_name, :password, :password_confirmation ]
+    devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
+    devise_parameter_sanitizer.permit :account_update, keys: added_attrs
+    devise_parameter_sanitizer.permit :sign_in, keys: added_attrs
   end
   
 end
