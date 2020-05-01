@@ -109,10 +109,32 @@ p {
 }
 
 
-/* ユーザー一覧ページ */
+/* Lineログイン */
 
-#table-users {
-  td {
-    vertical-align: middle;
-  }  
+#line_login .line-img{
+  margin-right: 4px;
+}
+
+#line_login .line-img img{
+  width: 120px;
+  height: 34px;
+  margin: 1px 0px 3px -3px;
+}
+
+#line_login{
+  //background: #00B900;
+  color: #ffffff;
+}
+
+#line_login .sns_btn_inner{
+  width: 60px;
+  height: 20px;
+  color: #ffffff;
+}
+
+.sns_btn_inner{
+  font-size: 1.2rem;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  line-height: 34px;
 }

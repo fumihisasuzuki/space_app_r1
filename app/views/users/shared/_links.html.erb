@@ -19,6 +19,21 @@
 <% end %>
 
 <%- if devise_mapping.omniauthable? %>
+  <h2>Lineでお手軽名幹事！</h2>
+  <%- resource_class.omniauth_providers.each do |provider| %>
+    <%= link_to omniauth_authorize_path(resource_name, provider) do %>
+      <li class="sns_login_btn" id="<%= provider %>_login" >
+        <p class="sns_btn_inner">
+          <span class="<%= provider %>-img">
+            <%= image_tag( "/#{provider}_login/btn_login_base.png", :size => "20x60" ) %>
+          </span>
+        </p>
+      </li>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%- if devise_mapping.omniauthable? && Date.current.blank? %>
   <%- resource_class.omniauth_providers.each do |provider| %>
     <%= link_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider) %><br />
   <% end %>
