@@ -30,7 +30,38 @@ class ApplicationController < ActionController::Base
       @home_page_name = 'ログイン'
       @home_page_path = root_path
     end
+#    debugger
     
+  end
+  
+  # それぞれのホーム画面にリダイレクト
+  def redirect_to_home_page_url
+#    debugger
+    if user_signed_in?
+      if current_user.admin?
+        redirect_to users_contents_index_url
+      else
+        redirect_to users_contents_show_url
+      end
+    else
+      redirect_to root_url
+    end
+  end
+  
+  # 現在ログインしているユーザーが管理者権限を持っているか確認します。
+  def admin_user
+    unless current_user.admin?
+      flash[:danger] = "アクセスするためには管理者権限が必要です。"
+      redirect_to_home_page_url
+    end
+  end
+  
+  # 現在ログインしているユーザーが一般or上長（管理者でない）か確認します。
+  def not_admin_user
+    if current_user.admin?
+      flash[:success] = "管理者としてログイン中。※管理者にホーム画面はありません。"
+      redirect_to_home_page_url
+    end
   end
   
   protected

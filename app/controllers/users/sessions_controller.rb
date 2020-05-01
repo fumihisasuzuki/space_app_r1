@@ -4,9 +4,9 @@ class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
-  # def new
-  #   super
-  # end
+  def new
+    super
+  end
 
   # POST /resource/sign_in
   # def create
@@ -21,9 +21,12 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   #ログイン後のリダイレクト先
-  def after_sign_in_path_for(resource)
-    @home_page_path
-  end
+#  def after_sign_in_path_for(resource)
+#    root_url
+    # redirect_to_home_page_url and return
+    # @home_page_path # エラーが出る
+    # users_contents_show_url # うまくいくが、DRYでないのが気になる・・・
+#  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_in_params

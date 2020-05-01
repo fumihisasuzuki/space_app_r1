@@ -1,5 +1,7 @@
 class Users::ContentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :admin_user, only: %w[index]
+  before_action :not_admin_user, only: %w[show]
   
   def index
 #    debugger

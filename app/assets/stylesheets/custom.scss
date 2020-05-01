@@ -57,7 +57,7 @@ p {
   margin-right: 10px;
   font-size: 1.7em;
   color: #fff;
-  text-transform: uppercase;
+//  text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
   font-weight: bold;
@@ -66,6 +66,17 @@ p {
 #logo:hover {
   color: #fff;
   text-decoration: none;
+}
+
+#welcome_message {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.2em;
+  color: #fff;
+//  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 16px;
+//  font-weight: bold;
 }
 
 /* debug */

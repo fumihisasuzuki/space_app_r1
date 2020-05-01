@@ -60,7 +60,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    edit_user_registration_path
+    edit_user_registration_url
   end
 
   # The path used after sign up for inactive accounts.
@@ -69,8 +69,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
   
   #アカウント編集後のリダイレクト先
-  def after_update_path_for(resource)
-    users_contents_show_url
+  # def after_update_path_for(resource)
+  #   users_contents_show_url
+  # end
+  
+  # current passwordなしで更新
+  def update_resource(resource, params)
+    resource.update_without_current_password(params)
   end
   
 end

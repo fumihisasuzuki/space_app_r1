@@ -22,7 +22,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
     end
     flash[:notice] = "ログインしました"
-    redirect_to root_path
+    redirect_to edit_user_registration_path
   end
 
   def fake_email(uid,provider)
