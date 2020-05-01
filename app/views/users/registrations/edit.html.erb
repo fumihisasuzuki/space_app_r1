@@ -19,24 +19,91 @@
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
         <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
       <% end %>
-    
-      <div class="field">
-        <%= f.label :password, class: "label-user--edit" %> <i>（変更しない場合、空欄でも可）</i>
-        <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-        <% if @minimum_password_length %>
-          <em>半角 <%= @minimum_password_length %> 文字以上にすること</em>
-        <% end %>
-      </div>
-    
-      <div class="field">
-        <%= f.label :password_confirmation, class: "label-user--edit" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
-      </div>
+
+
+          <tr>
+            <td style="background: #EEEEEE;">
+              <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                  <% headingid="heading"+@user.id.to_s %>
+                  <% collapseid_for_href="#collapse"+@user.id.to_s %>
+                  <% collapseid="collapse"+@user.id.to_s %>
+                  <div class="card-header" role="tab" id="<%= headingid %>">
+                    <h5 class="mb-0">
+                      <a class="btn btn-success btn-block" data-toggle="collapse" href="<%= collapseid_for_href %>" role="button" aria-expanded="false" aria-controls="<%= collapseid %>">
+                        ＋　詳細
+                      </a>
+                    </h5>
+                  </div><!-- /.card-header -->
+                  <div id="<%= collapseid %>" class="collapse data-parent" role="tabpanel" aria-labelledby="<%= headingid %>" data-parent="#accordion">
+                    <div class="card-body">
+                      
+                      
+                      <div class="field">
+                        <%= f.label :web_search_url, class: "label-user--edit" %>
+                        <%= f.text_field :web_search_url, autocomplete: "web_search_url", class: "form-control" %>
+                      </div>
+                    
+                      <div class="field">
+                        <%= f.label :train_search_url, class: "label-user--edit" %>
+                        <%= f.text_field :train_search_url, autocomplete: "train_search_url", class: "form-control" %>
+                      </div>
+                    
+                      <div class="field">
+                        <%= f.label :days_before, class: "label-user--edit" %>
+                        <%= f.text_field :days_before, autocomplete: "days_before", class: "form-control" %>
+                      </div>
+                      
+                      
+                    </div><!-- /.card-body -->
+                  </div><!-- /.collapse -->
+                </div><!-- /.card -->
+              </div><!-- /.accordion -->
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background: #EEEEEE;">
+              <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                  <% headingid="heading"+@user.id.to_s+"-2" %>
+                  <% collapseid_for_href="#collapse"+@user.id.to_s+"-2" %>
+                  <% collapseid="collapse"+@user.id.to_s+"-2" %>
+                  <div class="card-header" role="tab" id="<%= headingid %>">
+                    <h5 class="mb-0">
+                      <a class="btn btn-success btn-block" data-toggle="collapse" href="<%= collapseid_for_href %>" role="button" aria-expanded="false" aria-controls="<%= collapseid %>">
+                        ＋　パスワードの変更
+                      </a>
+                    </h5>
+                  </div><!-- /.card-header -->
+                  <div id="<%= collapseid %>" class="collapse data-parent" role="tabpanel" aria-labelledby="<%= headingid %>" data-parent="#accordion">
+                    <div class="card-body">
+
+
+                      <div class="field">
+                        <%= f.label :password, class: "label-user--edit" %>
+                        <% if @minimum_password_length %>
+                          <em>（半角 <%= @minimum_password_length %> 文字以上）</em>
+                        <% end %>
+                        <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+                      </div>
+                    
+                      <div class="field">
+                        <%= f.label :password_confirmation, class: "label-user--edit" %>
+                        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+                      </div>
+                      
+                      <div class="field">
+                        <%= f.label :current_password, class: "label-user--edit" %> <i>（※必須）</i>
+                        <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+                      </div>
       
-      <div class="field">
-        <%= f.label :current_password, class: "label-user--edit" %> <i>（※必須）</i>
-        <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
-      </div>
+                    </div><!-- /.card-body -->
+                  </div><!-- /.collapse -->
+                </div><!-- /.card -->
+              </div><!-- /.accordion -->
+            </td>
+          </tr>
       
       <div class="actions">
         <%= f.submit "情報更新", class: "btn btn-primary btn-block btn-user--edit" %>
