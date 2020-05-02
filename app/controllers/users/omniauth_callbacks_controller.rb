@@ -21,7 +21,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         # redirect_to edit_user_path(@profile.user.id) and return
       end
     end
-    flash[:notice] = "ログインしました"
+    # debugger
+    if current_user.email == "#{@omniauth['uid'].downcase}-#{@omniauth['provider']}@example.com"
+      flash[:info] = "万が一の際の連絡先として、ぜひ、メールアドレスを登録ください！"
+    else
+      flash[:success] = "LINEでログインしました。"
+    end
     redirect_to edit_user_registration_path
   end
 

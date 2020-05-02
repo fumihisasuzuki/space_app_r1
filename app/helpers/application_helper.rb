@@ -8,4 +8,13 @@ module ApplicationHelper
       page_name + " | " + base_title
     end
   end
+  
+  def change_flash_message_type(message, before, after)
+    if message
+      flash.now[after] = message
+      flash.delete(before)
+#      debugger
+    end
+  end
+
 end
