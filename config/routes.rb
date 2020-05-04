@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  namespace :users do
-    get 'contents/index'
-    get 'contents/show'
-  end
 
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
@@ -12,8 +8,17 @@ Rails.application.routes.draw do
     unlocks:       'users/unlocks',
     omniauth_callbacks: "users/omniauth_callbacks"
   }
-  root 'static_pages#top'
 
-  # resources :users
+  namespace :users do
+    get 'contents/index'
+    get 'contents/show'
+  end
   
+  namespace :events do
+    get 'new_a'
+    get 'new_b'
+  end
+  resources :events
+  
+  root 'static_pages#top'
 end

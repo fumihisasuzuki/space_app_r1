@@ -2,6 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
+      event: イベント
     attributes:
         user:
           id: ID
@@ -13,3 +14,15 @@ ja:
           password: パスワード
           created_at: 作成日
           updated_at: 更新日
+        event:
+          event_name: イベント名
+          chouseisan_note: イベント説明
+          chouseisan_url: 調整さんURL
+          chouseisan_check: 調整さん使用確認
+          place: 場所候補
+          indication_price: 予想会費
+          deadline: 回答期限
+          reserved_at: 予約日時
+          reserved_by: 予約名
+          reserved_number_of_members: 予約人数
+          reference: 備考

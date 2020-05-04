@@ -1,0 +1,33 @@
+// Place all the styles related to the Events controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+/* モーダルウインドウの位置調整 */
+
+.modal-dialog-center {
+  padding: 10%;
+}
+
+#table-approving {
+  display: block;
+  overflow-x: scroll;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  tr {
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+  }
+  td {
+    vertical-align: top;
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+
+.notice {
+  a:link {
+  color:#ff0000; text-decoration:none;
+  }
+}

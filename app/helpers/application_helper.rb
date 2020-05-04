@@ -11,7 +11,7 @@ module ApplicationHelper
   
   def change_flash_message_type(message, before, after)
     if message
-      flash.now[after] = message
+      flash.now[after] = message unless message == true
       flash.delete(before)
 #      debugger
     end
