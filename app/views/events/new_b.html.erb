@@ -1,0 +1,10 @@
+<% provide(:title, 'New-Event') %>
+<% provide(:class_text, 'event--new') %>
+<% provide(:button_text, 'イベント作成') %>
+<h1>新規イベントの作成</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= render 'event_form', model: @event %>
+  </div>
+</div>

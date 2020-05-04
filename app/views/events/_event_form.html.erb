@@ -1,0 +1,8 @@
+<%= form_with(model: model, local: true) do |f| %>
+  <%= render 'users/shared/error_messages', resource: model %>
+  
+  <%= f.label :event_name, class: "label-#{yield(:class_text)}" %>
+  <%= f.text_field :event_name, class: "form-control" %>
+  
+  <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+<% end %>

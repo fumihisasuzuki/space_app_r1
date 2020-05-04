@@ -1,2 +1,16 @@
-<h1>Events#show</h1>
-<p>Find me in app/views/events/show.html.erb</p>
+<% provide(:title, @event.event_name) %>
+<div>
+  <table class="table table-bordered table-condensed" id="event-table">
+    <tr>
+      <td>イベント名: <%= @event.event_name %></td>
+      <td>id: <%= @event.id %></td>
+      <td>幹事名: <%= current_user.user_name %></td>
+      <td>user_id: <%= @event.user_id %></td>
+    </tr>
+    <tr>
+      <td>note: <%= @event.chouseisan_note %></td>
+      <td>url: <%= @event.chouseisan_url %></td>
+      <td>check: <%= @event.chouseisan_check %></td>
+    </tr>
+  </table>
+</div>

@@ -1,3 +1,6 @@
+<% provide(:class_text, 'new-event') %>
+<% provide(:button_text, '作成') %>
+
 <div class="modal-dialog modal-lg modal-dialog-centered">
   <div class="modal-content">
     <div class="modal-header">
@@ -16,6 +19,9 @@
             				<a data-toggle="collapse" data-parent="#sampleAccordion" href="#sampleAccordionCollapse1">
             					【新規イベント作成】
             				</a>
+                    <% flash.each do |message_type, msg| %>
+                      <div class="alert alert-<%= message_type %>"><%= msg %></div>
+                    <% end %>
             			</h3>
             		</div>
             		<div id="sampleAccordionCollapse1" class="panel-collapse collapse in">
@@ -35,8 +41,15 @@
             		</div>
             		<div id="sampleAccordionCollapse2" class="panel-collapse collapse">
             			<div class="panel-body">
-                      <%= link_to "１. 「調整さん」に飛ぶ", "https://chouseisan.com/" %>
-                      <br>２．URLの入力
+                    STEP１. <%= link_to "「調整さん」に飛ぶ：https://chouseisan.com/", "https://chouseisan.com/", target: :_blank %>
+                    <br>STEP２.
+                    <%= form_with(model: @event, local: true) do |f| %>
+                      <%= render 'users/shared/error_messages', resource: @event %>
+                        <%= f.label :chouseisan_url, class: "label-form" %>
+                        <%= f.text_field :chouseisan_url, class: "form-control" %>
+                      <%= f.submit "調整さんを読み込んでイベント作成", class: "btn btn-lg btn-primary btn-form" %>
+                    <% end %>
+
                   </div>
             		</div>
             	</div>
@@ -50,7 +63,7 @@
             		</div>
             		<div id="sampleAccordionCollapse3" class="panel-collapse collapse">
             			<div class="panel-body">
-                      form
+                      <%= render 'event_form', model: @event %>
                   </div>
             		</div>
             	</div>
