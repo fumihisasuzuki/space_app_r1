@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %w[show]
+  before_action :set_event, only: %w[show destroy]
   
   def new
     @event = Event.new
@@ -23,7 +23,7 @@ class EventsController < ApplicationController
       @schedule.event_id = @event.id
       @schedule.save
       flash[:success] = 'イベントを作成しました'
-      redirect_to event_path(@event)
+      redirect_to event_url(@event)
     else
       #debugger
       render :new_b
@@ -35,6 +35,18 @@ class EventsController < ApplicationController
 
   def show
     @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
+  end
+  
+  def edit
+  end
+  
+  def update
+  end
+  
+  def destroy
+    @event.destroy
+    flash[:success] = 'イベント「' + @event.event_name + '」を削除しました。'
+    redirect_to users_contents_show_url
   end
   
   private

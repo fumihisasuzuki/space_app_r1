@@ -25,13 +25,21 @@
 
   <div class="col-md-8 col-md-offset-2">
     <% @events.each do |event| %>
-      <% decided_schedule = event.schedules.find_by(event_id: event.id, decided: true) ? event.schedules.find_by(event_id: event.id, decided: true) : event.schedules.find_by(event_id: event.id) %>
+      <% decided_schedule = event.schedules.find_by(event_id: event.id, decided: true) %>
       <div>
         <table class="table table-bordered table-condensed" id="event-table">
           <tr>
             <td>イベントID: <%= event.id %></td>
             <td>event_id: <%= decided_schedule.event_id %></td>
-            <td><%= link_to event.event_name, event_path(event) %></td>
+            <td>
+              <%= link_to event.event_name, event_path(event) %>
+              <%= link_to "削除", 
+                event_path(event), 
+                method: :delete, 
+                data: {confirm: "#{decided_schedule.held_at}の「#{event.event_name}」を削除します。よろしいですか？"}, 
+                class: "btn btn-danger"
+              %>
+            </td>
           </tr>
           <tr>
             <td>日程ID: <%= decided_schedule.id %></td>
