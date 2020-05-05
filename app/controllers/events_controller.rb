@@ -10,9 +10,18 @@ class EventsController < ApplicationController
   end
   
   def create
+#    debugger
     @event = Event.new(event_params)
     @event.user_id = current_user.id
-    if @event.save
+#    debugger
+    @schedule = @event.schedules.new(schedules_params)
+    
+    @event.chouseisan_check =false
+    @schedule.decided = true
+#    debugger
+    if @event.save && @schedule.save
+      @schedule.event_id = @event.id
+      @schedule.save
       flash[:success] = 'イベントを作成しました'
       redirect_to event_path(@event)
     else
@@ -25,6 +34,7 @@ class EventsController < ApplicationController
   end
 
   def show
+    @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
   end
   
   private
@@ -38,6 +48,8 @@ class EventsController < ApplicationController
 
 
     # strong parameter
+    
+    # Event#new
     def event_params
       params.require(:event).permit(:event_name,
                                     :chouseisan_note,
@@ -51,5 +63,11 @@ class EventsController < ApplicationController
                                     :reserved_number_of_members,
                                     :reference)
     end
-
+    
+    # Schedule#new
+    def schedules_params
+      params.require(:event).permit(schedules: [:held_at,
+                                                :attendance_numbers,
+                                                :decided])[:schedules]
+    end
 end

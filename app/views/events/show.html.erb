@@ -2,10 +2,19 @@
 <div>
   <table class="table table-bordered table-condensed" id="event-table">
     <tr>
-      <td>イベント名: <%= @event.event_name %></td>
-      <td>id: <%= @event.id %></td>
-      <td>幹事名: <%= current_user.user_name %></td>
+      <td>ユーザーID: <%= current_user.id %></td>
       <td>user_id: <%= @event.user_id %></td>
+      <td>幹事名: <%= current_user.user_name %></td>
+    </tr>
+    <tr>
+      <td>イベントID: <%= @event.id %></td>
+      <td>event_id: <%= @decided_schedule.event_id %></td>
+      <td>イベント名: <%= @event.event_name %></td>
+    </tr>
+    <tr>
+      <td>日程ID: <%= @decided_schedule.id %></td>
+      <td>確定: <%= @decided_schedule.decided %></td>
+      <td>日程: <%= @decided_schedule.held_at %></td>
     </tr>
     <tr>
       <td>note: <%= @event.chouseisan_note %></td>

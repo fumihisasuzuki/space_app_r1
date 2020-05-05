@@ -10,6 +10,7 @@ class Users::ContentsController < ApplicationController
   end
 
   def show
+    @events = current_user.events.all
 #    debugger
   end
 end

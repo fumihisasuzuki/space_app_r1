@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  held_at: 2020-05-05 01:27:10
+  decided: false
+  attendance_numbers: 1
+  event: one
+
+two:
+  held_at: 2020-05-05 01:27:10
+  decided: false
+  attendance_numbers: 1
+  event: two

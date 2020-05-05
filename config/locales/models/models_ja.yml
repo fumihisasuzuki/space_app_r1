@@ -3,26 +3,33 @@ ja:
     models:
       user: ユーザー
       event: イベント
+      schedule: 日程
     attributes:
-        user:
-          id: ID
-          user_name: 名幹事
-          email: メールアドレス
-          web_search_url: Web検索エンジンURL
-          train_search_url: 路線検索URL
-          days_before: 直前日数
-          password: パスワード
-          created_at: 作成日
-          updated_at: 更新日
-        event:
-          event_name: イベント名
-          chouseisan_note: イベント説明
-          chouseisan_url: 調整さんURL
-          chouseisan_check: 調整さん使用確認
-          place: 場所候補
-          indication_price: 予想会費
-          deadline: 回答期限
-          reserved_at: 予約日時
-          reserved_by: 予約名
-          reserved_number_of_members: 予約人数
-          reference: 備考
+      user:
+        id: ID
+        user_name: 名幹事
+        email: メールアドレス
+        web_search_url: Web検索エンジンURL
+        train_search_url: 路線検索URL
+        days_before: 直前日数
+        password: パスワード
+        created_at: 作成日
+        updated_at: 更新日
+      event:
+        event_name: イベント名
+        chouseisan_note: イベント説明
+        chouseisan_url: 調整さんURL
+        chouseisan_check: 調整さん使用確認
+        place: 場所候補
+        indication_price: 予想会費
+        deadline: 回答期限
+        reserved_at: 予約日時
+        reserved_by: 予約名
+        reserved_number_of_members: 予約人数
+        reference: 備考
+        user_id: ユーザーID
+      schedule:
+        held_at: 開催日
+        attendance_numbers: 参加人数
+        decided: 確定
+        event_id: イベントID

@@ -21,8 +21,31 @@
 
   <div class="col-md-4 col-md-offset-3">
     <%= link_to "イベント新規作成", new_event_path, remote: true, class: "btn btn-lg btn-primary pull-left" %>
+  </div>
 
-
+  <div class="col-md-8 col-md-offset-2">
+    <% @events.each do |event| %>
+      <% decided_schedule = event.schedules.find_by(event_id: event.id, decided: true) ? event.schedules.find_by(event_id: event.id, decided: true) : event.schedules.find_by(event_id: event.id) %>
+      <div>
+        <table class="table table-bordered table-condensed" id="event-table">
+          <tr>
+            <td>イベントID: <%= event.id %></td>
+            <td>event_id: <%= decided_schedule.event_id %></td>
+            <td><%= link_to event.event_name, event_path(event) %></td>
+          </tr>
+          <tr>
+            <td>日程ID: <%= decided_schedule.id %></td>
+            <td>確定: <%= decided_schedule.decided %></td>
+            <td>日程: <%= decided_schedule.held_at %></td>
+          </tr>
+          <tr>
+            <td>note: <%= event.chouseisan_note %></td>
+            <td>url: <%= event.chouseisan_url %></td>
+            <td>check: <%= event.chouseisan_check %></td>
+          </tr>
+        </table>
+      </div>
+    <% end %>
 
   </div>
 </div>
