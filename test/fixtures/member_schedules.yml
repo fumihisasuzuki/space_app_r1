@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attendance_status: 1
+  paymet_status: 1
+  fee: 1
+  member: one
+  schedule: one
+
+two:
+  attendance_status: 1
+  paymet_status: 1
+  fee: 1
+  member: two
+  schedule: two

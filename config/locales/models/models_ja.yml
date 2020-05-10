@@ -33,3 +33,15 @@ ja:
         attendance_numbers: 参加人数
         decided: 確定
         event_id: イベントID
+      member:
+        member_name: 参加者名
+        email: メールアドレス
+        line: LINE ID
+        comment: コメント
+        event_id: イベントID
+      member_schedule:
+        attendance_status: 参加ステータス
+        payment_status: 支払ステータス
+        fee: 会費
+        member_id: メンバーID
+        schedule_id: スケジュールID

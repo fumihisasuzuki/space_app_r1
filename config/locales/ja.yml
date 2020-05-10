@@ -209,3 +209,14 @@ ja:
       hour: "%H"
       minute: "%M"
     pm: 午後
+  enums:
+    member_schedule:
+      attendance_status:
+        to_be_absent: 不参加
+        on_hold: 保留
+        to_attend: 参加予定
+        already_attended: 参加済
+      payment_status:
+        not_need: 支払い不要
+        not_yet: 未払い
+        already_payed: 支払い済

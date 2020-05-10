@@ -30,21 +30,21 @@
         <table class="table table-bordered table-condensed" id="event-table">
           <tr>
             <td>イベントID: <%= event.id %></td>
-            <td>event_id: <%= decided_schedule.event_id %></td>
+            <td>event_id: <%= decided_schedule.event_id if decided_schedule %></td>
             <td>
               <%= link_to event.event_name, event_path(event) %>
               <%= link_to "削除", 
                 event_path(event), 
                 method: :delete, 
-                data: {confirm: "#{decided_schedule.held_at}の「#{event.event_name}」を削除します。よろしいですか？"}, 
+                data: {confirm: "「#{event.event_name}」を削除します。よろしいですか？"}, 
                 class: "btn btn-danger"
               %>
             </td>
           </tr>
           <tr>
-            <td>日程ID: <%= decided_schedule.id %></td>
-            <td>確定: <%= decided_schedule.decided %></td>
-            <td>日程: <%= decided_schedule.held_at %></td>
+            <td>日程ID: <%= decided_schedule.id if decided_schedule %></td>
+            <td>確定: <%= decided_schedule.decided if decided_schedule %></td>
+            <td>日程: <%= decided_schedule.held_at if decided_schedule %></td>
           </tr>
           <tr>
             <td>note: <%= event.chouseisan_note %></td>

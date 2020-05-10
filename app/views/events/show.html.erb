@@ -1,25 +1,67 @@
 <% provide(:title, @event.event_name) %>
 <div>
-  <table class="table table-bordered table-condensed" id="event-table">
-    <tr>
-      <td>ユーザーID: <%= current_user.id %></td>
-      <td>user_id: <%= @event.user_id %></td>
-      <td>幹事名: <%= current_user.user_name %></td>
-    </tr>
-    <tr>
-      <td>イベントID: <%= @event.id %></td>
-      <td>event_id: <%= @decided_schedule.event_id %></td>
-      <td>イベント名: <%= @event.event_name %></td>
-    </tr>
-    <tr>
-      <td>日程ID: <%= @decided_schedule.id %></td>
-      <td>確定: <%= @decided_schedule.decided %></td>
-      <td>日程: <%= @decided_schedule.held_at %></td>
-    </tr>
-    <tr>
-      <td>note: <%= @event.chouseisan_note %></td>
-      <td>url: <%= @event.chouseisan_url %></td>
-      <td>check: <%= @event.chouseisan_check %></td>
-    </tr>
-  </table>
+  <% if @decided_schedule %>
+    <table class="table table-bordered table-condensed" id="event-table">
+      <tr>
+        <td>ユーザーID: <%= current_user.id %></td>
+        <td>user_id: <%= @event.user_id %></td>
+        <td>幹事名: <%= current_user.user_name %></td>
+      </tr>
+      <tr>
+        <td>イベントID: <%= @event.id %></td>
+        <td>event_id: <%= @decided_schedule.event_id %></td>
+        <td>イベント名: <%= @event.event_name %>
+          <%= link_to "削除", 
+            event_path(@event), 
+            method: :delete, 
+            data: {confirm: "「#{@event.event_name}」を削除します。よろしいですか？"}, 
+            class: "btn btn-danger"
+          %>
+        </td>
+      </tr>
+      <tr>
+        <td>日程ID: <%= @decided_schedule.id %></td>
+        <td>確定: <%= @decided_schedule.decided %></td>
+        <td>日程: <%= @decided_schedule.held_at %></td>
+      </tr>
+      <tr>
+        <td>note: <%= @event.chouseisan_note %></td>
+        <td>url: <%= @event.chouseisan_url %></td>
+        <td>check: <%= @event.chouseisan_check %></td>
+      </tr>
+    </table>
+  <% else %>
+    <table class="table table-bordered table-condensed" id="event-table">
+      <tr>
+        <td>ユーザーID: <%= current_user.id %></td>
+        <td>user_id: <%= @event.user_id %></td>
+        <td>幹事名: <%= current_user.user_name %></td>
+      </tr>
+      <tr>
+        <td>イベントID: <%= @event.id %></td>
+        <td></td>
+        <td>イベント名: <%= @event.event_name %>
+          <%= link_to "削除", 
+            event_path(@event), 
+            method: :delete, 
+            data: {confirm: "「#{@event.event_name}」を削除します。よろしいですか？"}, 
+            class: "btn btn-danger"
+          %>
+        </td>
+      </tr>
+      <tr>
+        <td>note: <%= @event.chouseisan_note %></td>
+        <td>url: <%= @event.chouseisan_url %></td>
+        <td>check: <%= @event.chouseisan_check %></td>
+      </tr>
+    </table>
+    
+    <% #debugger %>
+    
+    <%= link_to "調整さんのデータ取得", @export_csv_url %>
+    <%= form_with url: import_events_path(id: @event), method: :post, local: true do |f| %>
+      <%= f.file_field :file %>
+      <%= f.submit "CSVをインポート", class: "btn btn-primary btn-block" %>
+    <% end %>
+  <% end %>
 </div>

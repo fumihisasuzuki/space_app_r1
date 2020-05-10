@@ -18,7 +18,9 @@ Rails.application.routes.draw do
     get 'new_a'
     get 'new_b'
   end
-  resources :events
+  resources :events do
+    collection { post :import }
+  end
   
   root 'static_pages#top'
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200505012710) do
+ActiveRecord::Schema.define(version: 20200509101927) do
 
   create_table "events", force: :cascade do |t|
     t.string "event_name", default: "", null: false
@@ -28,6 +28,30 @@ ActiveRecord::Schema.define(version: 20200505012710) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "member_schedules", force: :cascade do |t|
+    t.integer "attendance_status", default: 0
+    t.integer "payment_status", default: 0
+    t.integer "fee"
+    t.integer "member_id"
+    t.integer "schedule_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["member_id"], name: "index_member_schedules_on_member_id"
+    t.index ["schedule_id"], name: "index_member_schedules_on_schedule_id"
+  end
+
+  create_table "members", force: :cascade do |t|
+    t.string "member_name", null: false
+    t.string "email"
+    t.string "line"
+    t.string "comment"
+    t.integer "column_number"
+    t.integer "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_members_on_event_id"
   end
 
   create_table "schedules", force: :cascade do |t|
