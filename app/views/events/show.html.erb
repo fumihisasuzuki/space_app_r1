@@ -1,4 +1,69 @@
 <% provide(:title, @event.event_name) %>
+
+<div>
+  <% if @event.chouseisan_check? %>
+    <%= link_to "編集", @event.chouseisan_url, target: :_blank %>
+  <% else %>
+    <%= link_to "編集", edit_event_path(@event) %>
+  <% end %>
+  <h2><%= @event.event_name %></h2>
+  <h4><%= @event.chouseisan_note %></h4>
+</div>
+
+<div>
+  <h3 style="display:inline;">＜日程＞</h3>
+  <% if @decided_schedule.blank? %>
+    <%= render 'events/shows/pending_message', message: '調整中！' %>
+  <% else %>
+    <%= render 'events/shows/decided_schedule' %>
+  <% end %>
+</div>
+<div>
+  <% if @event.chouseisan_check? %>
+    <%= render 'events/shows/chouseisan_table' %>
+  <% end %>
+</div>
+
+<div>
+  <h3 style="display:inline;">＜参加者＞</h3>
+  <% if @decided_schedule.blank? %>
+    <%= render 'events/shows/pending_message', message: '未定！' %>
+  <% elsif @event.chouseisan_check? %>
+    <%= render 'events/shows/decided_members' %>
+  <% else %>
+    <%= render 'events/shows/member_index' %>
+  <% end %>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <%= debug(params) if Rails.env.development? %>
+      
+      
+      
+      
+<div>
+  <% if @decided_schedule.blank? %>
+  
+  <% elsif @event.chouseisan_check? %>
+  
+  <% else %>
+  
+  <% end %>
+</div>
+
+
+
+
 <div>
   <% if @decided_schedule %>
     <table class="table table-bordered table-condensed" id="event-table">
@@ -22,7 +87,11 @@
       <tr>
         <td>日程ID: <%= @decided_schedule.id %></td>
         <td>確定: <%= @decided_schedule.decided %></td>
-        <td>日程: <%= @decided_schedule.held_at %></td>
+        <td>
+          日程: <%= l(@decided_schedule.held_at, format: :shortdate) %>
+          <span class="<%= css_class_of_the_day(@decided_schedule.held_at) %>">(<%= $days_of_the_week[@decided_schedule.held_at.wday] %>)</span>
+          <%= l(@decided_schedule.held_at, format: :time) %>~
+        </td>
       </tr>
       <tr>
         <td>note: <%= @event.chouseisan_note %></td>
@@ -58,10 +127,17 @@
     
     <% #debugger %>
     
-    <%= link_to "調整さんのデータ取得", @export_csv_url %>
-    <%= form_with url: import_events_path(id: @event), method: :post, local: true do |f| %>
+    <%= link_to "①調整さんのデータ取得", @export_csv_url %>
+    <%= form_with url: import_event_path(@event), method: :post, local: true do |f| %>
       <%= f.file_field :file %>
-      <%= f.submit "CSVをインポート", class: "btn btn-primary btn-block" %>
+      <%= f.submit "③CSVをインポート", class: "btn btn-primary btn-sm" %>
     <% end %>
+          <%= link_to "調整さんデータのリセット", 
+            destroy_members_and_schedules_event_path(@event), 
+            method: :delete, 
+            data: {confirm: "「#{@event.event_name}」のデータをリセットします。よろしいですか？"}, 
+            class: "btn btn-danger"
+          %>
   <% end %>
 </div>
+

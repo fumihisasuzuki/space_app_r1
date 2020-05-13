@@ -7,15 +7,16 @@
   <%= f.label :place, class: "label-#{yield(:class_text)}" %>
   <%= f.text_field :place, class: "form-control" %>
   
-  
-  <%= f.fields_for :schedules do |schedule| %>
-  
-    <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>
-    <%= schedule.datetime_local_field :held_at, class: "form-control" %>
+  <% if model.new_record? %>
+    <%= f.fields_for :schedules do |schedule| %>
     
-    <%= schedule.label :attendance_numbers, class: "label-#{yield(:class_text)}" %>
-    <%= schedule.number_field :attendance_numbers, class: "form-control" %>
-
+      <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>
+      <%= schedule.datetime_local_field :held_at, class: "form-control" %>
+      
+      <%= schedule.label :attendance_numbers, class: "label-#{yield(:class_text)}" %>
+      <%= schedule.number_field :attendance_numbers, class: "form-control" %>
+  
+    <% end %>
   <% end %>
   
   

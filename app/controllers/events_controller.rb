@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %w[show destroy import]
+  before_action :authenticate_user!
+  before_action :set_event, only: %w[edit show update destroy destroy_members_and_schedules import]
   
   def new
     @event = Event.new
@@ -15,7 +16,7 @@ class EventsController < ApplicationController
     @event.user_id = current_user.id
     
     if @event.chouseisan_url
-      @event.event_name = "調整さんで更新してみましょう！"
+      @event.event_name = "（未更新）"
       if @event.save
         flash[:success] = '調整さんURLを登録しました。早速更新してみましょう！'
         redirect_to event_url(@event)
@@ -25,12 +26,12 @@ class EventsController < ApplicationController
       
     else
       @event.chouseisan_check =false
-      @schedule = @event.schedules.new(schedules_params)
+      @schedule = @event.schedules.new(schedule_params)
       @schedule.decided = true
       if @event.save && @schedule.save
         @schedule.event_id = @event.id
         @schedule.save
-        flash[:success] = 'イベントを作成しました'
+        flash[:success] = '次は参加者の名前を登録しましょう！'
         redirect_to event_url(@event)
       else
         #debugger
@@ -43,7 +44,6 @@ class EventsController < ApplicationController
   end
 
   def show
-    @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
     if @event.chouseisan_check
       reg = /=/.match(@event.chouseisan_url)
       chouseisan_uid = reg.post_match
@@ -58,6 +58,13 @@ class EventsController < ApplicationController
   end
   
   def update
+#    debugger
+    if @event.update_attributes(event_params)
+      flash[:success] = @event.event_name + 'を更新しました。'
+      redirect_to @event
+    else
+      render action: :edit
+    end
   end
   
   def destroy
@@ -66,7 +73,17 @@ class EventsController < ApplicationController
     redirect_to users_contents_show_url
   end
   
+  def destroy_members_and_schedules
+    if Member.where(event_id: @event.id).destroy_all && Schedule.where(event_id: @event.id).destroy_all
+      flash[:success] = '参加者と日程を全て削除しました。'
+      redirect_to event_url(@event)
+    else
+      flash[:danger] = 'なぜか参加者と日程の削除に失敗しました。'
+      render action: :show
+    end
+  end
   
+  # csvインポート（引数に@eventが必要）
   def import
     # fileはtmpに自動で一時保存される
 #    debugger
@@ -88,7 +105,13 @@ class EventsController < ApplicationController
   
     # 対象のイベントを取得します。
     def set_event
-      @event = Event.find(params[:id])
+      if Event.exists?(params[:id])
+        @event = Event.find(params[:id])
+        @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
+      else
+        flash[:danger] = 'id=' + params[:id] + 'のデータは存在しません。'
+        redirect_to_home_page_url
+      end
     end
 
 
@@ -110,7 +133,7 @@ class EventsController < ApplicationController
     end
     
     # Schedule#new
-    def schedules_params
+    def schedule_params
       params.require(:event).permit(schedules: [:held_at,
                                                 :attendance_numbers,
                                                 :decided])[:schedules]

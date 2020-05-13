@@ -1,0 +1,9 @@
+<h3 style="display:inline;">
+  <tr>
+    <td><%= l(@decided_schedule.held_at, format: :shortdate) %></td>
+    <td class="<%= css_class_of_the_day(@decided_schedule.held_at) %>">(<%= $days_of_the_week[@decided_schedule.held_at.wday] %>)</td>
+    <td><%= l(@decided_schedule.held_at, format: :time) %>~</td>
+    <td></td>
+    <td>＜ <%= @decided_schedule.attendance_numbers %>名 ＞</td>
+  </tr>
+</h3>

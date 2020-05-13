@@ -9,66 +9,56 @@ class Event < ApplicationRecord
   
   # csvインポート処理
   def self.import(file, event)
-    # csv_data = CSV.read('member.csv', headers: true)
-#    debugger
     if file
       row_num = 0
-#      event = find_by(chouseisan_url: url)
       CSV.foreach(file.path, headers: false, encoding: 'Shift_JIS:UTF-8') do |row|
         row_num += 1
 #        debugger
         case row_num
-        when 1
+        when 1 # 1行目の処理（イベント名）
           event.update_attribute(:event_name, row[0])
-        when 2
+        when 2 # 2行目の処理（イベント説明）
           event.update_attribute(:chouseisan_note, row[0])
-        when 3
+        when 3 # 3行目の処理（表ヘッダー）
           for col in 1..(row.count-1) do
             if row[col]
-              member = Member.new
+              member = event.members.find_by(event_id: event.id, column_number: col) || event.members.new
               member.update_attributes(event_id: event.id, column_number: col, member_name: row[col])
-              #member.update_attribute(:member_name, row[col])
             end
           end
-        else # 4行目以降
-          if row[0] != "コメント" && row.count > 1
-            schedule = Schedule.new
-            schedule.update_attributes(event_id: event.id, held_at: row[0])
-            for col in 1..(row.count-1) do
-              if row[col]
-                member = event.members.find_by(column_number: col)
-                member_schedule = MemberSchedule.new
-                case row[col]
-                when "○"
-                  status = "to_attend"
-                when "△"
-                  status = "on_hold"
-                when "×"
-                  status = "to_be_absent"
+        else # 4行目以降の処理（表の中身）
+          unless row[0] == "コメント" # 4行目以降（最後の行は除く）の処理
+            schedule = event.schedules.find_by(event_id: event.id, held_at: Time.zone.parse(row[0])) || event.schedules.new
+            schedule.update_attributes(event_id: event.id, held_at: Time.zone.parse(row[0]))
+            if row.count > 1
+              for col in 1..(row.count-1) do
+                if row[col]
+                  member = event.members.find_by(column_number: col)
+                  member_schedule = member.member_schedules.find_by(schedule_id: schedule.id) || member.member_schedules.new
+                  case row[col]
+                  when "○"
+                    status = "to_attend"
+                  when "△"
+                    status = "on_hold"
+                  when "×"
+                    status = "to_be_absent"
+                  end
+                  member_schedule.update_attributes(member_id: member.id, schedule_id: schedule.id, attendance_status: status)
                 end
-                member_schedule.update_attributes(member_id: member.id, schedule_id: schedule.id, attendance_status: status)
               end
             end
-          elsif row[0] == "コメント" # 最後の行の処理
-            for col in 1..(row.count-1) do
-              if row[col]
-                member = event.members.find_by(column_number: col)
-                member.update_attribute(:comment, row[col])
+            schedule.update_attribute(:attendance_numbers, schedule.member_schedules.where(attendance_status: "to_attend").count)
+          else # 最後の行の処理
+            if row.count > 1
+              for col in 1..(row.count-1) do
+                if row[col]
+                  member = event.members.find_by(column_number: col)
+                  member.update_attribute(:comment, row[col])
+                end
               end
             end
-          
-          else
-            # ここにはこないはず・・・
           end
         end
-        
-        # IDが見つかれば、レコードを呼び出し、見つからなければ、新しく作成
-        # event = find_by(id: row["id"]) || new
-        # CSVからデータを取得し、設定する
-        # event.attributes = row.to_hash.slice(*updatable_attributes)
-        # 保存する
-        # event.save
-        
       end
     end
   end

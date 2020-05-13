@@ -204,10 +204,11 @@ ja:
     formats:
       default: "%Y年%m月%d日(%a) %H時%M分%S秒 %z"
       long: "%Y/%m/%d %H:%M"
-      short: "%m/%d %H:%M"
-      time: "%H：%M"
-      hour: "%H"
-      minute: "%M"
+      short: "%-m/%-d %-H:%M"
+      time: "%-H：%M"
+      hour: "%-H"
+      minute: "%-M"
+      shortdate: "%-m/%-d"
     pm: 午後
   enums:
     member_schedule:

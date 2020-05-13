@@ -9,11 +9,11 @@ module ApplicationHelper
     end
   end
   
+  # flashメッセージのタイプを変更。（Deviseでmessageが重複したことにより必要となった）
   def change_flash_message_type(message, before, after)
     if message
       flash.now[after] = message unless message == true
       flash.delete(before)
-#      debugger
     end
   end
 

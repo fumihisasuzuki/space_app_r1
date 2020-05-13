@@ -1,0 +1,56 @@
+<div>
+  <tr>
+    <td>調整さんURL: <%= @event.chouseisan_url %></td>
+  </tr>
+  </br>
+  <tr>
+    <td>
+      <%= link_to "①調整さんのデータ取得", @export_csv_url, class: "btn btn-success btn-sm" %>
+      <%= form_with url: import_event_path(@event), method: :post, local: true do |f| %>
+        <%= f.file_field :file %>
+        <%= f.submit "③CSVをインポート", class: "btn btn-success btn-sm" %>
+      <% end %>
+    </td>
+    <td>
+      <%= link_to "調整さんに飛んで編集", @event.chouseisan_url, class: "btn btn-primary btn-sm", target: :_blank %>
+    </td>
+  </tr>
+
+  <table class="table table-bordered table-condensed" id="chouseisan-table">
+    <tr>
+      <td>日付</td>
+      <td>〇</td>
+      <td>△</td>
+      <td>×</td>
+      <% #debugger %>
+      <% @event.members.each do |member| %>
+        <td><%= member.member_name %></td>
+      <% end %>
+    </tr>
+    <% @event.schedules.each do |date| %>
+      <tr>
+        <td>
+          <%= l(date.held_at, format: :shortdate) %>
+          <span class="<%= css_class_of_the_day(date.held_at) %>">(<%= $days_of_the_week[date.held_at.wday] %>)</span>
+          <%= l(date.held_at, format: :time) %>~
+        </td>
+        <td><%= date.attendance_numbers %></td>
+        <td><%= date.member_schedules.where(attendance_status: "on_hold").count %></td>
+        <td><%= date.member_schedules.where(attendance_status: "to_be_absent").count %></td>
+        <% date.member_schedules.each do |member| %>
+          <td><%= member.attendance_status %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tr>
+      <td>コメント</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <% @event.members.each do |member| %>
+        <td><%= member.comment %></td>
+      <% end %>
+    </tr>
+    
+  </table>
+</div>

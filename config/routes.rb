@@ -19,7 +19,11 @@ Rails.application.routes.draw do
     get 'new_b'
   end
   resources :events do
-    collection { post :import }
+    member do
+      post 'import'
+      delete 'destroy_members_and_schedules'
+    end
+#    collection { post :import }
   end
   
   root 'static_pages#top'
