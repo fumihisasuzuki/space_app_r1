@@ -213,9 +213,9 @@ ja:
   enums:
     member_schedule:
       attendance_status:
-        to_be_absent: 不参加
-        on_hold: 保留
-        to_attend: 参加予定
+        to_be_absent: ×
+        on_hold: △
+        to_attend: 〇
         already_attended: 参加済
       payment_status:
         not_need: 支払い不要
