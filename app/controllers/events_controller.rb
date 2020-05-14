@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_event, only: %w[edit show update destroy destroy_members_and_schedules import]
+  before_action :set_event, except: %w[new new_b create index]
   
   def new
     @event = Event.new
@@ -47,10 +47,9 @@ class EventsController < ApplicationController
     if @event.chouseisan_check
       reg = /=/.match(@event.chouseisan_url)
       chouseisan_uid = reg.post_match
-      
       @export_csv_url = 'https://chouseisan.com/schedule/List/createCsv?h=' + chouseisan_uid
       
-      # redirect_to export_csv_url
+      @schedules = @decided_schedule ? @event.schedules.where(event_id: @event.id, decided: true) : @event.schedules
     end
   end
   
@@ -58,13 +57,25 @@ class EventsController < ApplicationController
   end
   
   def update
-#    debugger
     if @event.update_attributes(event_params)
       flash[:success] = @event.event_name + 'を更新しました。'
       redirect_to @event
     else
       render action: :edit
     end
+  end
+  
+  def decide_schedule
+    if params[:schedule_id] && @event.schedules.where(decided: true).blank?
+      if @event.schedules.find(params[:schedule_id]).update_attribute(:decided, true)
+        flash[:success] = @event.event_name + 'の日程を決定しました。'
+      else
+        flash[:danger] = 'なぜか日程の決定に失敗しました。'
+      end
+    else
+        flash[:danger] = '既に日程は決定しています。' + l(@event.schedules.find_by(decided: true).held_at, format: :short) + 'です。'
+    end
+    redirect_to @event
   end
   
   def destroy

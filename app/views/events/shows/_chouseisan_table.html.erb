@@ -1,3 +1,39 @@
+<p id="js-copytext">コピーするテキスト</p>
+<button type="button" id="js-copybtn">Copy</button>
+<p id="js-copyalert" class="copy_alert">コピーできました！</p>
+
+
+<textarea class="text-right" id="bar" readonly rows="1" wrap="off" style="overflow: overlay;">
+  aaa
+</textarea>
+<button class="btn btn-secondary clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
+  共有用のリンクをコピーする
+</button>
+    
+    
+<script type="text/javascript">
+    var clipboard = new Clipboard('.btn');
+    clipboard.on('success', function(e) {
+        //成功時の処理
+    });
+    clipboard.on('error', function(e) {
+      //失敗時の処理
+    });
+</script>
+<button type="button" class="btn" data-clipboard-text="この内容をコピーします">コピー</button>
+
+    
+    
+    <!-- Target -->
+<textarea id="bar">Mussum ipsum cacilds...</textarea>
+
+<!-- Trigger -->
+<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
+    Copy to clipboard
+</button>
+
+
+
 <div>
   <p>
     調整さんURL:
@@ -25,15 +61,17 @@
   <table class="table table-bordered table-condensed" id="chouseisan-table">
     <tr>
       <td colspan="<%= 4 + @event.members.count %>">
-        <div style="display:inline-flex">
-          <%= link_to "最新データ取得", @export_csv_url, class: "btn btn-success btn-sm" %>
-          <%= form_with url: import_event_path(@event), method: :post, local: true, class:"form-inline" do |f| %>
-            <span>→</span>
-            <%= f.file_field :file, class: "form-control" %>
-            <span>→</span>
-            <%= f.submit "③CSVをインポート", class: "btn btn-success btn-sm" %>
-          <% end %>
-        </div>
+        <p>
+          <div style="display:inline-flex">
+            <%= link_to "最新データ取得", @export_csv_url, class: "btn btn-success btn-sm" %>
+            <%= form_with url: import_event_path(@event), method: :post, local: true, class:"form-inline" do |f| %>
+              <span>→</span>
+              <%= f.file_field :file, class: "form-control" %>
+              <span>→</span>
+              <%= f.submit "③CSVをインポート", class: "btn btn-success btn-sm" %>
+            <% end %>
+          </div>
+        </p>
       </td>
     </tr>
     <tr>
@@ -48,10 +86,16 @@
         <td><%= member.member_name %></td>
       <% end %>
     </tr>
-    <% @event.schedules.each do |date| %>
+    <% #debugger %>
+    <% @schedules.each do |date| %>
       <tr>
         <td>
-          <%= link_to "この日にする", "#", class: "btn btn-info btn-xs" %>
+          <%= link_to "この日にする", 
+            decide_schedule_event_path(@event, schedule_id: date),
+            method: :patch, 
+            data: {confirm: "「#{@event.event_name}」の開催日を#{l(date.held_at, format: :short)}に決定します。よろしいですか？"}, 
+            class: "btn btn-info btn-xs"
+          %>
           <%= l(date.held_at, format: :shortdate) %>
           <span class="<%= css_class_of_the_day(date.held_at) %>">(<%= $days_of_the_week[date.held_at.wday] %>)</span>
           <%= l(date.held_at, format: :time) %>~

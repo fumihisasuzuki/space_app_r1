@@ -8,4 +8,5 @@ module EventsHelper
       'text-danger'
     end
   end
+  
 end
