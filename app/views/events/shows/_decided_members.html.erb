@@ -1,1 +1,30 @@
-decided_members
+<h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
+<%= render 'events/shows/members_table', models: @decided_statuses %>
+    
+<% if @on_hold_statuses.present? %>
+  <div>
+    <h3 style="display:inline;">＜保留＞</h3>
+    <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
+    <%= render 'events/shows/pending_message', message: '調整中！' %>
+  </div>
+  <%= render 'events/shows/members_table', models: @on_hold_statuses %>
+<% end %>
+
+<p>
+	<a class="btn btn-default" data-toggle="collapse" href="#collapseDirectEdit">
+	  直接編集
+	</a>
+</p>
+<div id="collapseDirectEdit" class="collapse">
+	<div class="well">
+	  ここまでの情報（タイトル、日程、参加者）をSPaCE上で直接編集できるようになります。<br>
+	  （ただし、以後、「調整さん」を更新しても、その変更は反映されませんのでご注意ください。）<br>
+	  既に「調整さん」での日程調整を終え、最終調整をする場合にオススメです。<br>
+    <%= link_to '「調整さん」での更新を終了し、これからは直接編集する', 
+      update_chouseisan_check_event_path(@event),
+      method: :patch, 
+      data: {confirm: "「#{@event.event_name}」のデータを直接編集できるようにします。これ以降、「調整さん」の変更は反映されなくなりますがよろしいですか？"}, 
+      class: "btn btn-primary btn-block"
+    %>
+	</div>
+</div>

@@ -65,15 +65,36 @@ class EventsController < ApplicationController
     end
   end
   
-  def decide_schedule
-    if params[:schedule_id] && @event.schedules.where(decided: true).blank?
+  def update_decision_of_schedule
+    if params[:schedule_id] && @decided_schedule.blank?
       if @event.schedules.find(params[:schedule_id]).update_attribute(:decided, true)
-        flash[:success] = @event.event_name + 'の日程を決定しました。'
+        flash[:success] = @event.event_name + 'の日程を' + l(@event.schedules.find(params[:schedule_id]).held_at, format: :short)+ 'に決定しました！'
       else
-        flash[:danger] = 'なぜか日程の決定に失敗しました。'
+        flash[:danger] = 'なぜか日程の決定に失敗しました。管理者にお問い合わせください。'
       end
     else
-        flash[:danger] = '既に日程は決定しています。' + l(@event.schedules.find_by(decided: true).held_at, format: :short) + 'です。'
+      if @decided_schedule.update_attribute(:decided, false)
+        flash[:success] = @event.event_name + 'の日程を再考することにしました。'
+      else
+        flash[:danger] = 'なぜか日程のリセットに失敗しました。管理者にお問い合わせください。'
+      end
+    end
+    redirect_to @event
+  end
+  
+  def update_chouseisan_check
+    if @decided_schedule.present? && @event.chouseisan_check?
+      if @event.update_attribute(:chouseisan_check, false)
+        flash[:success] = @event.event_name + 'を直接編集できます。（今後、調整さんの変更は反映されません。）'
+      else
+        flash[:danger] = 'なぜか切替に失敗しました。管理者にお問い合わせください。'
+      end
+    else
+      if @event.update_attribute(:chouseisan_check, true)
+        flash[:success] = @event.event_name + 'を直接編集できます。（今後、調整さんの変更は反映されません。）'
+      else
+        flash[:danger] = 'なぜか切替に失敗しました。管理者にお問い合わせください。'
+      end
     end
     redirect_to @event
   end
@@ -118,7 +139,10 @@ class EventsController < ApplicationController
     def set_event
       if Event.exists?(params[:id])
         @event = Event.find(params[:id])
-        @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
+        if @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
+          @decided_statuses = @decided_schedule.member_schedules.where(attendance_status: "to_attend").paginate(page: params[:page], per_page: 10)
+          @on_hold_statuses = @decided_schedule.member_schedules.where(attendance_status: "on_hold").paginate(page: params[:page], per_page: 10)
+        end
       else
         flash[:danger] = 'id=' + params[:id] + 'のデータは存在しません。'
         redirect_to_home_page_url

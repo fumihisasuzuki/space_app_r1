@@ -141,3 +141,39 @@
   <% end %>
 </div>
 
+<p id="js-copytext">コピーするテキスト</p>
+<button type="button" id="js-copybtn">Copy</button>
+<p id="js-copyalert" class="copy_alert">コピーできました！</p>
+
+
+<textarea class="text-right" id="bar" readonly rows="1" wrap="off" style="overflow: overlay;">
+  aaa
+</textarea>
+<button class="btn btn-secondary clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
+  共有用のリンクをコピーする
+</button>
+    
+    
+<script type="text/javascript">
+    var clipboard = new Clipboard('.btn');
+    clipboard.on('success', function(e) {
+        //成功時の処理
+    });
+    clipboard.on('error', function(e) {
+      //失敗時の処理
+    });
+</script>
+<button type="button" class="btn" data-clipboard-text="この内容をコピーします">コピー</button>
+
+    
+    
+    <!-- Target -->
+<textarea id="bar">Mussum ipsum cacilds...</textarea>
+
+<!-- Trigger -->
+<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
+    Copy to clipboard
+</button>
+
+
+

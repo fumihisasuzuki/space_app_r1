@@ -22,7 +22,8 @@ Rails.application.routes.draw do
     member do
       post 'import'
       delete 'destroy_members_and_schedules'
-      patch 'decide_schedule'
+      patch 'update_decision_of_schedule'
+      patch 'update_chouseisan_check'
     end
 #    collection { post :import }
   end

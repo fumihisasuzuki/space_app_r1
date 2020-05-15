@@ -1,50 +1,14 @@
-<p id="js-copytext">コピーするテキスト</p>
-<button type="button" id="js-copybtn">Copy</button>
-<p id="js-copyalert" class="copy_alert">コピーできました！</p>
-
-
-<textarea class="text-right" id="bar" readonly rows="1" wrap="off" style="overflow: overlay;">
-  aaa
-</textarea>
-<button class="btn btn-secondary clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
-  共有用のリンクをコピーする
-</button>
-    
-    
-<script type="text/javascript">
-    var clipboard = new Clipboard('.btn');
-    clipboard.on('success', function(e) {
-        //成功時の処理
-    });
-    clipboard.on('error', function(e) {
-      //失敗時の処理
-    });
-</script>
-<button type="button" class="btn" data-clipboard-text="この内容をコピーします">コピー</button>
-
-    
-    
-    <!-- Target -->
-<textarea id="bar">Mussum ipsum cacilds...</textarea>
-
-<!-- Trigger -->
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
-    Copy to clipboard
-</button>
-
-
-
 <div>
   <p>
     調整さんURL:
     <%= link_to @event.chouseisan_url, @event.chouseisan_url, target: :_blank %>
     <%= link_to "URLへ飛ぶ", @event.chouseisan_url, class: "btn btn-primary btn-sm", target: :_blank %>
     <%= link_to "URLコピー", "#", class: "btn btn-info btn-sm" %>
-  	<a class="btn btn-default" data-toggle="collapse" href="#collapseSample1">
+  	<a class="btn btn-default" data-toggle="collapse" href="#collapseURLedit">
   	  URL編集
   	</a>
   </p>
-  <div id="collapseSample1" class="collapse">
+  <div id="collapseURLedit" class="collapse">
   	<div class="well">
   		<%= form_with(model: @event, local: true, class:"form-inline") do |f| %>
         <%= render 'users/shared/error_messages', resource: @event %>
@@ -75,9 +39,7 @@
       </td>
     </tr>
     <tr>
-      <td>
-        <%= link_to "日付 / 参加者", @event.chouseisan_url, class: "btn btn-primary btn-lg", target: :_blank %>
-      </td>
+      <td>日付 / 参加者</td>
       <td>〇</td>
       <td>△</td>
       <td>×</td>
@@ -90,12 +52,21 @@
     <% @schedules.each do |date| %>
       <tr>
         <td>
-          <%= link_to "この日にする", 
-            decide_schedule_event_path(@event, schedule_id: date),
-            method: :patch, 
-            data: {confirm: "「#{@event.event_name}」の開催日を#{l(date.held_at, format: :short)}に決定します。よろしいですか？"}, 
-            class: "btn btn-info btn-xs"
-          %>
+          <% if @decided_schedule.blank? %>
+            <%= link_to 'この日にする', 
+              update_decision_of_schedule_event_path(@event, schedule_id: date),
+              method: :patch, 
+              data: {confirm: "「#{@event.event_name}」の開催日を#{l(date.held_at, format: :short)}に決定します。よろしいですか？"}, 
+              class: "btn btn-info btn-xs"
+            %>
+          <% else %>
+            <%= link_to '日程を再考する', 
+              update_decision_of_schedule_event_path(@event, schedule_id: date),
+              method: :patch, 
+              data: {confirm: "「#{@event.event_name}」の開催日を「調整中」に戻します。よろしいですか？"}, 
+              class: "btn btn-warning btn-xs"
+            %>
+          <% end %>
           <%= l(date.held_at, format: :shortdate) %>
           <span class="<%= css_class_of_the_day(date.held_at) %>">(<%= $days_of_the_week[date.held_at.wday] %>)</span>
           <%= l(date.held_at, format: :time) %>~
@@ -120,7 +91,7 @@
           destroy_members_and_schedules_event_path(@event), 
           method: :delete, 
           data: {confirm: "「#{@event.event_name}」の表のデータを全削除します。よろしいですか？"}, 
-          class: "btn btn-danger btn-xs"
+          class: "btn btn-default btn-xs"
         %>
       </td>
     </tr>
