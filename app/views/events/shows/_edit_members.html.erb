@@ -1,0 +1,31 @@
+<h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
+<%= render 'events/shows/members_table', models: @decided_statuses %>
+    
+<% if @on_hold_statuses.present? %>
+  <div>
+    <h3 style="display:inline;">＜保留＞</h3>
+    <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
+    <%= render 'events/shows/pending_message', message: '調整中！' %>
+  </div>
+  <%= render 'events/shows/members_table', models: @on_hold_statuses %>
+<% end %>
+
+<p>
+	<a class="btn btn-default" data-toggle="collapse" href="#collapseDirectEdit">
+	  「調整さん」で調整し直す
+	</a>
+</p>
+<div id="collapseDirectEdit" class="collapse">
+	<div class="well">
+	  ここまでの情報（タイトル、日程、参加者）を「調整さん」を使って更新できるようになります。<br>
+	  （ただし、上記で直接変更した内容は破棄されますのでご注意ください。）<br>
+	  候補日を複数提示して、複数の人の都合を調整する場合にオススメです。<br>
+    <%= render 'chouseisan_form', model: @event %>
+    <%= link_to '「調整さん」での更新を再開し、上記情報は破棄する', 
+      update_chouseisan_check_event_path(@event),
+      method: :patch, 
+      data: {confirm: "「#{@event.event_name}」の幹事をを「調整さん」で行います。上記内容は破棄されますがよろしいですか？"}, 
+      class: "btn btn-primary btn-block"
+    %>
+	</div>
+</div>

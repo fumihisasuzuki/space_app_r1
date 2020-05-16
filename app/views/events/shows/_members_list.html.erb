@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= will_paginate models %>
+    <table class="table table-hover" id="table-members">
+      <thead>
+        <tr>
+          <td colspan="1"><%= models.first.attendance_status_i18n %></td>
+          <td colspan="1">お名前</td>
+          <td colspan="1">コメント</td>
+        </tr>
+      </thead>
+      <tbody>
+        <div>
+          <% first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
+          <% models.each_with_index do |m_s, counter| %>
+            <tr>
+              <td><%= counter + first_number %></td>
+              <td><%= @event.members.find(m_s.member_id).member_name %></td>
+              <td><%= @event.members.find(m_s.member_id).comment %></td>
+            </tr>
+          <% end %>
+        </div>
+      </tbody>
+    </table>
+    <%= will_paginate models %>
+  </div>
+</div>

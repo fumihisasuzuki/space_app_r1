@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_event, except: %w[new new_b create index]
+  before_action :correct_user, except: %w[new new_b create index]
   
   def new
     @event = Event.new
@@ -25,12 +26,30 @@ class EventsController < ApplicationController
       end
       
     else
-      @event.chouseisan_check =false
-      @schedule = @event.schedules.new(schedule_params)
-      @schedule.decided = true
-      if @event.save && @schedule.save
-        @schedule.event_id = @event.id
-        @schedule.save
+      @event.chouseisan_check = false
+      if @event.save
+        @decided_schedule = @event.schedules.new(schedule_params)
+        @decided_schedule.decided = true
+        if @decided_schedule.save
+          @decided_statuses = []
+          @decided_schedule.attendance_numbers.times do |number|
+            @member = @event.members.new(member_params)
+            @member.member_name = "member-#{number + 1}"
+            if @member.save
+              decided_status = @member.member_schedules.new(schedule_id: @decided_schedule.id, attendance_status: "to_attend")
+              unless decided_status.save
+                debugger
+              end
+            else
+              debugger
+            end
+          end
+        else
+          debugger
+        end
+          
+                #debugger
+
         flash[:success] = '次は参加者の名前を登録しましょう！'
         redirect_to event_url(@event)
       else
@@ -59,7 +78,9 @@ class EventsController < ApplicationController
   def update
     if @event.update_attributes(event_params)
       flash[:success] = @event.event_name + 'を更新しました。'
-      redirect_to @event
+      #if 
+        redirect_to @event
+        #render action: :update_chouseisan_check
     else
       render action: :edit
     end
@@ -91,12 +112,16 @@ class EventsController < ApplicationController
       end
     else
       if @event.update_attribute(:chouseisan_check, true)
-        flash[:success] = @event.event_name + 'を直接編集できます。（今後、調整さんの変更は反映されません。）'
+        flash[:success] = @event.event_name + 'を「調整さん」で更新できます。'
       else
         flash[:danger] = 'なぜか切替に失敗しました。管理者にお問い合わせください。'
       end
     end
-    redirect_to @event
+    if @event.chouseisan_url.blank?
+      render action: :new
+    else
+      redirect_to @event
+    end
   end
   
   def destroy
@@ -148,7 +173,14 @@ class EventsController < ApplicationController
         redirect_to_home_page_url
       end
     end
-
+    
+    # アクセスしたユーザーが現在ログインしているユーザー本人か確認します。
+    def correct_user
+      unless current_user == User.find(@event.user_id)
+        flash[:danger] = "別アカウントの情報にアクセスしようとしています。URLを確認してください。"
+        redirect_to_home_page_url
+      end
+    end
 
     # strong parameter
     
@@ -173,4 +205,12 @@ class EventsController < ApplicationController
                                                 :attendance_numbers,
                                                 :decided])[:schedules]
     end
+    
+    # Member#new
+    def member_params
+      params.require(:event).permit(members: [:member_name,
+                                                :comment,
+                                                :column_number])[:members]
+    end
+    
 end

@@ -56,13 +56,14 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  # 現在ログインしているユーザーが一般or上長（管理者でない）か確認します。
+  # 現在ログインしているユーザーが一般（管理者でない）か確認します。
   def not_admin_user
     if current_user.admin?
       flash[:success] = "管理者としてログイン中。※管理者にホーム画面はありません。"
       redirect_to_home_page_url
     end
   end
+
   
   protected
 
