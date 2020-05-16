@@ -38,6 +38,7 @@ ja:
         email: メールアドレス
         line: LINE ID
         comment: コメント
+        remark: 備考
         event_id: イベントID
       member_schedule:
         attendance_status: 参加ステータス

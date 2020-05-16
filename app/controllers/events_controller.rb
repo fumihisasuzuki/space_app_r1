@@ -34,7 +34,7 @@ class EventsController < ApplicationController
           @decided_statuses = []
           @decided_schedule.attendance_numbers.times do |number|
             @member = @event.members.new(member_params)
-            @member.member_name = "member-#{number + 1}"
+            @member.member_name = "member#{number + 1}"
             if @member.save
               decided_status = @member.member_schedules.new(schedule_id: @decided_schedule.id, attendance_status: "to_attend")
               unless decided_status.save
@@ -47,13 +47,9 @@ class EventsController < ApplicationController
         else
           debugger
         end
-          
-                #debugger
-
         flash[:success] = '次は参加者の名前を登録しましょう！'
         redirect_to event_url(@event)
       else
-        #debugger
         render :new_b
       end
     end
@@ -154,22 +150,22 @@ class EventsController < ApplicationController
     redirect_to event_url(@event)
   end
   
-  
-  
   private
+#  public
   
     # beforeフィルター
   
     # 対象のイベントを取得します。
     def set_event
-      if Event.exists?(params[:id])
-        @event = Event.find(params[:id])
+      set_id = params[:event_id].blank? ? params[:id] : params[:event_id]
+      if Event.exists?(set_id)
+        @event = Event.find(set_id)
         if @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
           @decided_statuses = @decided_schedule.member_schedules.where(attendance_status: "to_attend").paginate(page: params[:page], per_page: 10)
           @on_hold_statuses = @decided_schedule.member_schedules.where(attendance_status: "on_hold").paginate(page: params[:page], per_page: 10)
         end
       else
-        flash[:danger] = 'id=' + params[:id] + 'のデータは存在しません。'
+        flash[:danger] = 'id=' + set_id + 'のデータは存在しません。'
         redirect_to_home_page_url
       end
     end
@@ -209,8 +205,9 @@ class EventsController < ApplicationController
     # Member#new
     def member_params
       params.require(:event).permit(members: [:member_name,
-                                                :comment,
-                                                :column_number])[:members]
+                                              :comment,
+                                              :remark,
+                                              :column_number])[:members]
     end
     
 end

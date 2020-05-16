@@ -6,17 +6,52 @@
         <tr>
           <td colspan="1"><%= models.first.attendance_status_i18n %></td>
           <td colspan="1">お名前</td>
-          <td colspan="1">コメント</td>
+          <td colspan="1">ご本人コメント</td>
+          <td colspan="1">備考</td>
+          <td colspan="1"><%= link_to "まとめて編集", "#" %></td>
         </tr>
       </thead>
       <tbody>
         <div>
           <% first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
           <% models.each_with_index do |m_s, counter| %>
+            <% @member = @event.members.find(m_s.member_id) %>
             <tr>
               <td><%= counter + first_number %></td>
-              <td><%= @event.members.find(m_s.member_id).member_name %></td>
-              <td><%= @event.members.find(m_s.member_id).comment %></td>
+              <td><%= @member.member_name %></td>
+              <td><%= @member.comment %></td>
+              <td><%= @member.remark %></td>
+              <td>
+                <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapse-edit-member-<%= counter + first_number %>">
+              	  編集
+              	</a>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <div id="collapse-edit-member-<%= counter + first_number %>" class="collapse">
+                	<div class="well">
+                	  <%= form_with(url: event_member_path(@event, @member), model: @member, local: true, class:"form-inline") do |f| %>
+                      <%= render 'users/shared/error_messages', resource: @member %>
+                        <% #debugger %>
+                        <% unless @event.chouseisan_check? %>
+                          <% if m_s.attendance_status == "to_attend" %>
+                            <%= link_to "保留に変更", "#", class: "btn btn-warning btn-sm" %>
+                          <% else %>
+                            <%= link_to "出席に変更", "#", class: "btn btn-info btn-sm" %>
+                          <% end %>
+                          <%= link_to "欠席に変更", "#", class: "btn btn-danger btn-sm" %>
+                          <%= f.label :member_name, class: "label-form" %>
+                          <%= f.text_field :member_name, class: "form-control" %>
+                          <br>
+                        <% end %>
+                        <%= f.label :remark, class: "label-form" %>
+                        <%= f.text_field :remark, class: "form-control" %>
+                      <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
+                    <% end %>
+                	</div>
+                </div>
+              </td>
             </tr>
           <% end %>
         </div>
