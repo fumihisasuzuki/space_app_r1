@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_event, except: %w[new new_b create index]
+  before_action :set_number_of_members, except: %w[new new_b create]
   before_action :correct_user, except: %w[new new_b create index]
   
   def new
@@ -155,7 +156,7 @@ class EventsController < ApplicationController
   
     # beforeフィルター
   
-    # 対象のイベントを取得します。
+    # 対象のイベントを取得。
     def set_event
       set_id = params[:event_id].blank? ? params[:id] : params[:event_id]
       if Event.exists?(set_id)
@@ -170,6 +171,13 @@ class EventsController < ApplicationController
       end
     end
     
+    # 参加人数を取得。
+    def set_number_of_members
+      if @decided_schedule && @decided_statuses
+        @decided_schedule.update_attribute(:attendance_numbers, @decided_statuses.count)
+      end
+    end
+    
     # アクセスしたユーザーが現在ログインしているユーザー本人か確認します。
     def correct_user
       unless current_user == User.find(@event.user_id)
@@ -177,7 +185,8 @@ class EventsController < ApplicationController
         redirect_to_home_page_url
       end
     end
-
+    
+    
     # strong parameter
     
     # Event#new

@@ -5,8 +5,8 @@
       <thead>
         <tr>
           <td colspan="1"><%= models.first.attendance_status_i18n %></td>
-          <td colspan="1">お名前</td>
-          <td colspan="1">ご本人コメント</td>
+          <td colspan="1">名前</td>
+          <td colspan="1">本人コメント</td>
           <td colspan="1">備考</td>
           <td colspan="1"><%= link_to "まとめて編集", "#" %></td>
         </tr>
@@ -33,20 +33,21 @@
                 	<div class="well">
                 	  <%= form_with(url: event_member_path(@event, @member), model: @member, local: true, class:"form-inline") do |f| %>
                       <%= render 'users/shared/error_messages', resource: @member %>
-                        <% #debugger %>
-                        <% unless @event.chouseisan_check? %>
-                          <% if m_s.attendance_status == "to_attend" %>
-                            <%= link_to "保留に変更", "#", class: "btn btn-warning btn-sm" %>
-                          <% else %>
-                            <%= link_to "出席に変更", "#", class: "btn btn-info btn-sm" %>
-                          <% end %>
-                          <%= link_to "欠席に変更", "#", class: "btn btn-danger btn-sm" %>
-                          <%= f.label :member_name, class: "label-form" %>
-                          <%= f.text_field :member_name, class: "form-control" %>
-                          <br>
+                      <% #debugger %>
+                      <% unless @event.chouseisan_check? %>
+                        <% if m_s.attendance_status == "to_attend" %>
+                          <%= link_to "保留に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 1), method: :patch, class: "btn btn-warning btn-sm" %>
+                        <% else %>
+                          <%= link_to "出席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 2), method: :patch, class: "btn btn-info btn-sm" %>
                         <% end %>
-                        <%= f.label :remark, class: "label-form" %>
-                        <%= f.text_field :remark, class: "form-control" %>
+                        <%= link_to "欠席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 0), method: :patch, class: "btn btn-danger btn-sm" %>
+                        <br>
+                        <%= f.label :member_name, class: "label-form" %>
+                        <%= f.text_field :member_name, class: "form-control" %>
+                        <br>
+                      <% end %>
+                      <%= f.label :remark, class: "label-form" %>
+                      <%= f.text_field :remark, class: "form-control" %>
                       <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
                     <% end %>
                 	</div>
@@ -54,6 +55,39 @@
               </td>
             </tr>
           <% end %>
+          
+          <tr>
+            <td></td>
+            <td>
+              <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapse-new-member-<%= models.first.attendance_status %>">
+            	  追加
+            	</a>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              <div id="collapse-new-member-<%= models.first.attendance_status %>" class="collapse">
+              	<div class="well">
+              	  <% @member = @event.members.new %>
+              	  <%= form_with(model:[@event, @member], local: true, class:"form-inline") do |f| %>
+                    <%= render 'users/shared/error_messages', resource: @member %>
+                    <%= hidden_field_tag :status_key, models.first.attendance_status %>
+                    <% #debugger %>
+                    <%= f.label :member_name, class: "label-form" %>
+                    <%= f.text_field :member_name, class: "form-control" %>
+                    <br>
+                    <%= f.label :remark, class: "label-form" %>
+                    <%= f.text_field :remark, class: "form-control" %>
+                    <%= f.submit "追加", class: "btn btn-sm btn-primary btn-form" %>
+                  <% end %>
+              	</div>
+              </div>
+            </td>
+          </tr>
+          
         </div>
       </tbody>
     </table>

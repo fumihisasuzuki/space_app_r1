@@ -1,5 +1,27 @@
 class MembersController < EventsController
-  before_action :set_member
+  before_action :authenticate_user!
+  before_action :set_event
+  before_action :correct_user
+  before_action :set_member, except: %w[create index]
+  
+  def create
+    @member = @event.members.new(member_params)
+    if @member.save
+      @decided_status = @member.member_schedules.new(attendance_status: params[:status_key], schedule_id: @decided_schedule.id)
+      if @decided_status.save
+        flash[:success] = 'メンバー「' + @member.member_name + '」を追加しました。'
+        redirect_to event_url(@event)
+      else
+        debugger
+        flash[:danger] = 'なぜか参加者の追加に失敗しました。管理者にお問い合わせください。'
+        redirect_to event_url(@event)
+      end
+    else
+      debugger
+      flash[:danger] = 'なぜか参加者の追加に失敗しました。管理者にお問い合わせください。'
+      redirect_to event_url(@event)
+    end
+  end
   
   def edit
   end
@@ -13,6 +35,23 @@ class MembersController < EventsController
       render action: :edit
     end
   end
+  
+  def update_status
+    #debugger
+    member_status = @member.member_schedules.find(params[:attendance_id])
+    if member_status.update_attribute(:attendance_status, params[:key].to_i)
+      if @decided_schedule.update_attribute(:attendance_numbers, @decided_schedule.member_schedules.where(attendance_status: "to_attend").count)
+        flash[:success] = @member.member_name + 'を' + member_status.attendance_status_i18n + 'に変更しました。'
+        redirect_to @event
+      else
+      render action: :edit
+      end
+    else
+      #debugger
+      render action: :edit
+    end
+  end
+    
   
   def update_all
     @member.member_schedules.find_by(schedule_id: @decided_schedule.id)
@@ -42,9 +81,9 @@ class MembersController < EventsController
     # Member#new
     def member_params
       params.require(:member).permit(:member_name,
-                                     :comment,
-                                     :remark,
-                                     :column_number)
+                                              :comment,
+                                              :remark,
+                                              :column_number)
     end
     
 end

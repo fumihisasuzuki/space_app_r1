@@ -25,7 +25,12 @@ Rails.application.routes.draw do
       patch 'update_decision_of_schedule'
       patch 'update_chouseisan_check'
     end
-    resources :members, only: [:show, :edit, :update, :destroy]
+    resources :members do
+      member do
+        patch 'update_status'
+        patch 'update_all'
+      end
+    end
 #    collection { post :import }
   end
   

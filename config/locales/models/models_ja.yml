@@ -4,10 +4,11 @@ ja:
       user: ユーザー
       event: イベント
       schedule: 日程
+      member: 参加メンバー
     attributes:
       user:
         id: ID
-        user_name: 名幹事
+        user_name: 幹事名
         email: メールアドレス
         web_search_url: Web検索エンジンURL
         train_search_url: 路線検索URL
