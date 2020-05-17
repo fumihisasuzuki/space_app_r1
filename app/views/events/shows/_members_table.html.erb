@@ -41,6 +41,12 @@
                           <%= link_to "出席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 2), method: :patch, class: "btn btn-info btn-sm" %>
                         <% end %>
                         <%= link_to "欠席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 0), method: :patch, class: "btn btn-danger btn-sm" %>
+                        <%= link_to "削除", 
+                          event_member_path(@event, @member), 
+                          method: :delete, 
+                          data: {confirm: "「#{@member.member_name}」を削除します。よろしいですか？"}, 
+                          class: "btn btn-danger btn-xs"
+                        %>
                         <br>
                         <%= f.label :member_name, class: "label-form" %>
                         <%= f.text_field :member_name, class: "form-control" %>
@@ -50,6 +56,8 @@
                       <%= f.text_field :remark, class: "form-control" %>
                       <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
                     <% end %>
+                    
+        
                 	</div>
                 </div>
               </td>

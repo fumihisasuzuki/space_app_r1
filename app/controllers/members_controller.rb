@@ -57,6 +57,12 @@ class MembersController < EventsController
     @member.member_schedules.find_by(schedule_id: @decided_schedule.id)
   end
   
+  def destroy
+    @member.destroy
+    flash[:success] = 'このイベントから「' + @member.member_name + '」を削除しました。'
+    redirect_to event_url(@event)
+  end
+  
   private
 #  public
   
