@@ -1,27 +1,11 @@
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= will_paginate models %>
-    <table class="table table-hover" id="table-members">
-      <thead>
-        <tr>
-          <td colspan="1"><%= models.first.attendance_status_i18n %></td>
-          <td colspan="1">お名前</td>
-          <td colspan="1">コメント</td>
-        </tr>
-      </thead>
-      <tbody>
-        <div>
-          <% first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
-          <% models.each_with_index do |m_s, counter| %>
-            <tr>
-              <td><%= counter + first_number %></td>
-              <td><%= @event.members.find(m_s.member_id).member_name %></td>
-              <td><%= @event.members.find(m_s.member_id).comment %></td>
-            </tr>
-          <% end %>
-        </div>
-      </tbody>
-    </table>
-    <%= will_paginate models %>
+<h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
+<%= render 'events/shows/members_list_for_each_status', models: @decided_statuses %>
+    
+<% if @on_hold_statuses.present? %>
+  <div>
+    <h3 style="display:inline;">＜保留＞</h3>
+    <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
+    <%= render 'events/shows/pending_message', message: '調整中！' %>
   </div>
-</div>
+  <%= render 'events/shows/members_list_for_each_status', models: @on_hold_statuses %>
+<% end %>

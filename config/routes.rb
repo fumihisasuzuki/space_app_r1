@@ -28,9 +28,9 @@ Rails.application.routes.draw do
     resources :members do
       member do
         patch 'update_status'
-        patch 'update_all'
       end
     end
+    patch 'members/update_all'
 #    collection { post :import }
   end
   

@@ -4,6 +4,28 @@ class MembersController < EventsController
   before_action :correct_user
   before_action :set_member, except: %w[create index]
   
+  def index
+    if @decided_schedule
+      @members_to_attend = []
+      @members_on_hold = []
+      @members_to_be_absent = []
+      @decided_schedule.member_schedules.all.each_with_index do |m_s, counter|
+        #debugger
+        case m_s.attendance_status
+        when "to_attend"
+          @members_to_attend << @event.members.find(m_s.member_id)
+        when "on_hold"
+          @members_on_hold << @event.members.find(m_s.member_id)
+        when "to_be_absent"
+          @members_to_be_absent << @event.members.find(m_s.member_id)
+        end
+      end
+#      @members_to_attend = @members_to_attend.paginate(page: params[:page], per_page: 10)
+#      @members_on_hold = @members_on_hold.paginate(page: params[:page], per_page: 10)
+#      @members_to_be_absent = @members_to_be_absent.paginate(page: params[:page], per_page: 10)
+    end
+  end
+  
   def create
     @member = @event.members.new(member_params)
     if @member.save

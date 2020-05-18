@@ -1,0 +1,47 @@
+<div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3 style="text-align:center">【メンバー編集】</h3>
+    </div>
+
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-10">
+            <% flash.each do |message_type, msg| %>
+              <div class="alert alert-<%= message_type %>"><%= msg %></div>
+            <% end %>
+            
+            <div>
+              <h4 style="display:inline;">＜参加＞</h4>
+              <h4 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h4>
+            </div>
+            <%= render 'members/edit_index', models: @members_to_attend %>
+            
+            <div>
+              <h4 style="display:inline;">＜保留＞</h4>
+              <h4 style="display:inline;"><%= @members_on_hold.count %>名</h4>
+            </div>
+            <% if @members_on_hold.present? %>
+              <%= render 'members/edit_index', models: @members_on_hold %>
+            <% end %>
+
+            <div>
+              <h4 style="display:inline;">＜不参加＞</h4>
+              <h4 style="display:inline;"><%= @members_to_be_absent.count %>名</h4>
+            </div>
+            <% if @members_to_be_absent.present? %>
+              <%= render 'members/edit_index', models: @members_to_be_absent %>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+    </div>
+  </div>
+</div>

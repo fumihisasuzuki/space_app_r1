@@ -1,15 +1,3 @@
-<h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
-<%= render 'events/shows/members_table', models: @decided_statuses %>
-    
-<% if @on_hold_statuses.present? %>
-  <div>
-    <h3 style="display:inline;">＜保留＞</h3>
-    <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
-    <%= render 'events/shows/pending_message', message: '調整中！' %>
-  </div>
-  <%= render 'events/shows/members_table', models: @on_hold_statuses %>
-<% end %>
-
 <p>
 	<a class="btn btn-default" data-toggle="collapse" href="#collapseDirectEdit">
 	  「調整さん」で調整し直す

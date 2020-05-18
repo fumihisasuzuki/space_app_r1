@@ -29,9 +29,11 @@
   <% if @decided_schedule.blank? %>
     <%= render 'events/shows/pending_message', message: '未定！' %>
   <% elsif @event.chouseisan_check? %>
-    <%= render 'events/shows/decided_members' %>
+    <%= render 'events/shows/members_list' %>
+    <%= render 'events/shows/to_direct_edit' %>
   <% else %>
-    <%= render 'events/shows/edit_members' %>
+    <%= render 'events/shows/members_list' %>
+    <%= render 'events/shows/to_chouseisan_edit' %>
   <% end %>
 </div>
 

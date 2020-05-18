@@ -1,0 +1,46 @@
+<%= form_with(url: event_members_update_all_path(@event), model: models, local: true, class:"form-inline") do |f| %>
+  <%= f.submit "変更を保存", class: "btn btn-sm btn-primary btn-form" %>
+    <table class="table table-hover" id="table-members">
+      <thead>
+        <tr>
+          <td colspan="1"><%= models.first.member_schedules.first.attendance_status_i18n %></td>
+          <td colspan="1">※入力必須</td>
+          <td colspan="1"></td>
+          <td colspan="1">出欠</td>
+          <td colspan="1">削除</td>
+        </tr>
+      </thead>
+      <tbody>
+        <div>
+    
+          <% first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
+          <% models.each_with_index do |member, counter| %>
+            <%= f.fields_for "#{models}[]", member do |m| %>
+              <tr>
+                <td><%= counter + first_number %></td>
+                <td>
+                  <%= m.label :member_name, class: "label-form" %>
+                  <%= m.text_field :member_name, class: "form-control" %>
+                </td>
+                <td>
+                  <%= m.label :remark, class: "label-form" %>
+                  <%= m.text_field :remark, class: "form-control" %>
+                </td>
+                <td>
+                  <%= f.label :remark, class: "label-form" %>
+                  <%= f.text_field :remark, class: "form-control" %>
+                </td>
+                <td>
+                  <%= check_box :delete_a_member, member.id, class: "form-control" %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+          
+          
+        </div>
+      </tbody>
+    </table>
+
+  <%= f.submit "変更を保存", class: "btn btn-sm btn-primary btn-form" %>
+<% end %>
