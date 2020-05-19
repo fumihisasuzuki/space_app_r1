@@ -1,11 +1,59 @@
-<h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
-<%= render 'events/shows/members_list_for_each_status', models: @decided_statuses %>
-    
-<% if @on_hold_statuses.present? %>
-  <div>
-    <h3 style="display:inline;">＜保留＞</h3>
-    <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
-    <%= render 'events/shows/pending_message', message: '調整中！' %>
-  </div>
-  <%= render 'events/shows/members_list_for_each_status', models: @on_hold_statuses %>
-<% end %>
+<div class="panel-group" id="memberslist">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<a data-toggle="collapse" data-parent="#memberslist" href="#memberslistCollapse1">
+					<div>
+            <h3 style="display:inline;">＜参加者＞</h3>
+            <h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
+          </div>
+				</a>
+			</h3>
+		</div>
+		<div id="memberslistCollapse1" class="panel-collapse collapse in">
+			<div class="panel-body">
+        <%= render 'events/shows/members_list_for_each_status', models: @decided_statuses, first_number: 1 %>
+			</div>
+		</div>
+	</div>
+  <% if @on_hold_statuses.present? %>
+  	<div class="panel panel-default">
+  		<div class="panel-heading">
+  			<h3 class="panel-title">
+  				<a data-toggle="collapse" data-parent="#memberslist" href="#memberslistCollapse2">
+            <div>
+              <h3 style="display:inline;">＜保留＞</h3>
+              <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
+              <%= render 'events/shows/pending_message', message: '調整中！' %>
+            </div>
+  				</a>
+  			</h3>
+  		</div>
+  		<div id="memberslistCollapse2" class="panel-collapse collapse">
+  			<div class="panel-body">
+          <%= render 'events/shows/members_list_for_each_status', models: @on_hold_statuses, first_number: 1 + @decided_schedule.attendance_numbers %>
+  			</div>
+  		</div>
+  	</div>
+  <% end %>
+      
+  <% if @to_be_absent_statuses.present? %>
+  	<div class="panel panel-default">
+  		<div class="panel-heading">
+  			<h3 class="panel-title">
+  				<a data-toggle="collapse" data-parent="#memberslist" href="#memberslistCollapse3">
+            <div>
+              <h4 style="display:inline;">＜不参加＞</h4>
+              <h4 style="display:inline;"><%= @to_be_absent_statuses.count %>名</h4>
+            </div>
+  				</a>
+  			</h3>
+  		</div>
+  		<div id="memberslistCollapse3" class="panel-collapse collapse">
+  			<div class="panel-body">
+          <%= render 'events/shows/members_list_for_each_status', models: @to_be_absent_statuses, first_number: 1 + @decided_schedule.attendance_numbers + @on_hold_statuses.count %>
+  			</div>
+  		</div>
+  	</div>
+  <% end %>
+</div>

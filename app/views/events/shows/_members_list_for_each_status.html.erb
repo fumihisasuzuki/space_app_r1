@@ -1,3 +1,4 @@
+<% status_key = models.first.attendance_status %>
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= will_paginate models %>
@@ -9,13 +10,12 @@
           <td colspan="1">本人コメント</td>
           <td colspan="1">備考</td>
           <td colspan="1">
-            <%= link_to "まとめて編集", event_members_path(@event), remote: true, class: "btn btn-lg btn-primary pull-left" %>
+            <%= link_to "まとめて編集", event_members_path(@event, status_key: status_key), remote: true %>
           </td>
         </tr>
       </thead>
       <tbody>
         <div>
-          <% first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
           <% models.each_with_index do |m_s, counter| %>
             <% @member = @event.members.find(m_s.member_id) %>
             <tr>
@@ -37,12 +37,9 @@
                       <%= render 'users/shared/error_messages', resource: @member %>
                       <% #debugger %>
                       <% unless @event.chouseisan_check? %>
-                        <% if m_s.attendance_status == "to_attend" %>
-                          <%= link_to "保留に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 1), method: :patch, class: "btn btn-warning btn-sm" %>
-                        <% else %>
-                          <%= link_to "出席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 2), method: :patch, class: "btn btn-info btn-sm" %>
-                        <% end %>
-                        <%= link_to "欠席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 0), method: :patch, class: "btn btn-danger btn-sm" %>
+                        <%= link_to "出席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 2), method: :patch, class: "btn btn-info btn-sm" unless m_s.attendance_status == "to_attend" %>
+                        <%= link_to "保留に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 1), method: :patch, class: "btn btn-warning btn-sm" unless m_s.attendance_status == "on_hold" %>
+                        <%= link_to "欠席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 0), method: :patch, class: "btn btn-danger btn-sm" unless m_s.attendance_status == "to_be_absent" %>
                         <%= link_to "削除", 
                           event_member_path(@event, @member), 
                           method: :delete, 
@@ -55,7 +52,7 @@
                         <br>
                       <% end %>
                       <%= f.label :remark, class: "label-form" %>
-                      <%= f.text_field :remark, class: "form-control" %>
+                      <%= f.text_field :remark, autofocus: true, class: "form-control" %>
                       <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
                     <% end %>
         
@@ -68,7 +65,7 @@
           <tr>
             <td></td>
             <td>
-              <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapse-new-member-<%= models.first.attendance_status %>">
+              <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapse-new-member-<%= models.first.attendance_status %>">
             	  追加
             	</a>
             </td>
@@ -86,7 +83,7 @@
                     <%= hidden_field_tag :status_key, models.first.attendance_status %>
                     <% #debugger %>
                     <%= f.label :member_name, class: "label-form" %>
-                    <%= f.text_field :member_name, class: "form-control" %>
+                    <%= f.text_field :member_name, autofocus: true, class: "form-control" %>
                     <br>
                     <%= f.label :remark, class: "label-form" %>
                     <%= f.text_field :remark, class: "form-control" %>

@@ -1,7 +1,4 @@
 <% attendance_status = models.first.member_schedules.first.attendance_status_i18n %>
-<% #reg = /@/.match("#{models}") %>
-<% #models_except_for_at = reg.post_match %>
-<% #debugger %>
 <%= form_with(model: @event, url: event_members_update_all_url(@event), local: true, method: :patch, class:"form-inline") do |f| %>
   <%= f.submit "#{attendance_status}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
   <%= hidden_field_tag :status_key, attendance_status %>
@@ -21,7 +18,7 @@
   
         <% first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
         <% models.each_with_index do |member, counter| %>
-          <%= f.fields_for "#{models_name}[]", member do |m| %>
+          <%= f.fields_for "members[]", member do |m| %>
             <tr>
               <td><%= counter + first_number %></td>
               <td>

@@ -25,8 +25,8 @@
 </div>
 
 <div>
-  <h3 style="display:inline;">＜参加者＞</h3>
   <% if @decided_schedule.blank? %>
+    <h3 style="display:inline;">＜参加者＞</h3>
     <%= render 'events/shows/pending_message', message: '未定！' %>
   <% elsif @event.chouseisan_check? %>
     <%= render 'events/shows/members_list' %>
