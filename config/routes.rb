@@ -25,12 +25,12 @@ Rails.application.routes.draw do
       patch 'update_decision_of_schedule'
       patch 'update_chouseisan_check'
     end
+    patch 'members/update_all'
     resources :members do
       member do
         patch 'update_status'
       end
     end
-    patch 'members/update_all'
 #    collection { post :import }
   end
   

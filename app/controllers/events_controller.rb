@@ -166,7 +166,7 @@ class EventsController < ApplicationController
           @on_hold_statuses = @decided_schedule.member_schedules.where(attendance_status: "on_hold").paginate(page: params[:page], per_page: 10)
         end
       else
-        flash[:danger] = 'id=' + set_id + 'のデータは存在しません。'
+        flash[:danger] = 'set_event:error; id=' + set_id + 'のデータは存在しません。'
         redirect_to_home_page_url
       end
     end

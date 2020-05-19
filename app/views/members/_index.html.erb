@@ -8,23 +8,23 @@
     <div class="modal-body">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-10 col-md-offset-1">
             <% flash.each do |message_type, msg| %>
               <div class="alert alert-<%= message_type %>"><%= msg %></div>
             <% end %>
             
-            <div>
+            <div class="all_members_edit">
               <h4 style="display:inline;">＜参加＞</h4>
               <h4 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h4>
+              <%= render 'members/edit_index', models: @members_to_attend, models_name: "members_to_attend" %>
             </div>
-            <%= render 'members/edit_index', models: @members_to_attend %>
             
             <div>
               <h4 style="display:inline;">＜保留＞</h4>
               <h4 style="display:inline;"><%= @members_on_hold.count %>名</h4>
             </div>
             <% if @members_on_hold.present? %>
-              <%= render 'members/edit_index', models: @members_on_hold %>
+              <%= render 'members/edit_index', models: @members_on_hold, models_name: "members_on_hold" %>
             <% end %>
 
             <div>
@@ -32,7 +32,7 @@
               <h4 style="display:inline;"><%= @members_to_be_absent.count %>名</h4>
             </div>
             <% if @members_to_be_absent.present? %>
-              <%= render 'members/edit_index', models: @members_to_be_absent %>
+              <%= render 'members/edit_index', models: @members_to_be_absent, models_name: "members_to_be_absent" %>
             <% end %>
 
           </div>
