@@ -10,7 +10,8 @@
           <td colspan="1">本人コメント</td>
           <td colspan="1">備考</td>
           <td colspan="1">
-            <%= link_to "まとめて編集", event_members_path(@event, status_key: status_key), remote: true %>
+            <% #debugger %>
+            <%= link_to "まとめて編集", event_members_path(@event, status_key: status_key, number_key: first_number), remote: true %>
           </td>
         </tr>
       </thead>

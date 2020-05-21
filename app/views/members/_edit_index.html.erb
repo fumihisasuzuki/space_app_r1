@@ -1,12 +1,11 @@
-<% attendance_status = models.first.member_schedules.first.attendance_status_i18n %>
+<% attendance_status_symbol = models.first.member_schedules.first.attendance_status_i18n %>
 <%= form_with(model: @event, url: event_members_update_all_url(@event), local: true, method: :patch, class:"form-inline") do |f| %>
-  <%= f.submit "#{attendance_status}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
-  <%= hidden_field_tag :status_key, attendance_status %>
+  <%= f.submit "#{attendance_status_symbol}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
   <%= hidden_field_tag :event_id, @event %>
   <table class="table table-hover" id="table-members">
     <thead>
       <tr>
-        <td colspan="1"><%= attendance_status %></td>
+        <td colspan="1"><%= attendance_status_symbol %></td>
         <td colspan="1">※入力必須</td>
         <td colspan="1"></td>
         <td colspan="1">出欠</td>
@@ -16,11 +15,11 @@
     <tbody>
       <div>
   
-        <% first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
+        <% #first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
         <% models.each_with_index do |member, counter| %>
           <%= f.fields_for "members[]", member do |m| %>
             <tr>
-              <td><%= counter + first_number %></td>
+              <td><%= counter + @first_number %></td>
               <td>
                 <%= m.label :member_name, class: "label-form" %>
                 <%= m.text_field :member_name, class: "form-control" %>
@@ -30,6 +29,11 @@
                 <%= m.text_field :remark, class: "form-control" %>
               </td>
               <td>
+                <% member_status = member.member_schedules.find_by(schedule_id: @decided_schedule.id) %>
+                <%= m.fields_for :member_schedules, member_status do |m_s| %>
+                  <%= m_s.label :attendance_status, class: "label-form" %>
+                  <%= m_s.select :attendance_status, MemberSchedule.attendance_statuses.keys.map { |k| [I18n.t("enums.member_schedule.attendance_status.#{k}"), k]} %>
+                <% end %>
               </td>
               <td>
                 <%= check_box :delete_a_member, member.id, class: "form-control" %>
@@ -42,5 +46,5 @@
     </tbody>
   </table>
 
-  <%= f.submit "#{attendance_status}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
+  <%= f.submit "#{attendance_status_symbol}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
 <% end %>
