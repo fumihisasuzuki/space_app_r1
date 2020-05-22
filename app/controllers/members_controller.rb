@@ -6,7 +6,7 @@ class MembersController < EventsController
 #  before_action :set_members_list, only: %w[index]
   
   def index
-    #debugger
+#    debugger
     if @decided_schedule
       @members = []
       @decided_schedule.member_schedules.all.each_with_index do |m_s, counter|
@@ -15,6 +15,7 @@ class MembersController < EventsController
       end
       @first_number = params[:number_key].to_i
     end
+#    debugger
   end
   
   def create
@@ -67,28 +68,12 @@ class MembersController < EventsController
     
   
   def update_all
-    member_schedules5_params.each do |id, item|
+    member_schedules_params.each do |id, item|
       if params[:delete_a_member]["#{id}"] == "1"
         member.destroy
       else
         member = Member.find(id)
         member.update_attributes(item)
-#            debugger
-#        if item[:member_schedules_attributes].present?
-#          item[:member_schedules_attributes].each do |m_s_id, m_s_item|
-#            debugger
-        
-#            member_status = MemberSchedule.find(m_s_id)
-#            member_status.update_attributes(m_s_item)
-#          end
-#        end
-        #debugger
-        #params[:event][:members]["#{id}"][:member_schedules].each do |m_s_id, m_s_item|
-#        member_schedules_params.each do |m_s_id, m_s_item|
-#        debugger
-#          member_status = MemberSchedule.find(m_s_id)#member.member_schedules.find_by(schedule_id: @decided_schedule.id)
-#          member_status.update_attributes(m_s_item)
-#        end
       end
     end
     flash[:info] = "メンバー情報を更新しました。"
@@ -137,61 +122,9 @@ class MembersController < EventsController
                                       :remark,
                                       :column_number)
     end
-    
-    # 参加者のリスト
-    def members_params
-      params.require(:event).permit(members: [:member_name,
-                                              :comment,
-                                              :member_schedules,
-                                              :remark])[:members]
-    end
-    
-    # 参加者ステータスのリスト1
-    def member_schedules1_params
-      params.require(:event).permit(members: [:member_name,
-                                              :comment,
-                                              { member_schedules: [
-                                                 :attendance_status,
-                                                 :payment_status,
-                                                 :fee]
-                                               },
-                                               :remark])[:members]
-    end
-    # 参加者ステータスのリスト2
-    def member_schedules2_params
-      params.require(:event).permit(members: [:member_name,
-                                              :comment,
-                                              { member_schedules_attributes: [
-                                                 :attendance_status,
-                                                 :payment_status,
-                                                 :fee]
-                                               },
-                                               :remark])[:members]
-    end
-    # 参加者ステータスのリスト3
-    def member_schedules3_params
-      params.require(:event).permit(members: [:member_name,
-                                              :comment,
-                                              :remark,
-                                              member_schedules_attributes: [:attendance_status,
-                                                                            :payment_status,
-                                                                            :fee]
-                                              ])[:members]
-    end
-    
-    # 参加者ステータスのリスト4
-    def member_schedules4_params
-      params.require(:event).permit(members: [:member_name,
-                                              :comment,
-                                              :remark,
-                                              member_schedules_attributes: [:attendance_status,
-                                                                            :payment_status,
-                                                                            :fee][:member_schedules]
-                                              ])[:members]
-    end
-    
-    # 参加者ステータスのリスト5
-    def member_schedules5_params
+  
+    # Member#update_all
+    def member_schedules_params
       params.require(:event).permit(members: [:member_name,
                                               :comment,
                                               :remark,
