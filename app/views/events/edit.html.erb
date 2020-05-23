@@ -1,10 +1,10 @@
 <% provide(:title, 'Edit-Event') %>
 <% provide(:class_text, 'event--edit') %>
 <% provide(:button_text, 'イベント編集') %>
-<h1>イベントの編集</h1>
+<h1>イベントの直接編集</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= render 'event_form', model: @event %>
+    <%= render 'event_form', model: @event, schedule_model: @decided_schedule %>
   </div>
 </div>

@@ -3,7 +3,10 @@ class Event < ApplicationRecord
   has_many :members, dependent: :destroy
   has_many :schedules, dependent: :destroy
   
+  VALID_URL_REGEX = /(\A\z)|(\A(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z)/ix
+#  VALID_CHOUSEISAN_URL_REGEX = /(\A\z)|(\A(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?+=[a-z0-9]\z)/ix
   validates :event_name, presence: true
+  validates :chouseisan_url, presence: true, length: { maximum: 200 }, format: { with: VALID_URL_REGEX }, if: :create_with_chouseisan?
   validates :chouseisan_note, length: { maximum: 200 }
   validates :reference, length: { maximum: 200 }
   
@@ -63,9 +66,11 @@ class Event < ApplicationRecord
     end
   end
 
-  # csvインポートによる更新を許可するカラムを定義
-  def self.updatable_attributes
-    #["name", "email", "department", "employee_number", "uid", "basic_work_time", "designated_work_start_time", "designated_work_end_time", "superior", "admin", "password"]
-  end
-  
+
+  private
+    # 調整さんでnewするときのみバリデーション
+    def create_with_chouseisan?
+      chouseisan_url.present?
+    end
+    
 end

@@ -5,54 +5,23 @@ class EventsController < ApplicationController
   before_action :correct_user, except: %w[new new_b create index]
   
   def new
-    @event = Event.new
+    @event = current_user.events.new
+    @decided_schedule = @event.schedules.new
   end
   
   def new_b
-    @event = Event.new
+    @event = current_user.events.new
+    @decided_schedule = @event.schedules.new
   end
   
   def create
-#    debugger
-    @event = Event.new(event_params)
-    @event.user_id = current_user.id
-    
+    @event = current_user.events.new(event_params)
     if @event.chouseisan_url
-      @event.event_name = "（未更新）"
-      if @event.save
-        flash[:success] = '調整さんURLを登録しました。早速更新してみましょう！'
-        redirect_to event_url(@event)
-      else
-        render :new_b
-      end
-      
+#      debugger
+      create_with_chouseisan
     else
-      @event.chouseisan_check = false
-      if @event.save
-        @decided_schedule = @event.schedules.new(schedule_params)
-        @decided_schedule.decided = true
-        if @decided_schedule.save
-          @decided_statuses = []
-          @decided_schedule.attendance_numbers.times do |number|
-            @member = @event.members.new(member_params)
-            @member.member_name = "member#{number + 1}"
-            if @member.save
-              decided_status = @member.member_schedules.new(schedule_id: @decided_schedule.id, attendance_status: "to_attend")
-              unless decided_status.save
-                debugger
-              end
-            else
-              debugger
-            end
-          end
-        else
-          debugger
-        end
-        flash[:success] = '次は参加者の名前を登録しましょう！'
-        redirect_to event_url(@event)
-      else
-        render :new_b
-      end
+#      debugger
+      create_without_chouseisan
     end
   end
   
@@ -73,11 +42,9 @@ class EventsController < ApplicationController
   end
   
   def update
-    if @event.update_attributes(event_params)
+    if @event.update_attributes(event_params) && @decided_schedule.update_attributes(schedule_params)
       flash[:success] = @event.event_name + 'を更新しました。'
-      #if 
-        redirect_to @event
-        #render action: :update_chouseisan_check
+      redirect_to @event
     else
       render action: :edit
     end
@@ -153,7 +120,52 @@ class EventsController < ApplicationController
   
   private
 #  public
-  
+
+    # 調整さんで新規イベント作成
+    def create_with_chouseisan
+      @event.event_name = "（未更新）"
+      if @event.save
+        flash[:success] = '調整さんURLを登録しました。早速更新してみましょう！'
+        redirect_to event_url(@event)
+      else
+        render :new_b
+      end
+    end
+    
+    # 調整さんなしで直接新規イベント作成
+    def create_without_chouseisan
+      @event.chouseisan_check = false
+      if @event.save
+        @decided_schedule = @event.schedules.new(schedule_params)
+        @decided_schedule.decided = true
+        if @decided_schedule.save
+          @decided_statuses = []
+          @decided_schedule.attendance_numbers.times do |number|
+            @member = @event.members.new(member_params)
+            @member.member_name = "member#{number + 1}"
+            if @member.save
+              decided_status = @member.member_schedules.new(schedule_id: @decided_schedule.id, attendance_status: "to_attend")
+              if decided_status.save
+                flash[:success] = '次は「まとめて編集」で参加者の名前を登録しましょう！'
+                redirect_to event_url(@event)
+              else
+                flash[:danger] = 'decided_scheduleモデルの保存時に予期せぬエラーが発生しました。管理者にお問い合わせください。'
+                render :new_b
+              end
+            else
+              flash[:danger] = 'memberモデルの保存時に予期せぬエラーが発生しました。管理者にお問い合わせください。'
+              render :new_b
+            end
+          end
+        else
+          render :new_b
+        end
+      else
+        render :new_b
+      end
+    end
+    
+    
     # beforeフィルター
   
     # 対象のイベントを取得。
@@ -218,6 +230,26 @@ class EventsController < ApplicationController
                                               :comment,
                                               :remark,
                                               :column_number])[:members]
+    end
+    
+    # Event&Schedule#update
+    def event_schedule_params
+      params.require(:event).permit(:event_name,
+                                    :chouseisan_note,
+                                    :chouseisan_url,
+                                    :chouseisan_check,
+                                    :place,
+                                    :indication_price,
+                                    :deadline,
+                                    :reserved_at,
+                                    :reserved_by,
+                                    :reserved_number_of_members,
+                                    :reference,
+                                    schedules_attributes: [:id,
+                                                           :held_at,
+                                                           :attendance_numbers,
+                                                           :decided]
+                                    )
     end
     
 end

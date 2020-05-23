@@ -1,12 +1,14 @@
 <% provide(:title, @event.event_name) %>
 
 <div>
-  <% if @event.chouseisan_check? %>
-    <%= link_to "編集", @event.chouseisan_url, target: :_blank %>
-  <% else %>
-    <%= link_to "編集", edit_event_path(@event) %>
-  <% end %>
-  <h2><%= @event.event_name %></h2>
+  <h1 style="display:inline;"><%= @event.event_name %></h1>
+  <h5 style="display:inline;">
+    <% if @event.chouseisan_check? %>
+      <%= link_to "編集", @event.chouseisan_url, target: :_blank %>
+    <% else %>
+      <%= link_to "直接編集", edit_event_path(@event) %>
+    <% end %>
+  </h5>
   <h4><%= @event.chouseisan_note %></h4>
 </div>
 

@@ -1,5 +1,6 @@
 <%= form_with(model: model, local: true) do |f| %>
   <%= render 'users/shared/error_messages', resource: model %>
+  <%= render 'users/shared/error_messages', resource: schedule_model %>
   
   <%= f.label :event_name, class: "label-#{yield(:class_text)}" %>
   <%= f.text_field :event_name, class: "form-control" %>
@@ -7,16 +8,16 @@
   <%= f.label :place, class: "label-#{yield(:class_text)}" %>
   <%= f.text_field :place, class: "form-control" %>
   
-  <% if model.new_record? %>
-    <%= f.fields_for :schedules do |schedule| %>
-    
-      <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>
-      <%= schedule.datetime_local_field :held_at, class: "form-control" %>
-      
-      <%= schedule.label :attendance_numbers, class: "label-#{yield(:class_text)}" %>
-      <%= schedule.number_field :attendance_numbers, min:2, class: "form-control" %>
+  <%= f.fields_for :schedules, schedule_model do |schedule| %>
   
+    <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>
+    <%= schedule.datetime_local_field :held_at, class: "form-control" %>
+    
+    <% if schedule_model.new_record? %>
+      <%= schedule.label :attendance_numbers, class: "label-#{yield(:class_text)}" %>
+      <%= schedule.number_field :attendance_numbers, min:2, value: 4, class: "form-control" %>
     <% end %>
+    
   <% end %>
   
   
