@@ -5,4 +5,5 @@ class Schedule < ApplicationRecord
   accepts_nested_attributes_for :member_schedules, allow_destroy: true
   
   validates :held_at, presence: true
+  validates :attendance_numbers, presence: true
 end

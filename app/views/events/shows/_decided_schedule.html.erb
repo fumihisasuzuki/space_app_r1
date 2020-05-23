@@ -1,4 +1,5 @@
 <h3 style="display:inline;">
+  <%= "（！過去の日付です！）" if @decided_schedule.held_at < Time.current %>
   <%= l(@decided_schedule.held_at, format: :shortdate) %>
   <a class="<%= css_class_of_the_day(@decided_schedule.held_at) %>">(<%= $days_of_the_week[@decided_schedule.held_at.wday] %>)</a>
   <%= l(@decided_schedule.held_at, format: :time) %>~

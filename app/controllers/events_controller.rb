@@ -6,16 +6,16 @@ class EventsController < ApplicationController
   
   def new
     @event = current_user.events.new
-    @decided_schedule = @event.schedules.new
+    @decided_schedule = @event.schedules.new(held_at: Time.current.change(hour: 19, min:0, sec: 0))
   end
   
   def new_b
     @event = current_user.events.new
-    @decided_schedule = @event.schedules.new
+    @decided_schedule = @event.schedules.new(held_at: Time.current.change(hour: 19, min:0, sec: 0))
   end
   
   def create
-    @event = current_user.events.new(event_params)
+    @event = current_user.events.new(event_schedule_params)
     if @event.chouseisan_url
 #      debugger
       create_with_chouseisan
@@ -29,6 +29,7 @@ class EventsController < ApplicationController
   end
 
   def show
+#    debugger
     if @event.chouseisan_check
       reg = /=/.match(@event.chouseisan_url)
       chouseisan_uid = reg.post_match
@@ -135,32 +136,29 @@ class EventsController < ApplicationController
     # 調整さんなしで直接新規イベント作成
     def create_without_chouseisan
       @event.chouseisan_check = false
+      @event.schedules.first.decided = true
       if @event.save
-        @decided_schedule = @event.schedules.new(schedule_params)
-        @decided_schedule.decided = true
-        if @decided_schedule.save
-          @decided_statuses = []
-          @decided_schedule.attendance_numbers.times do |number|
-            @member = @event.members.new(member_params)
-            @member.member_name = "member#{number + 1}"
-            if @member.save
-              decided_status = @member.member_schedules.new(schedule_id: @decided_schedule.id, attendance_status: "to_attend")
-              if decided_status.save
-                flash[:success] = '次は「まとめて編集」で参加者の名前を登録しましょう！'
-                redirect_to event_url(@event)
-              else
-                flash[:danger] = 'decided_scheduleモデルの保存時に予期せぬエラーが発生しました。管理者にお問い合わせください。'
-                render :new_b
-              end
-            else
-              flash[:danger] = 'memberモデルの保存時に予期せぬエラーが発生しました。管理者にお問い合わせください。'
-              render :new_b
+        @decided_schedule = @event.schedules.first
+        @decided_schedule.attendance_numbers.times do |number|
+          @member = @event.members.new(member_params)
+          @member.member_name = "member#{number + 1}"
+          if @member.save
+            decided_status = @member.member_schedules.new(schedule_id: @decided_schedule.id, attendance_status: "to_attend")
+            unless decided_status.save
+              flash[:danger] = 'decided_scheduleモデルの保存時に予期せぬエラーが発生しました。管理者にお問い合わせください。'
+              redirect_to event_url(@event) and return
             end
+          else
+            flash[:danger] = 'システムエラーによりmemberの自動生成に失敗しました。管理者にお問い合わせください。'
+            redirect_to event_url(@event) and return
           end
-        else
-          render :new_b
         end
+        flash[:danger] = '過去の日付に設定されています。' if @decided_schedule.held_at < Time.current
+        flash[:success] = '次は「まとめて編集」で参加者の名前を登録しましょう！'
+        redirect_to event_url(@event)
+          
       else
+        @decided_schedule = @event.schedules.new
         render :new_b
       end
     end
