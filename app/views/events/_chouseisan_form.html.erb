@@ -1,10 +1,11 @@
+<%= render 'users/shared/error_messages', resource: model %>
 <% if model.chouseisan_url.blank? %>
   STEP１. <%= link_to "「調整さん」に飛ぶ：https://chouseisan.com/", "https://chouseisan.com/", target: :_blank %><br>
-  STEP２. 「調整さん」のURLを登録してください。
+  STEP２. 「調整さん」で出欠表をつくり、URLをコピー<br>
+  STEP３. 「調整さん」のURLを登録。
 <% end %>
 <%= form_with(model: model, local: true, class:"form-inline") do |f| %>
-  <%= render 'users/shared/error_messages', resource: model %>
-    <%= f.label :chouseisan_url, class: "label-form" %>
-    <%= f.text_field :chouseisan_url, class: "form-control" %>
+  <%= f.label :chouseisan_url, class: "label-form" %>
+  <%= f.text_field :chouseisan_url, class: "form-control" %>
   <%= f.submit "登録", class: "btn btn-sm btn-primary btn-form" %>
 <% end %>

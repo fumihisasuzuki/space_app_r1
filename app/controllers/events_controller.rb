@@ -1,17 +1,16 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_event, except: %w[new new_b create index]
-  before_action :set_number_of_members, except: %w[new new_b create]
-  before_action :correct_user, except: %w[new new_b create index]
+  before_action :set_event, except: %w[new new_a new_b create index]
+  before_action :set_only_new_event, only: %w[new new_a new_b]
+  before_action :set_only_new_decided_schedule, only: %w[new new_b]
+  before_action :set_number_of_members, except: %w[new new_a new_b create]
+  before_action :correct_user, except: %w[new new_a new_b create index]
   
   def new
-    @event = current_user.events.new
-    @decided_schedule = @event.schedules.new(held_at: Time.current.change(hour: 19, min:0, sec: 0))
   end
-  
+  def new_a
+  end
   def new_b
-    @event = current_user.events.new
-    @decided_schedule = @event.schedules.new(held_at: Time.current.change(hour: 19, min:0, sec: 0))
   end
   
   def create
@@ -129,7 +128,7 @@ class EventsController < ApplicationController
         flash[:success] = '調整さんURLを登録しました。早速更新してみましょう！'
         redirect_to event_url(@event)
       else
-        render :new_b
+        render :new_a
       end
     end
     
@@ -158,7 +157,7 @@ class EventsController < ApplicationController
         redirect_to event_url(@event)
           
       else
-        @decided_schedule = @event.schedules.new
+        set_only_new_decided_schedule
         render :new_b
       end
     end
@@ -180,6 +179,16 @@ class EventsController < ApplicationController
         flash[:danger] = 'set_event:error; id=' + set_id + 'のデータは存在しません。'
         redirect_to_home_page_url
       end
+    end
+    
+    # new event
+    def set_only_new_event
+      @event = current_user.events.new
+    end
+    
+    # new decided_schedule
+    def set_only_new_decided_schedule
+      @decided_schedule = @event.schedules.new(held_at: Time.current.change(hour: 19, min:0, sec: 0))
     end
     
     # 参加人数を取得。

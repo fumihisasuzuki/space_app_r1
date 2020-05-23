@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= render 'event_form', model: @event, schedule_model: @decided_schedule %>
-    <%= link_to "日程が未決定の場合はこちら", events_new_a_path %>
+    <%= render 'chouseisan_form', model: @event %>
+    <%= link_to "日程が調整済の場合はこちら", events_new_b_path %>
   </div>
 </div>

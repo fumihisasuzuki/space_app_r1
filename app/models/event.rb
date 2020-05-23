@@ -71,7 +71,7 @@ class Event < ApplicationRecord
   private
     # 調整さんでnewするときのみバリデーション
     def create_with_chouseisan?
-      chouseisan_url.present?
+      !chouseisan_url.nil?
     end
     
 end
