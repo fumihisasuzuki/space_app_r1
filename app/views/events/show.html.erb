@@ -4,10 +4,11 @@
   <h1 style="display:inline;"><%= @event.event_name %></h1>
   <h5 style="display:inline;">
     <% if @event.chouseisan_check? %>
-      <%= link_to "編集", @event.chouseisan_url, target: :_blank %>
+      <%= link_to "編集（調整さん）", @event.chouseisan_url, target: :_blank %>
     <% else %>
-      <%= link_to "直接編集", edit_event_path(@event) %>
+      <%= link_to "編集", edit_event_path(@event) %>
     <% end %>
+    <%= link_to "ページ更新", event_path(@event) %>
   </h5>
   <h4><%= @event.chouseisan_note %></h4>
 </div>
@@ -41,14 +42,25 @@
 
 
 
-
-
-
-
-
-
-
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
       <%= debug(params) if Rails.env.development? %>
       
@@ -99,8 +111,8 @@
       </tr>
       <tr>
         <td>note: <%= @event.chouseisan_note %></td>
-        <td>url: <%= @event.chouseisan_url %></td>
         <td>check: <%= @event.chouseisan_check %></td>
+        <td>url: <%= @event.chouseisan_url %></td>
       </tr>
     </table>
   <% else %>
@@ -124,8 +136,8 @@
       </tr>
       <tr>
         <td>note: <%= @event.chouseisan_note %></td>
-        <td>url: <%= @event.chouseisan_url %></td>
         <td>check: <%= @event.chouseisan_check %></td>
+        <td>url: <%= @event.chouseisan_url %></td>
       </tr>
     </table>
     

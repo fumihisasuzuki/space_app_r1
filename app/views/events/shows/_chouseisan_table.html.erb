@@ -1,19 +1,5 @@
 <div>
-  <p>
-    調整さんURL:
-    <%= link_to @event.chouseisan_url, @event.chouseisan_url, target: :_blank %>
-    <%= link_to "URLへ飛ぶ", @event.chouseisan_url, class: "btn btn-primary btn-sm", target: :_blank %>
-    <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.chouseisan_url %>">URLコピー</button>
-  	<a class="btn btn-default" data-toggle="collapse" href="#collapseURLedit">
-  	  URL編集
-  	</a>
-  </p>
-  <div id="collapseURLedit" class="collapse">
-  	<div class="well">
-      <%= render 'chouseisan_form', model: @event %>
-  	</div>
-  </div>
-
+  <%= render 'events/shows/chouseisan_url' %>
   <table class="table table-bordered table-condensed" id="chouseisan-table">
     <tr>
       <td colspan="<%= 4 + @event.members.count %>">
@@ -35,12 +21,10 @@
       <td>〇</td>
       <td>△</td>
       <td>×</td>
-      <% #debugger %>
       <% @event.members.each do |member| %>
         <td><%= member.member_name %></td>
       <% end %>
     </tr>
-    <% #debugger %>
     <% @schedules.each do |date| %>
       <tr>
         <td>

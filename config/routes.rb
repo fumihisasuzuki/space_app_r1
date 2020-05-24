@@ -31,7 +31,6 @@ Rails.application.routes.draw do
         patch 'update_status'
       end
     end
-#    collection { post :import }
   end
   
   root 'static_pages#top'

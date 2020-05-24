@@ -3,19 +3,15 @@ class MembersController < EventsController
   before_action :set_event
   before_action :correct_user
   before_action :set_member, except: %w[create index update_all]
-#  before_action :set_members_list, only: %w[index]
   
   def index
-#    debugger
     if @decided_schedule
       @members = []
       @decided_schedule.member_schedules.all.each_with_index do |m_s, counter|
-        #debugger
         @members << @event.members.find(m_s.member_id) if m_s.attendance_status == params[:status_key]
       end
       @first_number = params[:number_key].to_i
     end
-#    debugger
   end
   
   def create
@@ -27,13 +23,13 @@ class MembersController < EventsController
         redirect_to event_url(@event)
       else
         debugger
-        flash[:danger] = 'なぜか参加者の追加に失敗しました。管理者にお問い合わせください。'
+        flash[:danger] = 'システムエラー：参加者のステータス登録に失敗しました。管理者にお問い合わせください。'
         redirect_to event_url(@event)
       end
     else
-      debugger
-      flash[:danger] = 'なぜか参加者の追加に失敗しました。管理者にお問い合わせください。'
-      redirect_to event_url(@event)
+      @member_rendered_status = params[:status_key]
+      flash.now[:danger] = 'メンバーの追加に失敗しました。やり直してください。'
+      render action: :show
     end
   end
   
@@ -41,42 +37,49 @@ class MembersController < EventsController
   end
   
   def update
-    #debugger
+    name = @event.members.find(params[:id]).member_name
     if @member.update_attributes(member_params)
       flash[:success] = @member.member_name + 'を更新しました。'
       redirect_to @event
     else
-      render action: :edit
+      @member_rendered_status = @member.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status
+      flash.now[:danger] = name + 'の更新に失敗しました。'
+      render action: :show
     end
   end
   
   def update_status
-    #debugger
     member_status = @member.member_schedules.find(params[:attendance_id])
     if member_status.update_attribute(:attendance_status, params[:key].to_i)
       if @decided_schedule.update_attribute(:attendance_numbers, @decided_schedule.member_schedules.where(attendance_status: "to_attend").count)
         flash[:success] = @member.member_name + 'を' + member_status.attendance_status_i18n + 'に変更しました。'
         redirect_to @event
       else
-      render action: :edit
+        debugger
+        render action: :show
       end
     else
-      #debugger
-      render action: :edit
+      debugger
+      render action: :show
     end
   end
     
   
   def update_all
-    member_schedules_params.each do |id, item|
-      if params[:delete_a_member]["#{id}"] == "1"
-        member.destroy
-      else
+    ActiveRecord::Base.transaction do # トランザクションを開始します。
+      member_schedules_params.each do |id, item|
         member = Member.find(id)
-        member.update_attributes(item)
+        if params[:delete_a_member]["#{id}"] == "1"
+          member.destroy
+        else
+          member.update_attributes!(item)
+        end
       end
     end
     flash[:info] = "メンバー情報を更新しました。"
+    redirect_to @event
+  rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
+    flash[:danger] = "無効な入力データがあった為、変更できませんでした。"
     redirect_to @event
   end
   
@@ -87,7 +90,6 @@ class MembersController < EventsController
   end
   
   private
-#  public
   
     # beforeフィルター
   
@@ -106,10 +108,6 @@ class MembersController < EventsController
         flash[:danger] = 'event_id=' + params[:event_id] + 'のデータは存在しません。'
         redirect_to_home_page_url
       end
-    end
-    
-    # 対象のメンバーリストを取得します。
-    def set_members_list
     end
     
     

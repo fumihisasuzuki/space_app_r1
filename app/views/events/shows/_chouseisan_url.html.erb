@@ -1,0 +1,14 @@
+<p>
+  調整さんURL:
+  <%= link_to @event.chouseisan_url, @event.chouseisan_url, target: :_blank %>
+  <%= link_to "URLへ飛ぶ", @event.chouseisan_url, class: "btn btn-primary btn-sm", target: :_blank %>
+  <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.chouseisan_url %>">URLコピー</button>
+    <a class="btn btn-default" data-toggle="collapse" href="#collapseURLedit">
+      URL編集
+    </a>
+</p>
+<div id="collapseURLedit" class="collapse">
+    <div class="well">
+        <%= render 'chouseisan_form', model: @event, explanation_need: false %>
+    </div>
+</div>

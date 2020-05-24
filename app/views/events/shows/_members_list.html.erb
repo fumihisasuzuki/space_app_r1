@@ -1,3 +1,4 @@
+<% member_rendered = @member %>
 <div class="panel-group" id="memberslist">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -6,6 +7,10 @@
 					<div>
             <h3 style="display:inline;">＜参加者＞</h3>
             <h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
+            <% if member_rendered %>
+              <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "to_attend" %>
+              <%= link_to "OK", event_path(@event) if @member_rendered_status == "to_attend" %>
+            <% end %>
           </div>
 				</a>
 			</h3>
@@ -25,6 +30,11 @@
               <h3 style="display:inline;">＜保留＞</h3>
               <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
               <%= render 'events/shows/pending_message', message: '調整中！' %>
+              <% #debugger %>
+              <% if member_rendered %>
+                <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "on_hold" %>
+                <%= link_to "OK", event_path(@event) if @member_rendered_status == "on_hold" %>
+              <% end %>
             </div>
   				</a>
   			</h3>
@@ -45,6 +55,10 @@
             <div>
               <h4 style="display:inline;">＜不参加＞</h4>
               <h4 style="display:inline;"><%= @to_be_absent_statuses.count %>名</h4>
+              <% if member_rendered %>
+                <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "to_be_absent" %>
+                <%= link_to "OK", event_path(@event) if @member_rendered_status == "to_be_absent" %>
+              <% end %>
             </div>
   				</a>
   			</h3>

@@ -17,7 +17,6 @@ class Event < ApplicationRecord
       row_num = 0
       CSV.foreach(file.path, headers: false, encoding: 'Shift_JIS:UTF-8') do |row|
         row_num += 1
-#        debugger
         case row_num
         when 1 # 1行目の処理（イベント名）
           event.update_attribute(:event_name, row[0])

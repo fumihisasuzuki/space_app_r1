@@ -2,22 +2,22 @@
   <%= render 'users/shared/error_messages', resource: model %>
   <%= render 'users/shared/error_messages', resource: schedule_model %>
   
-  <%= f.label :event_name, class: "label-#{yield(:class_text)}" %>※必須
-  <%= f.text_field :event_name, class: "form-control" %>
+  <%= f.label :event_name, class: "label-#{yield(:class_text)}" %>(※必須)
+  <%= f.text_field :event_name, autofocus: true, placeholder: "イベント名を入力", class: "form-control" %>
   
   <%= f.label :place, class: "label-#{yield(:class_text)}" %>
-  <%= f.text_field :place, class: "form-control" %>
+  <%= f.text_field :place, placeholder: "最寄り駅など開催場所を入力", class: "form-control" %>
   
   <%= f.fields_for :schedules, schedule_model do |schedule| %>
   
     <% if schedule_model.new_record? %>
-      <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>※必須
+      <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>(※必須)
       <%= schedule.datetime_local_field :held_at, class: "form-control" %>
     
-      <%= schedule.label :attendance_numbers, class: "label-#{yield(:class_text)}" %>※必須
+      <%= schedule.label :attendance_numbers, class: "label-#{yield(:class_text)}" %>(※必須)
       <%= schedule.number_field :attendance_numbers, min:2, value: 4, class: "form-control" %>
     <% else %>
-      <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>※必須
+      <%= schedule.label :held_at, class: "label-#{yield(:class_text)}" %>(※必須)
       <%= schedule.datetime_local_field :held_at, class: "form-control" %>
     <% end %>
     
@@ -25,7 +25,7 @@
   
   
   <%= f.label :chouseisan_note, class: "label-#{yield(:class_text)}" %>
-  <%= f.text_area :chouseisan_note, class: "form-control" %>
+  <%= f.text_area :chouseisan_note, placeholder: "開催趣旨や補足説明はこちら", class: "form-control" %>
   
   <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
 <% end %>

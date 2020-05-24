@@ -15,16 +15,16 @@
               <div class="alert alert-<%= message_type %>"><%= msg %></div>
             <% end %>
             
-            <div class="panel-group" id="sampleAccordion">
+            <div class="panel-group" id="neweventAccordion">
             	<div class="panel panel-default">
             		<div class="panel-heading">
             			<h3 class="panel-title">
-            				<a data-toggle="collapse" data-parent="#sampleAccordion" href="#sampleAccordionCollapse1">
+            				<a data-toggle="collapse" data-parent="#neweventAccordion" href="#neweventAccordionCollapsehead">
             					日程調整
             				</a>
             			</h3>
             		</div>
-            		<div id="sampleAccordionCollapse1" class="panel-collapse collapse in">
+            		<div id="neweventAccordionCollapsehead" class="panel-collapse collapse in">
             			<div class="panel-body">
             			  イベントを企画したら、まずは日程調整です。<br>
             				次の2通りの方法から選んでください。
@@ -34,26 +34,26 @@
             	<div class="panel panel-default">
             		<div class="panel-heading">
             			<h3 class="panel-title">
-            				<button type="button" class="btn btn-lg btn-success" data-toggle="collapse" data-parent="#sampleAccordion" href="#sampleAccordionCollapse2">
+            				<button type="button" class="btn btn-lg btn-success" data-toggle="collapse" data-parent="#neweventAccordion" href="#neweventAccordionCollapseA">
             				  A. 「調整さん」で日程調整
             				</button>
             			</h3>
             		</div>
-            		<div id="sampleAccordionCollapse2" class="panel-collapse collapse">
+            		<div id="neweventAccordionCollapseA" class="panel-collapse collapse">
             			<div class="panel-body">
-            		    <%= render 'chouseisan_form', model: @event %>
+            		    <%= render 'chouseisan_form', model: @event, explanation_need: true %>
                   </div>
             		</div>
             	</div>
             	<div class="panel panel-default">
             		<div class="panel-heading">
             			<h3 class="panel-title">
-            				<button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-parent="#sampleAccordion" href="#sampleAccordionCollapse3">
+            				<button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-parent="#neweventAccordion" href="#neweventAccordionCollapseB">
             					B. 既に日程調整済（手動で入力）
             				</a>
             			</h3>
             		</div>
-            		<div id="sampleAccordionCollapse3" class="panel-collapse collapse">
+            		<div id="neweventAccordionCollapseB" class="panel-collapse collapse">
             			<div class="panel-body">
                     <%= render 'event_form', model: @event, schedule_model: @decided_schedule %>
                   </div>

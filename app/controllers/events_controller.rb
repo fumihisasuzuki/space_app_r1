@@ -5,6 +5,7 @@ class EventsController < ApplicationController
   before_action :set_only_new_decided_schedule, only: %w[new new_b]
   before_action :set_number_of_members, except: %w[new new_a new_b create]
   before_action :correct_user, except: %w[new new_a new_b create index]
+  before_action :correct_chouseisan_url, only: %w[show]
   
   def new
   end
@@ -16,10 +17,8 @@ class EventsController < ApplicationController
   def create
     @event = current_user.events.new(event_schedule_params)
     if @event.chouseisan_url
-#      debugger
       create_with_chouseisan
     else
-#      debugger
       create_without_chouseisan
     end
   end
@@ -28,21 +27,23 @@ class EventsController < ApplicationController
   end
 
   def show
-#    debugger
-    if @event.chouseisan_check
-      reg = /=/.match(@event.chouseisan_url)
-      chouseisan_uid = reg.post_match
-      @export_csv_url = 'https://chouseisan.com/schedule/List/createCsv?h=' + chouseisan_uid
-      
-      @schedules = @decided_schedule ? @event.schedules.where(event_id: @event.id, decided: true) : @event.schedules
+    if @event.chouseisan_check? && @event.chouseisan_url
+      if reg = /=/.match(@event.chouseisan_url)
+        chouseisan_uid = reg.post_match
+        @export_csv_url = 'https://chouseisan.com/schedule/List/createCsv?h=' + chouseisan_uid
+      else
+        flash[:danger] = "適切な調整さんURLを登録してください。"
+        redirect_to edit_event_path(@event)
+      end
     end
+      @schedules = @decided_schedule ? @event.schedules.where(event_id: @event.id, decided: true) : @event.schedules
   end
   
   def edit
   end
   
   def update
-    if @event.update_attributes(event_params) && @decided_schedule.update_attributes(schedule_params)
+    if @event.update_attributes(event_schedule_params)
       flash[:success] = @event.event_name + 'を更新しました。'
       redirect_to @event
     else
@@ -81,8 +82,9 @@ class EventsController < ApplicationController
         flash[:danger] = 'なぜか切替に失敗しました。管理者にお問い合わせください。'
       end
     end
-    if @event.chouseisan_url.blank?
-      render action: :new
+    if params[:new_or_edit_chouseisan_url] == "true"
+      flash[:success] = 'STEP１～３にしたがって「' + @event.event_name + '」用の調整さんURLを作成し、登録してください。'
+      redirect_to edit_event_path(@event)
     else
       redirect_to @event
     end
@@ -107,19 +109,16 @@ class EventsController < ApplicationController
   # csvインポート（引数に@eventが必要）
   def import
     # fileはtmpに自動で一時保存される
-#    debugger
     Event.import(params[:file], @event)
     if params[:file]
       flash[:success] = "#{:file}をインポートしました。"
     else
       flash[:danger] = "ファイルを選択してください。"
     end
-#    debugger
     redirect_to event_url(@event)
   end
   
   private
-#  public
 
     # 調整さんで新規イベント作成
     def create_with_chouseisan
@@ -198,11 +197,19 @@ class EventsController < ApplicationController
       end
     end
     
-    # アクセスしたユーザーが現在ログインしているユーザー本人か確認します。
+    # アクセスしたユーザーが現在ログインしているユーザー本人か確認。
     def correct_user
       unless current_user == User.find(@event.user_id)
         flash[:danger] = "別アカウントの情報にアクセスしようとしています。URLを確認してください。"
         redirect_to_home_page_url
+      end
+    end
+    
+    # chouseisan_checkがtrueであるにも関わらず、urlが登録されていない場合は、編集画面へ飛ばす
+    def correct_chouseisan_url
+      if @event.chouseisan_check? && @event.chouseisan_url.blank?
+        flash[:danger] = "適切な調整さんURLを登録してください。"
+        redirect_to edit_event_path(@event)
       end
     end
     

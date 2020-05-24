@@ -8,12 +8,20 @@
 	  ここまでの情報（タイトル、日程、参加者）を「調整さん」を使って更新できるようになります。<br>
 	  （ただし、上記で直接変更した内容は破棄されますのでご注意ください。）<br>
 	  候補日を複数提示して、複数の人の都合を調整する場合にオススメです。<br>
-    <%= render 'chouseisan_form', model: @event %>
-    <%= link_to '「調整さん」での更新を再開し、上記情報は破棄する', 
-      update_chouseisan_check_event_path(@event),
-      method: :patch, 
-      data: {confirm: "「#{@event.event_name}」の幹事をを「調整さん」で行います。上記内容は破棄されますがよろしいですか？"}, 
-      class: "btn btn-primary btn-block"
-    %>
+    <%= render 'events/shows/chouseisan_url' if @event.chouseisan_url %>
+    <h4 style="display:inline;">
+      上記情報は破棄し、「調整さん」での更新を開始/再開する：
+      <%= link_to '上記URLを使用', 
+        update_chouseisan_check_event_path(@event),
+        method: :patch, 
+        data: {confirm: "「#{@event.event_name}」の幹事を「調整さん」で行います。直接編集した内容は破棄されますがよろしいですか？"}, 
+        class: "btn btn-primary btn-lg" if @event.chouseisan_url %>
+      <%= link_to 'URLを新規登録/変更', 
+        update_chouseisan_check_event_path(@event, new_or_edit_chouseisan_url: true),
+        method: :patch, 
+        data: {confirm: "「#{@event.event_name}」の幹事を「調整さん」で行います。直接編集した内容は破棄されますがよろしいですか？"}, 
+        class: "btn btn-success btn-lg"
+      %>
+    </h4>
 	</div>
 </div>
