@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     passwords:     'users/passwords',
@@ -31,6 +30,7 @@ Rails.application.routes.draw do
         patch 'update_status'
       end
     end
+    resources :shops
   end
   
   root 'static_pages#top'

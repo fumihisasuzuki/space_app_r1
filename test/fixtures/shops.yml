@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shop_name: MyString
+  shop_url: MyString
+  shop_station: MyString
+  shop_address: MyString
+  course: 
+  decided: false
+  price: 1
+  event: one
+
+two:
+  shop_name: MyString
+  shop_url: MyString
+  shop_station: MyString
+  shop_address: MyString
+  course: 
+  decided: false
+  price: 1
+  event: two

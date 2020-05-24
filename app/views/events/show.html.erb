@@ -41,6 +41,30 @@
 </div>
 
 
+<div>
+  <h3 style="display:inline;">＜場所＞</h3>
+  <% if @decided_shop.blank? %>
+    <%= render 'events/shows/pending_message', message: '調整中！' %>
+  <% else %>
+    <h5 style="display:inline;">決定済</h5>
+    <%= link_to "お店を選び直す", "#" %>
+  <% end %>
+</div>
+<div>
+  <h4 style="display:inline;">
+    <%= render 'events/edit_place' %>
+  </h4>
+</div>
+<div>
+  <h3 style="display:inline;">お店</h3>
+  <% if @decided_shop.blank? %>
+    <%= link_to "Web検索", current_user.web_search_url, class: "btn btn-danger btn-sm", target: :_blank %><br>
+    <%= render 'events/shows/shop_index', models: @shops %>
+  <% else %>
+    <%= render 'events/shows/shop_show', model: @decided_shop %>
+  <% end %>
+</div>
+
 
 <br>
 <br>
@@ -62,8 +86,18 @@
 <br>
 <br>
 
-      <%= debug(params) if Rails.env.development? %>
+<%= debug(params) if Rails.env.development? %>
       
+
+<div class="line-it-button" data-lang="ja" data-type="share-b" data-ver="3" data-url="https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com" data-color="default" data-size="small" data-count="false" style="display: none;"></div>
+<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+
+    <%= link_to "LINEで共有", "https://line.me/R/msg/text/?#{@event.event_name}" %>
+
+
+<div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" data-url="https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com" data-color="default" data-size="large" data-count="false" style="display: none;"></div>
+<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+ 
       
       
       
