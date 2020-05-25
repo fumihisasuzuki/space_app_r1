@@ -13,6 +13,8 @@
   <h4><%= @event.chouseisan_note %></h4>
 </div>
 
+<br>
+
 <div>
   <h3 style="display:inline;">＜日程＞</h3>
   <% if @decided_schedule.blank? %>
@@ -27,6 +29,8 @@
   <% end %>
 </div>
 
+<br>
+
 <div>
   <% if @decided_schedule.blank? %>
     <h3 style="display:inline;">＜参加者＞</h3>
@@ -40,6 +44,8 @@
   <% end %>
 </div>
 
+<br>
+<br>
 
 <div>
   <h3 style="display:inline;">＜場所＞</h3>
@@ -56,9 +62,7 @@
   </h4>
 </div>
 <div>
-  <h3 style="display:inline;">お店</h3>
   <% if @decided_shop.blank? %>
-    <%= link_to "Web検索", current_user.web_search_url, class: "btn btn-danger btn-sm", target: :_blank %><br>
     <%= render 'events/shows/shop_index', models: @shops %>
   <% else %>
     <%= render 'events/shows/shop_show', model: @decided_shop %>
@@ -223,3 +227,4 @@
 
 <!--モーダルウインドウ表示-->
 <div id="member-index" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="shop-edit" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

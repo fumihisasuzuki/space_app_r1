@@ -3,6 +3,7 @@ ja:
     models:
       user: ユーザー
       event: イベント
+      shop: 店情報
       schedule: 日程
       member: 参加メンバー
     attributes:
@@ -29,6 +30,16 @@ ja:
         reserved_number_of_members: 予約人数
         reference: 備考
         user_id: ユーザーID
+      shop:
+        shop_name: 店名
+        shop_url: 店情報URL
+        shop_station: 店最寄り駅
+        shop_address: 住所
+        course: コース
+        price: 価格
+        remark: 備考
+        decided: 確定
+        event_id: イベントID
       schedule:
         held_at: 開催日
         attendance_numbers: 参加人数

@@ -1,0 +1,25 @@
+<% provide(:title, 'New-Event') %>
+<% provide(:class_text, 'event--new') %>
+<% provide(:button_text, 'イベント作成') %>
+<div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3 style="text-align:center">【店情報編集】</h3>
+    </div>
+
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <%= render 'shops/shop_form_full', model: @shop %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+    </div>
+  </div>
+</div>

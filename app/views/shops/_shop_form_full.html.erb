@@ -1,0 +1,24 @@
+<%= form_with(model:[@event, model], local: true) do |f| %>
+  <%= f.label :shop_name, class: "label-form" %>
+  <%= f.text_field :shop_name, placeholder: "店名を入力(※必須)", class: "form-control" %>
+  
+  <%= f.label :shop_url, class: "label-form" %>
+  <%= f.text_field :shop_url, placeholder: "URLを貼付け(※必須)", class: "form-control" %>
+  
+  <%= f.label :shop_station, class: "label-form" %>
+  <%= f.text_field :shop_station, placeholder: "最寄り駅（空欄でも可）", class: "form-control" %>
+  
+  <%= f.label :shop_address, class: "label-form" %>
+  <%= f.text_field :shop_address, placeholder: "住所（空欄でも可）", class: "form-control" %>
+  
+  <%= f.label :course, class: "label-form" %>
+  <%= f.text_field :course, placeholder: "コース名（空欄でも可）", class: "form-control" %>
+  
+  <%= f.label :price, class: "label-form" %>
+  <%= f.text_field :price, placeholder: "金額（空欄でも可）", class: "form-control" %>
+  
+  <%= f.label :remark, class: "label-form" %>
+  <%= f.text_field :remark, placeholder: "メモ（空欄でも可）", class: "form-control" %>
+  
+  <%= f.submit "更新", class: "btn btn-block btn-primary btn-form" %>
+<% end %>

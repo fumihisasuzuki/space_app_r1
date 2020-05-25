@@ -1,0 +1,9 @@
+<%= form_with(model:[@event, model], local: true, class:"form-inline") do |f| %>
+  <%= f.label :shop_name, class: "label-form" %>
+  <%= f.text_field :shop_name, placeholder: "店名を入力（※必須）", class: "form-control" %>
+  <%= f.label :shop_url, class: "label-form" %>
+  <%= f.text_field :shop_url, placeholder: "URLを貼付け（※必須）", class: "form-control" %>
+  <%= f.label :remark, class: "label-form" %>
+  <%= f.text_area :remark, placeholder: "メモ(空欄でも可)", class: "form-control" %>
+  <%= f.submit "登録", class: "btn btn-sm btn-primary btn-form" %>
+<% end %>

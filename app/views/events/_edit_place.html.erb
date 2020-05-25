@@ -1,7 +1,10 @@
-<%= form_with(model: @event, local: true, class:"form-inline") do |f| %>
-  <%= f.label :place, class: "label-form" %>
-  <%= f.text_field :place, placeholder: "最寄り駅など開催場所を入力", autofocus: true, class: "form-control" %>
-  <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
-  <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.place %>">駅名コピー</button>
-  <%= link_to "行き方検索", current_user.train_search_url, class: "btn btn-danger btn-sm", target: :_blank %>
-<% end %>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <%= form_with(model: @event, local: true, class:"form-inline") do |f| %>
+      <%= f.text_field :place, placeholder: "開催場所（駅名）を入力", autofocus: true, class: "form-control" %>
+      <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
+      <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.place %>">駅名コピー</button>
+      <%= link_to "行き方を調べる（路線検索）", current_user.train_search_url, class: "btn btn-danger btn-sm", target: :_blank %>
+    <% end %>
+  </div>
+</div>
