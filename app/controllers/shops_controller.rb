@@ -30,8 +30,27 @@ class ShopsController < EventsController
   end
   
   def destroy
+    @shop.destroy
+    flash[:success] = 'このイベントから「' + @shop.shop_name + '」を削除しました。'
+    redirect_to event_url(@event)
   end
   
+  def update_decision
+    if @decided_shop.blank?
+      if @shop.update_attribute(:decided, true)
+        flash[:success] = @event.event_name + 'のお店を' + @shop.shop_name + 'に決定しました！'
+      else
+        flash[:danger] = 'なぜかお店の決定に失敗しました。管理者にお問い合わせください。'
+      end
+    else
+      if @decided_shop.update_attribute(:decided, false)
+        flash[:success] = @event.event_name + 'のお店を再考することにしました。'
+      else
+        flash[:danger] = 'なぜかお店のリセットに失敗しました。管理者にお問い合わせください。'
+      end
+    end
+    redirect_to @event
+  end
   
   private
   

@@ -30,7 +30,11 @@ Rails.application.routes.draw do
         patch 'update_status'
       end
     end
-    resources :shops
+    resources :shops do
+      member do
+        patch 'update_decision'
+      end
+    end
   end
   
   root 'static_pages#top'

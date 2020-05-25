@@ -36,7 +36,6 @@ class EventsController < ApplicationController
         redirect_to edit_event_path(@event)
       end
     end
-      @schedules = @decided_schedule ? @event.schedules.where(event_id: @event.id, decided: true) : @event.schedules
   end
   
   def edit
@@ -174,6 +173,7 @@ class EventsController < ApplicationController
           @on_hold_statuses = @decided_schedule.member_schedules.where(attendance_status: "on_hold").paginate(page: params[:page], per_page: 10)
           @to_be_absent_statuses = @decided_schedule.member_schedules.where(attendance_status: "to_be_absent").paginate(page: params[:page], per_page: 10)
         end
+        @schedules = @decided_schedule ? @event.schedules.where(event_id: @event.id, decided: true) : @event.schedules.all
         @decided_shop = @event.shops.find_by(event_id: @event.id, decided: true)
         @shops = @event.shops.all.paginate(page: params[:page], per_page: 10)
       else

@@ -7,9 +7,12 @@
           <% models.each_with_index do |shop, counter| %>
             <tr>
               <td>
+                候補<%= counter + 1 %>
+              </td>
+              <td>
                 <div style="writing-mode: vertical-rl;">
                   <%= link_to 'このお店に決める', 
-                    "#",
+                    update_decision_event_shop_path(@event, shop),
                     method: :patch, 
                     data: {confirm: "「#{@event.event_name}」の開催場所を#{shop.shop_name}に決定します。よろしいですか？"}, 
                     class: "btn btn-info btn-xs"
@@ -17,25 +20,37 @@
                 </div>
               </td>
               <td>
-                <% #debugger %>
                 <%= render 'users/shared/error_messages', resource: @shop if @shop.present? && shop.id.to_s == params[:id] %>
                 <%= link_to "OK", event_path(@event) if @shop.present? && shop.id.to_s == params[:id] %>
                 <div>
-                  候補<%= counter + 1 %>
                   <h3 style="display:inline;"><%= shop.shop_name %></h3>
                   <%= link_to "編集", edit_event_shop_path(@event, shop), remote: true %>
                 </div>
                 <p>
                   <%= link_to shop.shop_url, shop.shop_url, target: :_blank %>
-                  <%= link_to "URLへ飛ぶ", shop.shop_url, class: "btn btn-primary btn-sm", target: :_blank %>
+                  <%= link_to "URLへ飛ぶ", shop.shop_url, class: "btn btn-primary btn-sm", target: :_blank if shop.shop_url %>
                   <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= shop.shop_url %>">URLコピー</button>
                   <a class="btn btn-default" data-toggle="collapse" href="#collapse-shop-edit-<%= counter + 1 %>">
                     詳細表示
                   </a>
+                  <%= link_to_web_search("店名でweb検索", shop.shop_name) %>
                 </p>
+                <div>
+                  <%= form_with(model:[@event, shop], local: true, class:"form-inline") do |f| %>
+                    <%= f.label :remark, class: "label-form" %>
+                    <%= f.text_area :remark, placeholder: "ここにメモが書けます", size: "50x2", class: "form-control" %>
+                    <%= f.submit "メモを保存", class: "btn btn-sm btn-primary btn-form" %>
+                  <% end %>
+                </div>
                 <div id="collapse-shop-edit-<%= counter + 1 %>" class="collapse">
                   <div class="well">
-                    <%= render 'shops/shop_form_full', model: shop %>
+                    <%= render 'events/shows/shop_show', model: shop %>
+                    <%= link_to "削除", 
+                      event_shop_path(@event, shop), 
+                      method: :delete, 
+                      data: {confirm: "「#{shop.shop_name}」を削除します。よろしいですか？"}, 
+                      class: "btn btn-danger btn-xs"
+                    %>
                   </div>
                 </div>
 
@@ -44,8 +59,8 @@
           <% end %>
             
           <tr>
-            <td>
-              <%= link_to "① Web検索", current_user.web_search_url, class: "btn btn-danger btn-sm", target: :_blank %>
+            <td colspan="2">
+              <%= link_to "① Web検索", current_user.web_search_url, class: "btn btn-danger btn-block", target: :_blank %>
             </td>
             <td>
               <%= render 'users/shared/error_messages', resource: @shop if @shop.present? && params[:id].blank? %>
@@ -56,7 +71,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="5">
+            <td colspan="3">
               <div id="collapse-new-shop" class="collapse">
               	<div class="well">
                   <%= render 'shops/shop_form_light', model: @event.shops.new %>
