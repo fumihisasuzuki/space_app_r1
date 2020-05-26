@@ -33,7 +33,8 @@
                   <a class="btn btn-default" data-toggle="collapse" href="#collapse-shop-edit-<%= counter + 1 %>">
                     詳細表示
                   </a>
-                  <%= link_to_web_search("店名でweb検索", shop.shop_name) %>
+                  <% event_station = @event.station.present? ? @event.station : "" %>
+                  <%= link_to_web_search("店名でweb検索", [shop.shop_name, event_station]) %>
                 </p>
                 <div>
                   <%= form_with(model:[@event, shop], local: true, class:"form-inline") do |f| %>

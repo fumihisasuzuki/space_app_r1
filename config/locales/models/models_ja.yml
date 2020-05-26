@@ -13,6 +13,8 @@ ja:
         email: メールアドレス
         web_search_url: Web検索エンジンURL
         train_search_url: 路線検索URL
+        map_url: マップURL
+        station: 最寄り駅
         days_before: 直前日数
         password: パスワード
         created_at: 作成日
@@ -22,7 +24,8 @@ ja:
         chouseisan_note: イベント説明
         chouseisan_url: 調整さんURL
         chouseisan_check: 調整さん使用確認
-        place: 場所候補
+        place: お店の種類
+        station: 駅名
         indication_price: 予想会費
         deadline: 回答期限
         reserved_at: 予約日時

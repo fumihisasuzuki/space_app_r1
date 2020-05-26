@@ -5,8 +5,11 @@
   <%= f.label :event_name, class: "label-#{yield(:class_text)}" %>(※必須)
   <%= f.text_field :event_name, autofocus: true, placeholder: "イベント名を入力", class: "form-control" %>
   
+  <%= f.label :station, class: "label-#{yield(:class_text)}" %>
+  <%= f.text_field :station, placeholder: "開催予定の最寄り駅を入力", class: "form-control" %>
+
   <%= f.label :place, class: "label-#{yield(:class_text)}" %>
-  <%= f.text_field :place, placeholder: "最寄り駅など開催場所を入力", class: "form-control" %>
+  <%= f.text_field :place, placeholder: "予約する店の種類を入力（検索時考慮されます）", class: "form-control" %>
   
   <%= f.fields_for :schedules, schedule_model do |schedule| %>
   

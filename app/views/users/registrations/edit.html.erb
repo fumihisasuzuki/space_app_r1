@@ -53,8 +53,18 @@
                   </div>
                 
                   <div class="field">
+                    <%= f.label :map_url, class: "label-user--edit" %>
+                    <%= f.text_field :map_url, autocomplete: "map_url", class: "form-control" %>
+                  </div>
+                
+                  <div class="field">
                     <%= f.label :train_search_url, class: "label-user--edit" %>
                     <%= f.text_field :train_search_url, autocomplete: "train_search_url", class: "form-control" %>
+                  </div>
+                
+                  <div class="field">
+                    <%= f.label :station, class: "label-user--edit" %>
+                    <%= f.text_field :station, placeholder: "最寄り駅を入力（路線検索時に使用できます）", autocomplete: "train_search_url", class: "form-control" %>
                   </div>
                 
                   <div class="field">

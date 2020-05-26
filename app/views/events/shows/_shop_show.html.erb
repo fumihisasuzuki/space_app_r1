@@ -21,12 +21,13 @@
               <a class="btn btn-default" data-toggle="collapse" href="#collapse-decided-shop">
                 編集
               </a>
-              <%= link_to_web_search("店名でweb検索", model.shop_name) %>
+              <% event_station = @event.station.present? ? @event.station : "" %>
+              <%= link_to_web_search("店名でweb検索", [model.shop_name, event_station]) %>
             </p>
             <% if model.shop_address.present? %>
               <div>
                 <h4 style="display:inline;">＜住所＞<%= model.shop_address %></h4>
-                <%= link_to_map("地図を表示", model.shop_address) %>
+                <%= link_to_map("地図を表示", [model.shop_address]) %>
               </div>
             <% end %>
             <div>
