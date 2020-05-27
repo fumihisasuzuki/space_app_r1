@@ -1,0 +1,84 @@
+<table class="table table-bordered table-hover" id="table-event-detail">
+  <% models.each_with_index do |event, counter| %>
+    <% decided_schedule = event.schedules.find_by(decided: true) %>
+    <% decided_shop = event.shops.find_by(decided: true) %>
+    <% event_station = event.station.present? ? event.station : "" %>
+    <% event_place = event.place.present? ? event.place : "" %>
+    <% on_hold_numbers = decided_schedule.member_schedules.where(attendance_status: "on_hold").count if decided_schedule %>
+    <tr>
+      <td colspan="2">
+        <div style="display:inline;">
+          <p>
+            <h3 style="display:inline;">
+              <%= link_to event.event_name, event_path(event) %>
+            </h3>
+            <a class="btn btn-default pull-right" data-toggle="collapse" href="#collapse-event-index-<%= event.id %>-<%= counter %>">
+              詳細
+            </a>
+          </p>
+          
+          <br>
+          
+          <% if decided_schedule.blank? %>
+            <h4 style="display:inline;">日程：</h4>
+            <%= render 'events/shows/pending_message', message: '調整中！' %>
+          <% else %>
+            <h3 style="display:inline;">
+              <%= l(decided_schedule.held_at, format: :shortdate) %>
+              <a class="<%= css_class_of_the_day(decided_schedule.held_at) %>">(<%= $days_of_the_week[decided_schedule.held_at.wday] %>)</a>
+              <%= l(decided_schedule.held_at, format: :time) %>~
+            </h3>
+            <h3 style="display:inline;">
+              ＜ <%= decided_schedule.attendance_numbers %>
+              <% unless on_hold_numbers.zero? %>
+                ～<%= decided_schedule.attendance_numbers + on_hold_numbers %>
+              <% end %>
+              名 ＞
+            </h3>
+          <% end %>
+          <% if event.chouseisan_check? %>
+            <%= link_to "調整さんへ", event.chouseisan_url, class: "btn btn-success btn-sm", target: :_blank %>
+            <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= event.chouseisan_url %>">URLコピー</button>
+          <% else %>
+            直接調整可
+          <% end %>
+          
+          <br>
+          <br>
+          
+          <% if decided_shop.blank? %>
+            <h4 style="display:inline;">場所：</h4>
+            <%= render 'events/shows/pending_message', message: '調整中！' %>
+            <%= link_to_web_search("駅名でWeb検索", [event_station, event_place]) %>
+          <% else %>
+            <h2 style="display:inline;"><%= decided_shop.shop_name %></h2>
+            <%= link_to "WEBサイトを表示", decided_shop.shop_url, class: "btn btn-primary btn-sm", target: :_blank if decided_shop.shop_url %>
+            <%= link_to_web_search("店名でWeb検索", [decided_shop.shop_name, event_station, event_place]) %>
+            <%= link_to_map("地図を表示", [decided_shop.shop_name, event_station]) %>
+          <% end %>
+          <% if current_user.station && event.station %>
+            <%= link_to_train_search("駅名で路線検索", current_user.station, event.station) %>
+          <% else %>
+            <%= link_to "路線検索", current_user.train_search_url, class: "btn btn-danger btn-sm", target: :_blank %>
+            「駅名で路線検索」を利用するには、駅名を登録してください
+          <% end %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        
+        <div id="collapse-event-index-<%= event.id %>-<%= counter %>" class="collapse">
+          <div class="well">
+              <h4 style="display:inline;"><%= show_text_of(event.chouseisan_note) %></h4>
+              <%= link_to "詳細", event_path(event), class: "btn btn-primary btn-sm" %>
+              <%= link_to "削除", event_path(event), method: :delete, class: "btn btn-danger btn-sm",
+                data: {confirm: "「#{event.event_name}」を削除します。よろしいですか？"}
+              %>
+          </div>
+        </div>
+        
+      </td>
+    </tr>
+  <% end %>
+</table>

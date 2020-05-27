@@ -25,8 +25,8 @@
             <tr>
               <td><%= counter + first_number %></td>
               <td><%= @member.member_name %></td>
-              <td><%= @member.comment %></td>
-              <td><%= @member.remark %></td>
+              <td><%= show_text_of(@member.comment) %></td>
+              <td><%= show_text_of(@member.remark) %></td>
               <td>
                 <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapse-edit-member-<%= counter + first_number %>">
               	  編集

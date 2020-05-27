@@ -33,7 +33,7 @@
             <div>
               <%= form_with(model:[@event, model], local: true, class:"form-inline") do |f| %>
                 <%= f.label :remark, class: "label-form" %>
-                <%= f.text_area :remark, autofocus: true, placeholder: "ここにメモが書けます", size: "50x2", class: "form-control" %>
+                <%= f.text_area :remark, placeholder: "ここにメモが書けます", size: "50x2", class: "form-control" %>
                 <%= f.submit "メモを保存", class: "btn btn-sm btn-primary btn-form" %>
               <% end %>
             </div>

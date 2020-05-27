@@ -1,8 +1,8 @@
-<%= render 'events/shows/pending_message', message: '（！過去の日付です！）' if @decided_schedule.held_at < Time.current %>
+<%= render 'events/shows/pending_message', message: '（！過去の日付です！）' if model.held_at < Time.current %>
 <h3 style="display:inline;">
-  <%= l(@decided_schedule.held_at, format: :shortdate) %>
-  <a class="<%= css_class_of_the_day(@decided_schedule.held_at) %>">(<%= $days_of_the_week[@decided_schedule.held_at.wday] %>)</a>
-  <%= l(@decided_schedule.held_at, format: :time) %>~
+  <%= l(model.held_at, format: :shortdate) %>
+  <a class="<%= css_class_of_the_day(model.held_at) %>">(<%= $days_of_the_week[model.held_at.wday] %>)</a>
+  <%= l(model.held_at, format: :time) %>~
 </h3>
 <h5 style="display:inline;">
   <% if @event.chouseisan_check? %>
@@ -12,9 +12,9 @@
   <% end %>
 </h5>
 <h3 style="display:inline;">
-  ＜ <%= @decided_schedule.attendance_numbers %>
+  ＜ <%= model.attendance_numbers %>
   <% unless @on_hold_statuses.count.zero? %>
-    ～<%= @decided_schedule.attendance_numbers + @on_hold_statuses.count %>
+    ～<%= model.attendance_numbers + @on_hold_statuses.count %>
   <% end %>
   名 ＞
 </h3>

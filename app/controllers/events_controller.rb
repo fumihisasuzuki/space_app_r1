@@ -52,13 +52,13 @@ class EventsController < ApplicationController
   
   def update_decision_of_schedule
     if params[:schedule_id] && @decided_schedule.blank?
-      if @event.schedules.find(params[:schedule_id]).update_attribute(:decided, true)
+      if @event.schedules.find(params[:schedule_id]).update_attribute(:decided, true) && @event.update_attribute(:event_status, "schedule_decided")
         flash[:success] = @event.event_name + 'の日程を' + l(@event.schedules.find(params[:schedule_id]).held_at, format: :short)+ 'に決定しました！'
       else
         flash[:danger] = 'なぜか日程の決定に失敗しました。管理者にお問い合わせください。'
       end
     else
-      if @decided_schedule.update_attribute(:decided, false)
+      if @decided_schedule.update_attribute(:decided, false) && @event.update_attribute(:event_status, "pending")
         flash[:success] = @event.event_name + 'の日程を再考することにしました。'
       else
         flash[:danger] = 'なぜか日程のリセットに失敗しました。管理者にお問い合わせください。'
@@ -133,6 +133,7 @@ class EventsController < ApplicationController
     # 調整さんなしで直接新規イベント作成
     def create_without_chouseisan
       @event.chouseisan_check = false
+      @event.event_status = "schedule_decided"
       @event.schedules.first.decided = true
       if @event.save
         @decided_schedule = @event.schedules.first
@@ -172,6 +173,8 @@ class EventsController < ApplicationController
           @decided_statuses = @decided_schedule.member_schedules.where(attendance_status: "to_attend").paginate(page: params[:page], per_page: 10)
           @on_hold_statuses = @decided_schedule.member_schedules.where(attendance_status: "on_hold").paginate(page: params[:page], per_page: 10)
           @to_be_absent_statuses = @decided_schedule.member_schedules.where(attendance_status: "to_be_absent").paginate(page: params[:page], per_page: 10)
+        else
+          @event.update_attribute(:event_status, "pending")
         end
         @schedules = @decided_schedule ? @event.schedules.where(event_id: @event.id, decided: true) : @event.schedules.all
         @decided_shop = @event.shops.find_by(event_id: @event.id, decided: true)
@@ -221,6 +224,7 @@ class EventsController < ApplicationController
     # Event#new
     def event_params
       params.require(:event).permit(:event_name,
+                                    :event_status,
                                     :chouseisan_note,
                                     :chouseisan_url,
                                     :chouseisan_check,
@@ -252,6 +256,7 @@ class EventsController < ApplicationController
     # Event&Schedule#update
     def event_schedule_params
       params.require(:event).permit(:event_name,
+                                    :event_status,
                                     :chouseisan_note,
                                     :chouseisan_url,
                                     :chouseisan_check,

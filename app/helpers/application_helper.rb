@@ -16,5 +16,10 @@ module ApplicationHelper
       flash.delete(before)
     end
   end
+  
+  # text_areaで改行表示
+  def show_text_of(content)
+    return content.present? ? safe_join(content.split("\n"),tag(:br)) : ""
+  end
 
 end

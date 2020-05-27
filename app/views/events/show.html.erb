@@ -1,16 +1,16 @@
 <% provide(:title, @event.event_name) %>
+<%= link_to "ページ更新", event_path(@event), class:"pull-right" %>
 
-<div>
-  <h1 style="display:inline;"><%= @event.event_name %></h1>
+<div class="text-center">
+  <h1><%= @event.event_name %></h1>
+  <h4 style="display:inline;"><%= show_text_of(@event.chouseisan_note) %></h4>
   <h5 style="display:inline;">
     <% if @event.chouseisan_check? %>
       <%= link_to "編集（調整さん）", @event.chouseisan_url, target: :_blank %>
     <% else %>
       <%= link_to "編集", edit_event_path(@event) %>
     <% end %>
-    <%= link_to "ページ更新", event_path(@event) %>
   </h5>
-  <h4><%= @event.chouseisan_note %></h4>
 </div>
 
 <br>
@@ -20,7 +20,7 @@
   <% if @decided_schedule.blank? %>
     <%= render 'events/shows/pending_message', message: '調整中！' %>
   <% else %>
-    <%= render 'events/shows/decided_schedule' %>
+    <%= render 'events/shows/decided_schedule', model: @decided_schedule %>
   <% end %>
 </div>
 <div>
