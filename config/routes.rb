@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       delete 'destroy_members_and_schedules'
       patch 'update_decision_of_schedule'
       patch 'update_chouseisan_check'
+      get 'the_day'
     end
     patch 'members/update_all'
     resources :members do

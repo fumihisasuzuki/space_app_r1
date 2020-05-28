@@ -1,0 +1,71 @@
+<% provide(:title, @event.event_name) %>
+<%= link_to "現在当日モードです。通常モードはこちら", event_path(@event), class:"pull-right" %><br>
+<%= link_to "ページ更新", the_day_event_path(@event), class:"pull-right" %>
+
+<div class="text-center">
+  <h1>
+    <%= render 'events/shows/pending_message', message: '【開催中】' %>
+    <h1 style="display:inline;"><%= @event.event_name %></h1>
+  </h1>
+  <br>
+  <h4 style="display:inline;"><%= show_text_of(@event.chouseisan_note) %></h4>
+  <h5 style="display:inline;">
+    <% if @event.chouseisan_check? %>
+      <%= link_to "編集（調整さん）", @event.chouseisan_url, target: :_blank %>
+    <% else %>
+      <%= link_to "編集", edit_event_path(@event) %>
+    <% end %>
+  </h5>
+</div>
+
+<br>
+
+<div>
+  <h3 style="display:inline;">＜日程＞</h3>
+  <%= render 'events/shows/decided_schedule', model: @decided_schedule %>
+</div>
+<div><%= link_to "調整さんテーブルを見る", event_path(@event), class:"pull-right" if @event.chouseisan_check? %></div>
+
+<br>
+
+<div>
+  <%= render 'events/shows/members_list' %>
+</div>
+
+<br>
+<br>
+
+<% event_station = @event.station.present? ? @event.station : "" %>
+<% event_place = @event.place.present? ? @event.place : "" %>
+<div>
+  <h3 style="display:inline;">＜場所＞</h3>
+  <% if @decided_shop.blank? %>
+    <%= render 'events/shows/pending_message', message: '調整中！' %>
+  <% else %>
+    <h2 style="display:inline;"><%= @decided_shop.shop_name %></h2>
+    <%= link_to "WEBサイトを表示", @decided_shop.shop_url, class: "btn btn-primary btn-sm", target: :_blank if @decided_shop.shop_url %>
+    <%= link_to_map("地図を表示", [@decided_shop.shop_name, event_station]) %>
+    <%= link_to 'お店を選び直す', 
+      update_decision_event_shop_path(@event, @decided_shop),
+      method: :patch, 
+      data: {confirm: "「#{@event.event_name}」の開催場所を選び直しますか？"}
+    %>
+  <% end %>
+</div>
+<div>
+  <h4 style="display:inline;">
+    <%= render 'events/edit_place' %>
+  </h4>
+</div>
+<div>
+  <% if @decided_shop.blank? %>
+    <%= render 'events/shows/shop_index', models: @shops %>
+  <% else %>
+    <%= render 'events/shows/shop_show', model: @decided_shop %>
+  <% end %>
+</div>
+
+
+<!--モーダルウインドウ表示-->
+<div id="member-index" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="shop-edit" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

@@ -1,8 +1,9 @@
 <% provide(:title, @event.event_name) %>
+<%= link_to "現在このイベントは開催中です。当日モードはこちら", the_day_event_path(@event), class:"pull-right" if @event.event_status == "being_held_now" %><br>
 <%= link_to "ページ更新", event_path(@event), class:"pull-right" %>
 
 <div class="text-center">
-  <h1><%= @event.event_name %></h1>
+  <h1>（<%= @event.event_status_i18n %>）<%= @event.event_name %></h1>
   <h4 style="display:inline;"><%= show_text_of(@event.chouseisan_note) %></h4>
   <h5 style="display:inline;">
     <% if @event.chouseisan_check? %>
@@ -23,11 +24,7 @@
     <%= render 'events/shows/decided_schedule', model: @decided_schedule %>
   <% end %>
 </div>
-<div>
-  <% if @event.chouseisan_check? %>
-    <%= render 'events/shows/chouseisan_table' %>
-  <% end %>
-</div>
+<div><%= render 'events/shows/chouseisan_table' if @event.chouseisan_check? %></div>
 
 <br>
 

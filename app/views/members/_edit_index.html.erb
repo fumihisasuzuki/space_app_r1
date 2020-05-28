@@ -8,7 +8,8 @@
         <td colspan="1"><%= attendance_status_symbol %></td>
         <td colspan="1">※入力必須</td>
         <td colspan="1"></td>
-        <td colspan="1">出欠</td>
+        <td colspan="1"></td>
+        <td colspan="1"></td>
         <td colspan="1">削除</td>
       </tr>
     </thead>
@@ -26,15 +27,19 @@
               </td>
               <td>
                 <%= m.label :remark, class: "label-form" %>
-                <%= m.text_field :remark, class: "form-control" %>
+                <%= m.text_field :remark, placeholder: "メモを入力できます", class: "form-control" %>
               </td>
-              <td>
-                <% member_status = member.member_schedules.find_by(schedule_id: @decided_schedule.id) %>
-                <%= m.fields_for :member_schedules, member_status do |m_s| %>
+              <% member_status = member.member_schedules.find_by(schedule_id: @decided_schedule.id) %>
+              <%= m.fields_for :member_schedules, member_status do |m_s| %>
+                <td>
+                  <%= m_s.label :fee, class: "label-form" %>
+                  <%= m_s.text_field :fee, placeholder: "徴収予定金額を入力", class: "form-control" %>
+                </td>
+                <td>
                   <%= m_s.label :attendance_status, class: "label-form" %>
                   <%= m_s.select :attendance_status, MemberSchedule.attendance_statuses.keys.map { |k| [I18n.t("enums.member_schedule.attendance_status.#{k}"), k]} %>
-                <% end %>
-              </td>
+                </td>
+              <% end %>
               <td>
                 <%= check_box :delete_a_member, member.id, class: "form-control" %>
               </td>

@@ -8,6 +8,7 @@
           <td colspan="1"><%= models.first.attendance_status_i18n %></td>
           <td colspan="1">名前</td>
           <td colspan="1">本人コメント</td>
+          <td colspan="1">会費</td>
           <td colspan="1">備考</td>
           <td colspan="1">
             <% if @event.chouseisan_check? %>
@@ -26,6 +27,7 @@
               <td><%= counter + first_number %></td>
               <td><%= @member.member_name %></td>
               <td><%= show_text_of(@member.comment) %></td>
+              <td><%= @member.member_schedules.find_by(schedule_id: @decided_schedule.id).fee %></td>
               <td><%= show_text_of(@member.remark) %></td>
               <td>
                 <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapse-edit-member-<%= counter + first_number %>">
@@ -34,7 +36,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="5">
+              <td colspan="6">
                 <div id="collapse-edit-member-<%= counter + first_number %>" class="collapse">
                 	<div class="well">
                 	  <%= form_with(url: event_member_path(@event, @member), model: @member, local: true, class:"form-inline") do |f| %>
@@ -76,9 +78,10 @@
               <td></td>
               <td></td>
               <td></td>
+              <td></td>
             </tr>
             <tr>
-              <td colspan="5">
+              <td colspan="6">
                 <div id="collapse-new-member-<%= models.first.attendance_status %>" class="collapse">
                 	<div class="well">
                 	  <% @member = @event.members.new %>

@@ -27,7 +27,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    if @event.chouseisan_check? && @event.chouseisan_url
+    if @event.chouseisan_url && @event.chouseisan_check?
       if reg = /=/.match(@event.chouseisan_url)
         chouseisan_uid = reg.post_match
         @export_csv_url = 'https://chouseisan.com/schedule/List/createCsv?h=' + chouseisan_uid
@@ -35,6 +35,16 @@ class EventsController < ApplicationController
         flash[:danger] = "適切な調整さんURLを登録してください。"
         redirect_to edit_event_path(@event)
       end
+    end
+  end
+  
+  def the_day
+#      debugger
+    if @decided_schedule.present? && @event.update_attribute(:event_status, "being_held_now")
+      flash[:success] = @event.event_name + 'を開催しました。（当日モードです。）'
+    else
+      flash[:danger] = 'なぜか当日モードになりませんでした。管理者にお問い合わせください。'
+      redirect_to_home_page_url
     end
   end
   

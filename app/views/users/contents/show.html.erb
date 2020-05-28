@@ -2,7 +2,7 @@
 <div class="container">
   <div class="col-md-8 col-md-offset-2">
     <% if @events_soon %>
-      <h2>直近のイベント</h2>
+      <h2><%= current_user.days_before %>日以内のイベント</h2>
       <%= render 'users/contents/shows/detail_events_list', models: @events_soon %>
     <% end %>
   </div>

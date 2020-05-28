@@ -211,14 +211,14 @@ ja:
       shortdate: "%-m/%-d"
     pm: 午後
   enums:
-    events:
+    event:
       event_status:
         pending: 全調整中
         schedule_decided: 日程調整完了
         shop_decided: 店決定完了
         prepared: 全準備完了
         being_held_now: 開催中
-        finished: 修了済
+        finished: 終了済
     member_schedule:
       attendance_status:
         to_be_absent: ×
