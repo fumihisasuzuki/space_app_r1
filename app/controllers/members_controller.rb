@@ -3,6 +3,7 @@ class MembersController < EventsController
   before_action :set_event
   before_action :correct_user
   before_action :set_member, except: %w[create index update_all]
+  #before_action :set_members, only: %w[index]
   
   def index
     if @decided_schedule
@@ -77,7 +78,11 @@ class MembersController < EventsController
       end
     end
     flash[:info] = "メンバー情報を更新しました。"
-    redirect_to @event
+    if params[:delete_a_member] == "0"
+      redirect_to the_day_event_path(@event)
+    else
+      redirect_to @event
+    end
   rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
     flash[:danger] = "無効な入力データがあった為、変更できませんでした。"
     redirect_to @event

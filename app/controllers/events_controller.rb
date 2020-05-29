@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   before_action :set_only_new_event, only: %w[new new_a new_b]
   before_action :set_only_new_decided_schedule, only: %w[new new_b]
   before_action :set_number_of_members, except: %w[new new_a new_b create]
+  #before_action :set_members, only: %w[the_day]
   before_action :correct_user, except: %w[new new_a new_b create index]
   before_action :correct_chouseisan_url, only: %w[show]
   
@@ -41,6 +42,10 @@ class EventsController < ApplicationController
   def the_day
 #      debugger
     if @decided_schedule.present? && @event.update_attribute(:event_status, "being_held_now")
+      @decided_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_attend", schedule_id: @decided_schedule.id })
+      @on_hold_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "on_hold", schedule_id: @decided_schedule.id })
+      @to_be_absent_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_be_absent", schedule_id: @decided_schedule.id })
+      @the_day_check = true
       flash[:success] = @event.event_name + 'を開催しました。（当日モードです。）'
     else
       flash[:danger] = 'なぜか当日モードになりませんでした。管理者にお問い合わせください。'

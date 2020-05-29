@@ -10,8 +10,6 @@ class Users::ContentsController < ApplicationController
   end
 
   def show
-    @events = current_user.events.joins(:schedules).where(schedules: { decided: true}).order("schedules.held_at ASC")
-    
     start_time = Time.parse("1900/1/1 1") # Excelに見習って、登録は1900年～
     past_time = Time.current - 60*60*12
     future_time = (Time.current + 60*60*24*current_user.days_before).end_of_day

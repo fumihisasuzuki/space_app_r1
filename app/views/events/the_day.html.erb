@@ -1,5 +1,5 @@
 <% provide(:title, @event.event_name) %>
-<%= link_to "現在当日モードです。通常モードはこちら", event_path(@event), class:"pull-right" %><br>
+<p class="text-right">現在「当日モード」です。「通常モード」は<%= link_to "こちら", event_path(@event), class:"pull-right" %></p>
 <%= link_to "ページ更新", the_day_event_path(@event), class:"pull-right" %>
 
 <div class="text-center">
@@ -29,7 +29,7 @@
 <br>
 
 <div>
-  <%= render 'events/shows/members_list' %>
+  <%= render 'events/shows/members_list', the_day_check: true %>
 </div>
 
 <br>

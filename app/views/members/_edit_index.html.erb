@@ -6,23 +6,26 @@
     <thead>
       <tr>
         <td colspan="1"><%= attendance_status_symbol %></td>
-        <td colspan="1">※入力必須</td>
+        <td colspan="1">※名前は入力必須</td>
         <td colspan="1"></td>
         <td colspan="1"></td>
+			  <% if @the_day_check %>
+          <td colspan="1"></td>
+        <% end %>
         <td colspan="1"></td>
-        <td colspan="1">削除</td>
+			  <% unless @the_day_check %>
+          <td colspan="1">削除</td>
+        <% end %>
       </tr>
     </thead>
     <tbody>
       <div>
-  
-        <% #first_number = (@decided_schedule.attendance_numbers - models.count).zero? ? 1 : (@decided_schedule.attendance_numbers + 1) %>
         <% models.each_with_index do |member, counter| %>
           <%= f.fields_for "members[]", member do |m| %>
             <tr>
-              <td><%= counter + @first_number %></td>
+              <td><%= counter + first_number %></td>
               <td>
-                <%= m.label :member_name, class: "label-form" %>(※空欄不可)
+                <%= m.label :member_name, class: "label-form" unless @the_day_check %>
                 <%= m.text_field :member_name, class: "form-control" %>
               </td>
               <td>
@@ -35,14 +38,24 @@
                   <%= m_s.label :fee, class: "label-form" %>
                   <%= m_s.text_field :fee, placeholder: "徴収予定金額を入力", class: "form-control" %>
                 </td>
+			          <% if @the_day_check %>
+                  <td>
+                    <%= m_s.label :payment_status, class: "label-form" %>
+                    <%= m_s.select :payment_status, MemberSchedule.payment_statuses.keys.map { |k| [I18n.t("enums.member_schedule.payment_status.#{k}"), k]} %>
+                  </td>
+                <% end %>
                 <td>
                   <%= m_s.label :attendance_status, class: "label-form" %>
                   <%= m_s.select :attendance_status, MemberSchedule.attendance_statuses.keys.map { |k| [I18n.t("enums.member_schedule.attendance_status.#{k}"), k]} %>
                 </td>
               <% end %>
-              <td>
-                <%= check_box :delete_a_member, member.id, class: "form-control" %>
-              </td>
+		          <% if @the_day_check %>
+                <%= hidden_field_tag :delete_a_member, 0 %>
+              <% else %>
+                <td>
+                  <%= check_box :delete_a_member, member.id, class: "form-control" %>
+                </td>
+              <% end %>
             </tr>
           <% end %>
         <% end %>

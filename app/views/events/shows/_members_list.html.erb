@@ -17,11 +17,16 @@
 		</div>
 		<div id="memberslistCollapse1" class="panel-collapse collapse in">
 			<div class="panel-body">
-        <%= render 'events/shows/members_list_for_each_status', models: @decided_statuses, first_number: 1 %>
+			  <% if @the_day_check %>
+          <%= render 'members/edit_index', models: @decided_members, first_number: 1 %>
+			  <% else %>
+          <%= render 'events/shows/members_list_for_each_status', models: @decided_statuses, first_number: 1 %>
+        <% end %>
 			</div>
 		</div>
 	</div>
-  <% if @on_hold_statuses.present? %>
+	
+  <% if @on_hold_statuses.present? || @on_hold_members.present? %>
   	<div class="panel panel-default">
   		<div class="panel-heading">
   			<h3 class="panel-title">
@@ -41,13 +46,17 @@
   		</div>
   		<div id="memberslistCollapse2" class="panel-collapse collapse">
   			<div class="panel-body">
-          <%= render 'events/shows/members_list_for_each_status', models: @on_hold_statuses, first_number: 1 + @decided_schedule.attendance_numbers %>
+			    <% if @the_day_check %>
+            <%= render 'members/edit_index', models: @on_hold_members, first_number: 1 + @decided_members.count %>
+  			  <% else %>
+            <%= render 'events/shows/members_list_for_each_status', models: @on_hold_statuses, first_number: 1 + @decided_schedule.attendance_numbers %>
+          <% end %>
   			</div>
   		</div>
   	</div>
   <% end %>
       
-  <% if @to_be_absent_statuses.present? %>
+  <% if @to_be_absent_statuses.present? || @to_be_absent_members.present? %>
   	<div class="panel panel-default">
   		<div class="panel-heading">
   			<h3 class="panel-title">
@@ -65,7 +74,11 @@
   		</div>
   		<div id="memberslistCollapse3" class="panel-collapse collapse">
   			<div class="panel-body">
-          <%= render 'events/shows/members_list_for_each_status', models: @to_be_absent_statuses, first_number: 1 + @decided_schedule.attendance_numbers + @on_hold_statuses.count %>
+			    <% if @the_day_check %>
+            <%= render 'members/edit_index', models: @to_be_absent_members, first_number: 1 + @decided_members.count + @on_hold_members.count %>
+  			  <% else %>
+            <%= render 'events/shows/members_list_for_each_status', models: @to_be_absent_statuses, first_number: 1 + @decided_schedule.attendance_numbers + @on_hold_statuses.count %>
+          <% end %>
   			</div>
   		</div>
   	</div>
