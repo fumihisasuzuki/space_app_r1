@@ -10,6 +10,7 @@
         <div style="display:inline;">
           <p>
             <h2 style="display:inline;">
+              <%= link_to "開始！", the_day_event_path(event), class: "btn btn-info btn-lg", target: :_blank if decided_schedule.held_at.between?(@past_time, @future_time) %>
               <%= link_to event.event_name, event_path(event) %>
             </h2>
             <a class="btn btn-default pull-right" data-toggle="collapse" href="#collapse-event-index-<%= event.id %>-<%= counter %>">
@@ -94,7 +95,7 @@
               <tr>
                 <td>
                   <h5 style="display:inline;">
-                    <% if current_user.station.blank? || event_station.blank? %>
+                    <% if decided_shop.present? || current_user.station.present? && event_station.present? %>
                       <%= form_with(model: event, local: true, class:"form-inline") do |f| %>
                         <h5 style="display:inline;">@</h5>
                         <%= f.text_field :station, placeholder: "開催場所(駅名)を入力", class: "form-control" %>

@@ -28,7 +28,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee)
+    @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee) if @decided_schedule
     if @event.chouseisan_url && @event.chouseisan_check?
       if reg = /=/.match(@event.chouseisan_url)
         chouseisan_uid = reg.post_match
@@ -264,6 +264,7 @@ class EventsController < ApplicationController
     # Member#new
     def member_params
       params.require(:event).permit(members: [:member_name,
+                                              :attended,
                                               :comment,
                                               :remark,
                                               :column_number])[:members]

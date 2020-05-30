@@ -1,10 +1,10 @@
 <% provide(:title, current_user.user_name) %>
 <div class="container">
   <div class="col-md-8 col-md-offset-2">
-    <% if @events_soon %>
+    <% if @events_soon.present? %>
       <% today_or_tomorrow = (current_user.days_before == 0) ? "本日" : "本日～明日" %>
       <h2><%= current_user.days_before > 1 ? "#{current_user.days_before}日以内" : today_or_tomorrow %>のイベント</h2>
-      <%= render 'users/contents/shows/detail_events_list', models: @events_soon %>
+      <%= render 'users/contents/shows/events_list', models: @events_soon %>
     <% end %>
   </div>
 
@@ -12,19 +12,19 @@
     <%= link_to "イベント新規作成", new_event_path, remote: true, class: "btn btn-lg btn-primary pull-left" %>
   </div>
   <div class="col-md-8 col-md-offset-2">
-    <% if @events_after_a_few_days %>
+    <% if @events_after_a_few_days.present? %>
       <h2 class="text-center">イベント一覧</h2>
       <%= render 'users/contents/shows/events_list', models: @events_after_a_few_days %>
     <% end %>
   </div>
   <div class="col-md-8 col-md-offset-2">
-    <% if @events_pending %>
+    <% if @events_pending.present? %>
       <h2>未調整イベント一覧</h2>
       <%= render 'users/contents/shows/events_list', models: @events_pending %>
     <% end %>
   </div>
   <div class="col-md-8 col-md-offset-2">
-    <% if @events_past %>
+    <% if @events_past.present? %>
       <h2>過去のイベント一覧</h2>
       <%= render 'users/contents/shows/events_list', models: @events_past %>
     <% end %>

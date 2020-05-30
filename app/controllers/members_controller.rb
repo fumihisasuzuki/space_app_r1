@@ -6,7 +6,8 @@ class MembersController < EventsController
   #before_action :set_members, only: %w[index]
   
   def index
-    if @decided_schedule
+    if @decided_schedule.present?
+      @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee)
       @members = []
       @decided_schedule.member_schedules.all.each_with_index do |m_s, counter|
         @members << @event.members.find(m_s.member_id) if m_s.attendance_status == params[:status_key]
@@ -67,8 +68,10 @@ class MembersController < EventsController
     
   
   def update_all
+#    debugger
     ActiveRecord::Base.transaction do # トランザクションを開始します。
       member_schedules_params.each do |id, item|
+#        debugger
         member = Member.find(id)
         if params[:delete_a_member]["#{id}"] == "1"
           member.destroy
@@ -77,6 +80,7 @@ class MembersController < EventsController
           member.update_attributes!(item)
         end
       end
+      @decided_schedule.update_attribute(:attendance_numbers, @decided_schedule.member_schedules.where(attendance_status: "to_attend").count)
     end
     flash[:info] = "メンバー情報を更新しました。"
     if params[:delete_a_member] == "0"
@@ -86,7 +90,11 @@ class MembersController < EventsController
     end
   rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
     flash[:danger] = "無効な入力データがあった為、変更できませんでした。"
-    redirect_to @event
+    if params[:delete_a_member] == "0"
+      redirect_to the_day_event_path(@event)
+    else
+      redirect_to @event
+    end
   end
   
   def destroy
@@ -122,6 +130,7 @@ class MembersController < EventsController
     # Member#new
     def member_params
       params.require(:member).permit(:member_name,
+                                      :attended,
                                       :comment,
                                       :remark,
                                       :column_number)
@@ -130,6 +139,7 @@ class MembersController < EventsController
     # Member#update_all
     def member_schedules_params
       params.require(:event).permit(members: [:member_name,
+                                              :attended,
                                               :comment,
                                               :remark,
                                               member_schedules_attributes: [:id,

@@ -7,7 +7,13 @@
     <thead>
       <tr>
         <td colspan="1"><%= attendance_status_symbol %></td>
-        <td colspan="1">※名前は入力必須</td>
+        <td colspan="1">
+  			  <% if @the_day_check %>
+            実際来た参加者にチェック
+  			  <% else %>
+    			  ※名前は入力必須
+    			<% end %>
+  			</td>
         <td colspan="1"></td>
         <td>会費計：<%= @total_fee["#{status_key}"] %>円</td>
 			  <% if @the_day_check %>
@@ -24,7 +30,13 @@
         <% models.each_with_index do |member, counter| %>
           <%= f.fields_for "members[]", member do |m| %>
             <tr>
-              <td><%= counter + first_number %></td>
+              <td>
+        			  <% if @the_day_check %>
+                  <%= m.check_box :attended, {class: "form-control"}, checked_value = "true", unchecked_value = "false" %>
+        			  <% else %>
+          			  <%= counter + first_number %>
+          			<% end %>
+  			      </td>
               <td>
                 <%= m.label :member_name, class: "label-form" unless @the_day_check %>
                 <%= m.text_field :member_name, class: "form-control" %>
@@ -64,11 +76,11 @@
         <% end %>
         <tr>
           <td></td>
-          <% if status_key == "to_attend" %>
-            <td>会費計：<%= @total_fee["#{status_key}"] %>円</td>
-            <td>集金済：<%= @total_fee_payed["already_payed"] %>円</td>
-            <td>残り：<%= @total_fee_payed["not_yet"] %>円未回収</td>
-            <td>差:<%= @total_fee_payed["not_need"] %>円</td>
+          <% if @the_day_check && status_key == "to_attend" %>
+            <td>会費計：<%= @total_fee["#{status_key}"] || 0 %>円</td>
+            <td>集金済：<%= @total_fee_payed["already_payed"] || 0 %>円</td>
+            <td>残り：<%= @total_fee_payed["not_yet"] || 0 %>円未回収</td>
+            <td>差:<%= @total_fee_payed["not_need"] || 0 %>円</td>
           <% else %>
             <td></td>
             <td></td>

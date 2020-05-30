@@ -55,6 +55,7 @@ ja:
         line: LINE ID
         comment: コメント
         remark: 備考
+        attended: 参加チェック
         event_id: イベントID
       member_schedule:
         attendance_status: 出欠

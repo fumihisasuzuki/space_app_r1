@@ -5,8 +5,12 @@
 			<h3 class="panel-title">
 				<a data-toggle="collapse" data-parent="#memberslist" href="#memberslistCollapse1">
 					<div>
-            <h3 style="display:inline;">＜参加者＞</h3>
-            <h3 style="display:inline;"><%= @decided_schedule.attendance_numbers %>名</h3>
+            <h3 style="display:inline;">＜参加予定＞</h3>
+            <h3 style="display:inline;">
+              <%= @decided_schedule.attendance_numbers %>名
+              <%= " (現在:#{@event.members.where(attended: true).count}名参加)" if @the_day_check %>
+              <%= "(あと#{@decided_members.where(attended: false).count}名参加予定)" if @decided_members.where(attended: false).count < @decided_schedule.attendance_numbers %>
+            </h3>
             <% if member_rendered %>
               <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "to_attend" %>
               <%= link_to "OK", event_path(@event) if @member_rendered_status == "to_attend" %>
