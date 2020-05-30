@@ -28,6 +28,7 @@ class EventsController < ApplicationController
   end
 
   def show
+    @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee)
     if @event.chouseisan_url && @event.chouseisan_check?
       if reg = /=/.match(@event.chouseisan_url)
         chouseisan_uid = reg.post_match
@@ -41,12 +42,12 @@ class EventsController < ApplicationController
   
   def the_day
 #      debugger
+    first_time_check = @event.event_status
     if @decided_schedule.present? && @event.update_attribute(:event_status, "being_held_now")
-      @decided_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_attend", schedule_id: @decided_schedule.id })
-      @on_hold_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "on_hold", schedule_id: @decided_schedule.id })
-      @to_be_absent_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_be_absent", schedule_id: @decided_schedule.id })
+      @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee)
+      @total_fee_payed = @decided_schedule.member_schedules.where(attendance_status: "to_attend").group(:payment_status).sum(:fee)
       @the_day_check = true
-      flash[:success] = @event.event_name + 'を開催しました。（当日モードです。）'
+      flash[:success] = @event.event_name + 'を開催しました。（当日モードです。）' unless first_time_check == "being_held_now"
     else
       flash[:danger] = 'なぜか当日モードになりませんでした。管理者にお問い合わせください。'
       redirect_to_home_page_url
@@ -185,9 +186,9 @@ class EventsController < ApplicationController
       if Event.exists?(set_id)
         @event = Event.find(set_id)
         if @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
-          @decided_statuses = @decided_schedule.member_schedules.where(attendance_status: "to_attend").paginate(page: params[:page], per_page: 10)
-          @on_hold_statuses = @decided_schedule.member_schedules.where(attendance_status: "on_hold").paginate(page: params[:page], per_page: 10)
-          @to_be_absent_statuses = @decided_schedule.member_schedules.where(attendance_status: "to_be_absent").paginate(page: params[:page], per_page: 10)
+          @decided_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_attend", schedule_id: @decided_schedule.id }).paginate(page: params[:page], per_page: 10)
+          @on_hold_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "on_hold", schedule_id: @decided_schedule.id }).paginate(page: params[:page], per_page: 10)
+          @to_be_absent_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_be_absent", schedule_id: @decided_schedule.id }).paginate(page: params[:page], per_page: 10)
         else
           @event.update_attribute(:event_status, "pending")
         end

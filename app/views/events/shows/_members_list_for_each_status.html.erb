@@ -1,15 +1,18 @@
-<% status_key = models.first.attendance_status %>
+<% status_key = models.first.member_schedules.first.attendance_status %>
+<% colspan_number = @event.chouseisan_url.present? ? 6 : 5 %>
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
     <%= will_paginate models %>
     <table class="table table-hover" id="table-members">
       <thead>
         <tr>
-          <td colspan="1"><%= models.first.attendance_status_i18n %></td>
+          <td colspan="1"><%= models.first.member_schedules.first.attendance_status_i18n %></td>
           <td colspan="1">名前</td>
-          <td colspan="1">本人コメント</td>
-          <td colspan="1">会費</td>
+          <% if @event.chouseisan_url.present? %>
+            <td colspan="1">本人コメント</td>
+          <% end %>
           <td colspan="1">備考</td>
+          <td colspan="1">会費計：<%= @total_fee["#{status_key}"] %></td>
           <td colspan="1">
             <% if @event.chouseisan_check? %>
               <%= link_to "編集(調整さん)", @event.chouseisan_url, target: :_blank %>
@@ -21,14 +24,16 @@
       </thead>
       <tbody>
         <div>
-          <% models.each_with_index do |m_s, counter| %>
-            <% @member = @event.members.find(m_s.member_id) %>
+          <% models.each_with_index do |member, counter| %>
+            <% m_s = member.member_schedules.find_by(schedule_id: @decided_schedule.id) %>
             <tr>
               <td><%= counter + first_number %></td>
-              <td><%= @member.member_name %></td>
-              <td><%= show_text_of(@member.comment) %></td>
-              <td><%= @member.member_schedules.find_by(schedule_id: @decided_schedule.id).fee %></td>
-              <td><%= show_text_of(@member.remark) %></td>
+              <td><%= member.member_name %></td>
+              <% if @event.chouseisan_url.present? %>
+                <td><%= show_text_of(member.comment) %></td>
+              <% end %>
+              <td><%= show_text_of(member.remark) %></td>
+              <td><%= m_s.fee %>円</td>
               <td>
                 <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapse-edit-member-<%= counter + first_number %>">
               	  編集
@@ -36,19 +41,20 @@
               </td>
             </tr>
             <tr>
-              <td colspan="6">
+              <% #debugger %>
+              <td colspan = "<%= colspan_number %>" >
                 <div id="collapse-edit-member-<%= counter + first_number %>" class="collapse">
                 	<div class="well">
-                	  <%= form_with(url: event_member_path(@event, @member), model: @member, local: true, class:"form-inline") do |f| %>
+                	  <%= form_with(url: event_member_path(@event, member), model: member, local: true, class:"form-inline") do |f| %>
                       <% #debugger %>
                       <% unless @event.chouseisan_check? %>
-                        <%= link_to "出席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 2), method: :patch, class: "btn btn-info btn-sm" unless m_s.attendance_status == "to_attend" %>
-                        <%= link_to "保留に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 1), method: :patch, class: "btn btn-warning btn-sm" unless m_s.attendance_status == "on_hold" %>
-                        <%= link_to "欠席に変更", update_status_event_member_path(@event, @member, attendance_id: m_s.id, key: 0), method: :patch, class: "btn btn-danger btn-sm" unless m_s.attendance_status == "to_be_absent" %>
+                        <%= link_to "出席に変更", update_status_event_member_path(@event, member, attendance_id: m_s.id, key: 2), method: :patch, class: "btn btn-info btn-sm" unless m_s.attendance_status == "to_attend" %>
+                        <%= link_to "保留に変更", update_status_event_member_path(@event, member, attendance_id: m_s.id, key: 1), method: :patch, class: "btn btn-warning btn-sm" unless m_s.attendance_status == "on_hold" %>
+                        <%= link_to "欠席に変更", update_status_event_member_path(@event, member, attendance_id: m_s.id, key: 0), method: :patch, class: "btn btn-danger btn-sm" unless m_s.attendance_status == "to_be_absent" %>
                         <%= link_to "削除", 
-                          event_member_path(@event, @member), 
+                          event_member_path(@event, member), 
                           method: :delete, 
-                          data: {confirm: "「#{@member.member_name}」を削除します。よろしいですか？"}, 
+                          data: {confirm: "「#{member.member_name}」を削除します。よろしいですか？"}, 
                           class: "btn btn-danger btn-xs"
                         %>
                         <br>
@@ -67,27 +73,29 @@
             </tr>
           <% end %>
           
-          <% unless @event.chouseisan_check? || models.first.attendance_status == "to_be_absent" %>
+          <% unless @event.chouseisan_check? || models.first.member_schedules.first.attendance_status == "to_be_absent" %>
             <tr>
               <td></td>
               <td>
-                <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapse-new-member-<%= models.first.attendance_status %>">
+                <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapse-new-member-<%= models.first.member_schedules.first.attendance_status %>">
               	  追加
               	</a>
               </td>
-              <td></td>
+              <% if @event.chouseisan_url.present? %>
+                <td></td>
+              <% end %>
               <td></td>
               <td></td>
               <td></td>
             </tr>
             <tr>
-              <td colspan="6">
-                <div id="collapse-new-member-<%= models.first.attendance_status %>" class="collapse">
+              <td colspan = "<%= colspan_number %>" >
+                <div id="collapse-new-member-<%= models.first.member_schedules.first.attendance_status %>" class="collapse">
                 	<div class="well">
-                	  <% @member = @event.members.new %>
-                	  <%= form_with(model:[@event, @member], local: true, class:"form-inline") do |f| %>
-                      <%= render 'users/shared/error_messages', resource: @member %>
-                      <%= hidden_field_tag :status_key, models.first.attendance_status %>
+                	  <% new_member = @event.members.new %>
+                	  <%= form_with(model:[@event, new_member], local: true, class:"form-inline") do |f| %>
+                      <%= render 'users/shared/error_messages', resource: new_member %>
+                      <%= hidden_field_tag :status_key, models.first.member_schedules.first.attendance_status %>
                       <%= f.label :member_name, class: "label-form" %>(※空欄不可)
                       <%= f.text_field :member_name, autofocus: true, value: "member#{@event.members.all.count + 1}", class: "form-control" %>
                       <br>

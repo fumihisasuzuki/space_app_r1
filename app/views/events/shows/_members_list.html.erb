@@ -20,20 +20,20 @@
 			  <% if @the_day_check %>
           <%= render 'members/edit_index', models: @decided_members, first_number: 1 %>
 			  <% else %>
-          <%= render 'events/shows/members_list_for_each_status', models: @decided_statuses, first_number: 1 %>
+          <%= render 'events/shows/members_list_for_each_status', models: @decided_members, first_number: 1 %>
         <% end %>
 			</div>
 		</div>
 	</div>
 	
-  <% if @on_hold_statuses.present? || @on_hold_members.present? %>
+  <% if @on_hold_members.present? || @on_hold_members.present? %>
   	<div class="panel panel-default">
   		<div class="panel-heading">
   			<h3 class="panel-title">
   				<a data-toggle="collapse" data-parent="#memberslist" href="#memberslistCollapse2">
             <div>
               <h3 style="display:inline;">＜保留＞</h3>
-              <h3 style="display:inline;"><%= @on_hold_statuses.count %>名</h3>
+              <h3 style="display:inline;"><%= @on_hold_members.count %>名</h3>
               <%= render 'events/shows/pending_message', message: '調整中！' %>
               <% #debugger %>
               <% if member_rendered %>
@@ -49,21 +49,21 @@
 			    <% if @the_day_check %>
             <%= render 'members/edit_index', models: @on_hold_members, first_number: 1 + @decided_members.count %>
   			  <% else %>
-            <%= render 'events/shows/members_list_for_each_status', models: @on_hold_statuses, first_number: 1 + @decided_schedule.attendance_numbers %>
+            <%= render 'events/shows/members_list_for_each_status', models: @on_hold_members, first_number: 1 + @decided_schedule.attendance_numbers %>
           <% end %>
   			</div>
   		</div>
   	</div>
   <% end %>
       
-  <% if @to_be_absent_statuses.present? || @to_be_absent_members.present? %>
+  <% if @to_be_absent_members.present? || @to_be_absent_members.present? %>
   	<div class="panel panel-default">
   		<div class="panel-heading">
   			<h3 class="panel-title">
   				<a data-toggle="collapse" data-parent="#memberslist" href="#memberslistCollapse3">
             <div>
               <h4 style="display:inline;">＜不参加＞</h4>
-              <h4 style="display:inline;"><%= @to_be_absent_statuses.count %>名</h4>
+              <h4 style="display:inline;"><%= @to_be_absent_members.count %>名</h4>
               <% if member_rendered %>
                 <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "to_be_absent" %>
                 <%= link_to "OK", event_path(@event) if @member_rendered_status == "to_be_absent" %>
@@ -77,7 +77,7 @@
 			    <% if @the_day_check %>
             <%= render 'members/edit_index', models: @to_be_absent_members, first_number: 1 + @decided_members.count + @on_hold_members.count %>
   			  <% else %>
-            <%= render 'events/shows/members_list_for_each_status', models: @to_be_absent_statuses, first_number: 1 + @decided_schedule.attendance_numbers + @on_hold_statuses.count %>
+            <%= render 'events/shows/members_list_for_each_status', models: @to_be_absent_members, first_number: 1 + @decided_schedule.attendance_numbers + @on_hold_members.count %>
           <% end %>
   			</div>
   		</div>

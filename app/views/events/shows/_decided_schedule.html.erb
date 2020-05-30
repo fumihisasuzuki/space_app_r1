@@ -13,8 +13,8 @@
 </h5>
 <h3 style="display:inline;">
   ＜ <%= model.attendance_numbers %>
-  <% unless @on_hold_statuses.count.zero? %>
-    ～<%= model.attendance_numbers + @on_hold_statuses.count %>
+  <% unless @on_hold_members.count.zero? %>
+    ～<%= model.attendance_numbers + @on_hold_members.count %>
   <% end %>
   名 ＞
 </h3>

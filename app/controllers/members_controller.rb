@@ -73,6 +73,7 @@ class MembersController < EventsController
         if params[:delete_a_member]["#{id}"] == "1"
           member.destroy
         else
+          item[:member_schedules_attributes]["0"]["fee"] = "0" if item[:member_schedules_attributes]["0"]["payment_status"] == "not_need"
           member.update_attributes!(item)
         end
       end

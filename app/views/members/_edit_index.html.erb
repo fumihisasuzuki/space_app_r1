@@ -1,18 +1,19 @@
 <% attendance_status_symbol = models.first.member_schedules.first.attendance_status_i18n %>
+<% status_key = models.first.member_schedules.first.attendance_status %>
 <%= form_with(model: @event, url: event_members_update_all_url(@event), local: true, method: :patch, class:"form-inline") do |f| %>
   <%= f.submit "#{attendance_status_symbol}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
   <%= hidden_field_tag :event_id, @event %>
-  <table class="table table-hover" id="table-members">
+  <table class="table table-hover table-condensed" id="modal-table-members">
     <thead>
       <tr>
         <td colspan="1"><%= attendance_status_symbol %></td>
         <td colspan="1">※名前は入力必須</td>
         <td colspan="1"></td>
-        <td colspan="1"></td>
+        <td>会費計：<%= @total_fee["#{status_key}"] %>円</td>
 			  <% if @the_day_check %>
-          <td colspan="1"></td>
+          <td colspan="1">支払状況</td>
         <% end %>
-        <td colspan="1"></td>
+        <td colspan="1">出欠</td>
 			  <% unless @the_day_check %>
           <td colspan="1">削除</td>
         <% end %>
@@ -35,17 +36,19 @@
               <% member_status = member.member_schedules.find_by(schedule_id: @decided_schedule.id) %>
               <%= m.fields_for :member_schedules, member_status do |m_s| %>
                 <td>
-                  <%= m_s.label :fee, class: "label-form" %>
-                  <%= m_s.text_field :fee, placeholder: "徴収予定金額を入力", class: "form-control" %>
+                  <% if member_status.payment_status == "not_need" %>
+                    ご招待！
+                  <% else %>
+                    <%= m_s.label :fee, class: "label-form" %>
+                    <%= m_s.number_field :fee, min:0, step:"100", placeholder: "徴収予定金額を入力", class: "form-control" %>円
+                  <% end %>
                 </td>
 			          <% if @the_day_check %>
                   <td>
-                    <%= m_s.label :payment_status, class: "label-form" %>
                     <%= m_s.select :payment_status, MemberSchedule.payment_statuses.keys.map { |k| [I18n.t("enums.member_schedule.payment_status.#{k}"), k]} %>
                   </td>
                 <% end %>
                 <td>
-                  <%= m_s.label :attendance_status, class: "label-form" %>
                   <%= m_s.select :attendance_status, MemberSchedule.attendance_statuses.keys.map { |k| [I18n.t("enums.member_schedule.attendance_status.#{k}"), k]} %>
                 </td>
               <% end %>
@@ -59,7 +62,21 @@
             </tr>
           <% end %>
         <% end %>
-        
+        <tr>
+          <td></td>
+          <% if status_key == "to_attend" %>
+            <td>会費計：<%= @total_fee["#{status_key}"] %>円</td>
+            <td>集金済：<%= @total_fee_payed["already_payed"] %>円</td>
+            <td>残り：<%= @total_fee_payed["not_yet"] %>円未回収</td>
+            <td>差:<%= @total_fee_payed["not_need"] %>円</td>
+          <% else %>
+            <td></td>
+            <td></td>
+            <td>会費計：<%= @total_fee["#{status_key}"] %>円</td>
+            <td></td>
+          <% end %>
+          <td></td>
+        </tr>
       </div>
     </tbody>
   </table>
