@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'invitations/edit'
+
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     passwords:     'users/passwords',
@@ -24,6 +26,8 @@ Rails.application.routes.draw do
       patch 'update_decision_of_schedule'
       patch 'update_chouseisan_check'
       get 'the_day'
+      get 'invitations/edit'
+      patch 'invitations/update'
     end
     patch 'members/update_all'
     resources :members do

@@ -29,6 +29,9 @@ ActiveRecord::Schema.define(version: 20200530055153) do
     t.datetime "updated_at", null: false
     t.string "station", default: ""
     t.integer "event_status", default: 0
+    t.string "initial_invitation_statement"
+    t.string "schedule_information_statement"
+    t.string "final_invitation_statement"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 

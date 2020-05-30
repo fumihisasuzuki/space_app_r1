@@ -27,6 +27,9 @@ ja:
         chouseisan_check: 調整さん使用確認
         place: お店の種類
         station: 駅名
+        initial_invitation_statement: 調整さんURLの案内文
+        schedule_information_statement: 開催日決定の連絡文
+        final_invitation_statement: 最終案内文
         indication_price: 予想会費
         deadline: 回答期限
         reserved_at: 予約日時
