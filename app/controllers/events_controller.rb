@@ -44,6 +44,8 @@ class EventsController < ApplicationController
 #      debugger
     first_time_check = @event.event_status
     if @decided_schedule.present? && @event.update_attribute(:event_status, "being_held_now")
+#      @fee_numbers = @decided_schedule.member_schedules.where(attendance_status: "to_attend", payment_status: "not_yet").count
+#      @fee_much_numbers = @decided_schedule.member_schedules.where(attendance_status: "to_attend", payment_status: "not_yet_much").count
       @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee)
       @total_fee_payed = @decided_schedule.member_schedules.where(attendance_status: "to_attend").group(:payment_status).sum(:fee)
       @the_day_check = true
@@ -182,6 +184,7 @@ class EventsController < ApplicationController
   
     # 対象のイベントを取得。
     def set_event
+#      debugger
       set_id = params[:event_id].blank? ? params[:id] : params[:event_id]
       if Event.exists?(set_id)
         @event = Event.find(set_id)

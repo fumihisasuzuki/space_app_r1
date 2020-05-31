@@ -15,7 +15,7 @@ class InvitationsController < EventsController
     end
   end
   
-  
+  private
     # strong parameter
     
     # invitation#update

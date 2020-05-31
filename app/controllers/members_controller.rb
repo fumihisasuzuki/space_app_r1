@@ -8,10 +8,11 @@ class MembersController < EventsController
   def index
     if @decided_schedule.present?
       @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee)
-      @members = []
-      @decided_schedule.member_schedules.all.each_with_index do |m_s, counter|
-        @members << @event.members.find(m_s.member_id) if m_s.attendance_status == params[:status_key]
-      end
+#      @members = []
+#      @decided_schedule.member_schedules.all.each_with_index do |m_s, counter|
+#        @members << @event.members.find(m_s.member_id) if m_s.attendance_status == params[:status_key]
+#      end
+      @members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: params[:status_key], schedule_id: @decided_schedule.id }).paginate(page: params[:page], per_page: 10)
       @first_number = params[:number_key].to_i
     end
   end

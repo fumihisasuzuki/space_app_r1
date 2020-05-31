@@ -1,5 +1,6 @@
 <% status_key = models.first.member_schedules.first.attendance_status %>
 <% colspan_number = @event.chouseisan_url.present? ? 6 : 5 %>
+<% first_number += (params[:page].to_i - 1)*10 if params[:page] %>
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
     <%= will_paginate models %>

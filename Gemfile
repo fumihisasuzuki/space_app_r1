@@ -20,6 +20,7 @@ gem 'roo' # Excel, CSV, OpenOffice, GoogleSpreadSheetを開くことが可能
 gem 'enum' # enumメソッドを使える
 gem 'enum_help' # enumメソッドの日本語化
 gem 'clipboard-rails' # クリップボードにコピー
+gem 'rounding' # floor_to(xx.minutes) 時刻をxx単位に切り捨て、ceil_to(xx)で切り上げ
 
 # ログイン機能
 gem 'devise' # 簡単に認証機能を実装

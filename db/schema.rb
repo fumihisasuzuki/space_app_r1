@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200530055153) do
+ActiveRecord::Schema.define(version: 20200531092119) do
 
   create_table "events", force: :cascade do |t|
     t.string "event_name", default: "", null: false
     t.string "chouseisan_note"
     t.string "chouseisan_url"
     t.boolean "chouseisan_check", default: true, null: false
-    t.string "place"
+    t.string "place", default: ""
     t.integer "indication_price"
     t.date "deadline"
     t.datetime "reserved_at"
@@ -32,6 +32,10 @@ ActiveRecord::Schema.define(version: 20200530055153) do
     t.string "initial_invitation_statement"
     t.string "schedule_information_statement"
     t.string "final_invitation_statement"
+    t.integer "total_payment"
+    t.integer "fee_unit", default: 100
+    t.float "rate_of_fee_slope", default: 1.5
+    t.integer "calculation_method_type", default: 0
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -116,6 +120,7 @@ ActiveRecord::Schema.define(version: 20200530055153) do
     t.string "uid"
     t.string "station", default: ""
     t.string "map_url", default: "https://www.google.co.jp/maps/", null: false
+    t.integer "number_of_members_per_one_page", default: 10
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

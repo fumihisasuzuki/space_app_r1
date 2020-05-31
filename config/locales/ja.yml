@@ -220,6 +220,10 @@ ja:
         prepared: 全準備完了
         being_held_now: 開催中
         finished: 終了済
+      calculation_method_type:
+        fixed: 金額指定
+        dutch_treat: 割り勘
+        slope: 傾斜
     member_schedule:
       attendance_status:
         to_be_absent: ×
@@ -228,4 +232,5 @@ ja:
       payment_status:
         not_need: 支払い不要
         not_yet: 未払い
+        not_yet_much: 未払い（会計多め）
         already_payed: 済

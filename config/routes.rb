@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'fees/edit'
+
   get 'invitations/edit'
 
   devise_for :users, controllers: {
@@ -29,6 +31,8 @@ Rails.application.routes.draw do
       get 'the_day'
       get 'invitations/edit'
       patch 'invitations/update'
+      #get 'fees/edit'
+      patch 'fees/update'
     end
     patch 'members/update_all'
     resources :members do

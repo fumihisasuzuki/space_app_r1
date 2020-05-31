@@ -1,1 +1,22 @@
-aaa
+<% provide(:title, "Members of #{@event.event_name}") %>
+<h2 style="text-align:center">【メンバー編集】</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <% flash.each do |message_type, msg| %>
+        <div class="alert alert-<%= message_type %>"><%= msg %></div>
+      <% end %>
+      
+      <div class="all_members_edit">
+        <h3 style="display:inline;">＜<%= status_title(@members.first.member_schedules.first.attendance_status) %>＞</h3>
+        <h3 style="display:inline;"><%= @members.count %>名</h3>
+      </div>
+      <% unless @members.blank? %>
+        <%= render 'members/edit_index', models: @members, first_number: @first_number %>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<%= link_to "戻る", :back %>

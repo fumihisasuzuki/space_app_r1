@@ -5,6 +5,7 @@ class Event < ApplicationRecord
   has_many :schedules, dependent: :destroy
   accepts_nested_attributes_for :schedules, allow_destroy: true
   enum event_status:[:pending, :schedule_decided, :shop_decided, :prepared, :being_held_now, :finished] # イベントの状態
+  enum calculation_method_type:[:fixed, :dutch_treat, :slope] # 会計の計算方法
   
   VALID_URL_REGEX = /(\A\z)|(\A(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z)/ix
 #  VALID_CHOUSEISAN_URL_REGEX = /(\A\z)|(\A(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?+=[a-z0-9]\z)/ix
@@ -12,6 +13,7 @@ class Event < ApplicationRecord
   validates :chouseisan_url, presence: true, length: { maximum: 200 }, format: { with: VALID_URL_REGEX }, if: :create_with_chouseisan?
   validates :chouseisan_note, length: { maximum: 200 }
   validates :reference, length: { maximum: 200 }
+#  validates :total_payment, presence: true
   
   # csvインポート処理
   def self.import(file, event)

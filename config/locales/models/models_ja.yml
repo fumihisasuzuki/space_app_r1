@@ -16,6 +16,7 @@ ja:
         map_url: マップURL
         station: 最寄り駅
         days_before: 直前日数
+        number_of_members_per_one_page: １ページあたりの表示メンバー数
         password: パスワード
         created_at: 作成日
         updated_at: 更新日
@@ -31,6 +32,10 @@ ja:
         schedule_information_statement: 開催日決定の連絡文
         final_invitation_statement: 最終案内文
         indication_price: 予想会費
+        total_payment: 支払総額
+        fee_unit: 会費単位
+        rate_of_fee_slope: 傾斜率
+        calculation_method_type: 会費計算方法
         deadline: 回答期限
         reserved_at: 予約日時
         reserved_by: 予約名

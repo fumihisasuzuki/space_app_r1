@@ -1,7 +1,11 @@
 <% attendance_status_symbol = models.first.member_schedules.first.attendance_status_i18n %>
 <% status_key = models.first.member_schedules.first.attendance_status %>
+<% first_number += (params[:page].to_i - 1)*10 if params[:page] %>
+
 <%= form_with(model: @event, url: event_members_update_all_url(@event), local: true, method: :patch, class:"form-inline") do |f| %>
+  <%= will_paginate models %><br>
   <%= f.submit "#{attendance_status_symbol}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
+
   <%= hidden_field_tag :event_id, @event %>
   <table class="table table-hover table-condensed" id="modal-table-members">
     <thead>
@@ -52,7 +56,7 @@
                     ご招待！
                   <% else %>
                     <%= m_s.label :fee, class: "label-form" %>
-                    <%= m_s.number_field :fee, min:0, step:"100", placeholder: "徴収予定金額を入力", class: "form-control" %>円
+                    <%= m_s.number_field :fee, min:0, step: "#{@event.fee_unit}", placeholder: "徴収予定金額を入力", class: "form-control" %>円
                   <% end %>
                 </td>
 			          <% if @the_day_check %>
@@ -74,24 +78,11 @@
             </tr>
           <% end %>
         <% end %>
-        <tr>
-          <td></td>
-          <% if @the_day_check && status_key == "to_attend" %>
-            <td>会費計：<%= @total_fee["#{status_key}"] || 0 %>円</td>
-            <td>集金済：<%= @total_fee_payed["already_payed"] || 0 %>円</td>
-            <td>残り：<%= @total_fee_payed["not_yet"] || 0 %>円未回収</td>
-            <td>差:<%= @total_fee_payed["not_need"] || 0 %>円</td>
-          <% else %>
-            <td></td>
-            <td></td>
-            <td>会費計：<%= @total_fee["#{status_key}"] %>円</td>
-            <td></td>
-          <% end %>
-          <td></td>
-        </tr>
+        
       </div>
     </tbody>
   </table>
-
-  <%= f.submit "#{attendance_status_symbol}の変更を保存", class: "btn btn-sm btn-primary btn-form" %>
+  
+  <%= will_paginate models %>
+  <%= f.submit "#{attendance_status_symbol}の変更を保存", class: "btn btn-sm btn-primary btn-form pull-right" %>
 <% end %>
