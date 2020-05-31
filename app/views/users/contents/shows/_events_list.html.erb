@@ -2,7 +2,7 @@
   <% models.each_with_index do |event, counter| %>
     <% decided_schedule = event.schedules.find_by(decided: true) %>
     <% decided_shop = event.shops.find_by(decided: true) %>
-    <% event_station = event.station.present? ? event.station : "" %>
+    <% event_station = event.station#.present? ? event.station : "" %>
     <% event_place = event.place.present? ? event.place : "" %>
     <% on_hold_numbers = decided_schedule.member_schedules.where(attendance_status: "on_hold").count if decided_schedule %>
     <tr>
@@ -95,26 +95,28 @@
               <tr>
                 <td>
                   <h5 style="display:inline;">
-                    <% if decided_shop.present? || current_user.station.present? && event_station.present? %>
-                      <%= form_with(model: event, local: true, class:"form-inline") do |f| %>
-                        <h5 style="display:inline;">@</h5>
-                        <%= f.text_field :station, placeholder: "開催場所(駅名)を入力", class: "form-control" %>
-                        <h5 style="display:inline;">の</h5>
-                        <%= f.text_field :place, placeholder: "店の種類(居酒屋など)を入力", class: "form-control" %>
-                        <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
+                    <%= form_with(model: event, local: true, class:"form-inline") do |f| %>
+                      <% if decided_shop.present? || current_user.station.present? && event_station.present? %>
+                          <h5 style="display:inline;">@</h5>
+                          <%= f.text_field :station, placeholder: "開催場所(駅名)を入力", class: "form-control" %>
+                          <h5 style="display:inline;">の</h5>
+                          <%= f.text_field :place, placeholder: "店の種類(居酒屋など)を入力", class: "form-control" %>
+                          <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
+                          <%= link_to_web_search("お店をWeb検索", [decided_shop.shop_name, event_station, event_place]) if decided_shop %>
+                      <% else %>
                         <%= link_to_web_search("お店をWeb検索", [decided_shop.shop_name, event_station, event_place]) if decided_shop %>
                       <% end %>
-                    <% else %>
-                      <%= link_to_web_search("お店をWeb検索", [decided_shop.shop_name, event_station, event_place]) if decided_shop %>
+                      <%= link_to_web_search("駅名でお店を再検索", [event_station, event_place]) if decided_shop.present? %>
                     <% end %>
-                    <%= link_to_web_search("駅名でお店を再検索", [event_station, event_place]) if decided_shop.present? %>
                   </h5>
                 </td>
                 <td>
-                  <%= link_to "削除", event_path(event), method: :delete, class: "btn btn-danger btn-sm pull-right",
-                    data: {confirm: "「#{event.event_name}」を削除します。よろしいですか？"}
-                  %>
-                  <%= link_to "詳細", event_path(event), class: "btn btn-primary btn-sm pull-right" %>
+                  <h5 style="display:inline;">
+                    <%= link_to "削除", event_path(event), method: :delete, class: "btn btn-danger btn-sm pull-right",
+                      data: {confirm: "「#{event.event_name}」を削除します。よろしいですか？"}
+                    %>
+                    <%= link_to "詳細", event_path(event), class: "btn btn-primary btn-sm pull-right" %>
+                  </h5>
                 </td>
               </tr>
               <tr>

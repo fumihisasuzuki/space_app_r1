@@ -1,5 +1,4 @@
 <% provide(:title, @event.event_name) %>
-<%= link_to "最終案内文を作成", invitations_edit_event_path(@event), class: "btn btn-primary btn-sm", target: :_blank %>
 <%= link_to "現在このイベントは開催中です。当日モードはこちら", the_day_event_path(@event), class:"pull-right" if @event.event_status == "being_held_now" %><br>
 <%= link_to "ページ更新", event_path(@event), class:"pull-right" %>
 <h4><%= "進捗：#{@event.event_status_i18n}" %></h4>
@@ -44,10 +43,18 @@
 </div>
 
 <br>
+
+<div>
+  <h3 style="display:inline;">
+    ＜会費＞<%= @event.indication_price.present? ? "#{@event.indication_price}円" : "実費" %>
+  </h3>
+</div>
+
+<br>
 <br>
 
-<%# event_station = @event.station.present? ? @event.station : "" %>
-<%# event_place = @event.place.present? ? @event.place : "" %>
+<% event_station = @event.station#.present? ? @event.station : "" %>
+<% event_place = @event.place#.present? ? @event.place : "" %>
 <div>
   <h3 style="display:inline;">＜場所＞</h3>
   <% if @decided_shop.blank? %>
@@ -61,6 +68,7 @@
       method: :patch, 
       data: {confirm: "「#{@event.event_name}」の開催場所を選び直しますか？"}
     %>
+    <%= link_to "最終案内文を作成", invitations_edit_event_path(@event), class: "btn btn-primary btn-sm", target: :_blank %>
   <% end %>
 </div>
 <div>

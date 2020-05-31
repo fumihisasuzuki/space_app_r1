@@ -17,4 +17,5 @@
     ～<%= model.attendance_numbers + @on_hold_members.count %>
   <% end %>
   名 ＞
+  <%= link_to "開催日の連絡文を作成", invitations_edit_event_path(@event), class: "btn btn-primary btn-sm", target: :_blank %>
 </h3>

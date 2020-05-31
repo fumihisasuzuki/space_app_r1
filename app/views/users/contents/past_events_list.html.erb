@@ -1,0 +1,17 @@
+<% provide(:title, current_user.user_name) %>
+<div class="container">
+
+  <div class="col-md-4 col-md-offset-1">
+    <%= link_to "イベント新規作成", new_event_path, remote: true, class: "btn btn-lg btn-primary pull-left" %>
+  </div>
+  <div class="col-md-8 col-md-offset-2">
+    <% if @events_past.present? %>
+      <h2>過去のイベント一覧</h2>
+      <%= render 'users/contents/shows/events_list', models: @events_past %>
+    <% end %>
+  </div>
+
+</div>
+
+<!--モーダルウインドウ表示-->
+<div id="new-event" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

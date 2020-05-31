@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   namespace :users do
     get 'contents/index'
     get 'contents/show'
+    get 'contents/past_events_list'
   end
   
   namespace :events do

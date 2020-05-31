@@ -5,70 +5,39 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_with(url: invitations_update_event_path(@event), model: @event, method: :patch, local: true, class:"form-inline") do |f| %>
-      <%= render 'users/shared/error_messages', resource: @event %>
+    <%= render 'users/shared/error_messages', resource: @event %>
 
-      <% if @decided_schedule.present? && @decided_shop.present? %>
-        <%= f.label :final_invitation_statement, class: "label-#{yield(:class_text)}" %>（空欄で保存すると、初期値に戻ります）
-        <br>
-          <% if @event.final_invitation_statement.present? %>
-            <%= f.text_area :final_invitation_statement, autofocus: true, 
-                placeholder: "お店が決まったら最終案内を出そう", size: "80x10", class: "form-control" %>
-          <% else %>
-            <% final_invitation_statement_value = render 'invitations/final_invitation_statement', event: @event, schedule: @decided_schedule, shop: @decided_shop %>
-            <%= f.text_area :final_invitation_statement, autofocus: true, value: final_invitation_statement_value, 
-                placeholder: "お店が決まったら最終案内を出そう", size: "80x10", class: "form-control" %>
-          <% end %>
-        <br><br><%= f.submit yield(:button_text), class: "btn btn-primary btn-lg btn-#{yield(:class_text)}" %>
-        <button type="button" class="btn btn-info btn-lg clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.initial_invitation_statement %>">保存した案内文をコピー</button>
-        <div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" data-url="https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com" data-color="default" data-size="large" data-count="false" style="display: none;"></div>
-        <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-        <br>
-        <br>
-        <br>
-      <% end %>
-      
-      <% if @decided_schedule.present? %>
-        <%= f.label :schedule_information_statement, class: "label-#{yield(:class_text)}" %>（空欄で保存すると、初期値に戻ります）
-        <br>
-        <% if @event.schedule_information_statement.present? %>
-          <%= f.text_area :schedule_information_statement, autofocus: true, 
-              placeholder: "決定した日程を連絡しよう", size: "80x10", class: "form-control" %>
-        <% else %>
-          <% schedule_information_statement_value = render 'invitations/schedule_information_statement', event: @event, schedule: @decided_schedule %>
-          <%= f.text_area :schedule_information_statement, autofocus: true, value: schedule_information_statement_value, 
-              placeholder: "決定した日程を連絡しよう", size: "80x10", class: "form-control" %>
-        <% end %>
-        <br><br><%= f.submit yield(:button_text), class: "btn btn-primary btn-lg btn-#{yield(:class_text)}" %>
-        <button type="button" class="btn btn-info btn-lg clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.initial_invitation_statement %>">保存した案内文をコピー</button>
-        <div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" data-url="https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com" data-color="default" data-size="large" data-count="false" style="display: none;"></div>
-        <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-        <br>
-        <br>
-        <br>
-      <% end %>
-      
-      <%= f.label :initial_invitation_statement, class: "label-#{yield(:class_text)}" %>（空欄で保存すると、初期値に戻ります）
+    <% if @decided_schedule.present? && @decided_shop.present? %>
+      <% final_invitation_statement_value = 
+          render 'invitations/final_invitation_statement',event: @event, schedule: @decided_schedule, shop: @decided_shop %>
+      <%= render 'invitations/invitation_form', model: @event, column_name: :initial_invitation_statement, 
+          message: "初期値に戻すにはこのまま保存", value: final_invitation_statement_value %>
       <br>
-      <% if @event.initial_invitation_statement.present? %>
-        <%= f.text_area :initial_invitation_statement, autofocus: true, 
-            placeholder: "「調整さん」のURLを送って簡単に日程調整しよう", size: "80x10", class: "form-control" %>
-      <% else %>
-        <% initial_invitation_statement_value = render 'invitations/initial_invitation_statement_value', event: @event %>
-        <%= f.text_area :initial_invitation_statement, autofocus: true, value: initial_invitation_statement_value, 
-            placeholder: "「調整さん」のURLを送って簡単に日程調整しよう", size: "80x10", class: "form-control" %>
-      <% end %>
-      <br><br><%= f.submit yield(:button_text), class: "btn btn-primary btn-lg btn-#{yield(:class_text)}" %>
-      <button type="button" class="btn btn-info btn-lg clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.initial_invitation_statement %>">保存した案内文をコピー</button>
-      <div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" data-url="https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com" data-color="default" data-size="large" data-count="false" style="display: none;"></div>
-      <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-
-
+      <br>
+      <br>
     <% end %>
+    
+    <% if @decided_schedule.present? %>
+      <% schedule_information_statement_value = 
+          render 'invitations/schedule_information_statement', event: @event, schedule: @decided_schedule %>
+      <%= render 'invitations/invitation_form', model: @event, column_name: :schedule_information_statement, 
+          message: "初期値に戻すにはこのまま保存", value: schedule_information_statement_value %>
+      <br>
+      <br>
+      <br>
+    <% end %>
+    
+    <% initial_invitation_statement_value = 
+        render 'invitations/initial_invitation_statement_value', event: @event %>
+    <%= render 'invitations/invitation_form', model: @event, column_name: :initial_invitation_statement, 
+        message: "初期値に戻すにはこのまま保存", value: initial_invitation_statement_value %>
+
   </div>
 </div>
 
+<%= link_to "#{@event.event_name}のイベントページへ", event_path(@event), class:"pull-right" %>
 <%= link_to "戻る", :back %>
+
 
 <script type="text/javascript">
     var clipboard = new Clipboard('.btn');

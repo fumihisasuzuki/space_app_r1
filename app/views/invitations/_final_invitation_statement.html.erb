@@ -1,6 +1,17 @@
-<%= event.event_name %>のご案内
-<%= event.chouseisan_note %>
-開催は<%= event.station %>駅周辺の予定です。
+＜<%= l(schedule.held_at, format: :shortdate) %>(<%= $days_of_the_week[schedule.held_at.wday] %>)<%= event.event_name %>最終のご案内＞
+来る<%= l(schedule.held_at, format: :shortdate) %>(<%= $days_of_the_week[schedule.held_at.wday] %>)に予定しております<%= event.event_name %>の詳細が決定しましたので、下記の通りご案内致します。
+当日皆様がお越しになるのを楽しみにしております。
 
-下記のURLにアクセスし、各々の予定を入力してください。
-URL：<%= event.chouseisan_url %>
+記
+
+日時：<%= l(schedule.held_at, format: :longdate) %>(<%= $days_of_the_week[schedule.held_at.wday] %>) <%= l(schedule.held_at, format: :time) %>~
+場所：<%= event.station %>駅周辺<%= "の#{event.place}を予定" if event.place.present? %>
+お店：<%= shop.shop_name %>
+会費：<%= event.indication_price.present? ? event.indication_price : "実費" %>
+集金：<%= event.indication_price.present? ? "会の開始前までに私までお願いします" : "清算後現地回収" %>
+<% if event.chouseisan_check? %>
+  下記のURLから皆様の回答状況を確認できます。
+  日程調整用URL：<%= event.chouseisan_url %>
+<% end %>
+
+以上

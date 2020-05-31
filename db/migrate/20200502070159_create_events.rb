@@ -5,7 +5,7 @@ class CreateEvents < ActiveRecord::Migration[5.1]
       t.string :chouseisan_note
       t.string :chouseisan_url
       t.boolean :chouseisan_check, null: false, default: true
-      t.string :place
+      t.string :place, default: ""
       t.integer :indication_price
       t.date :deadline
       t.datetime :reserved_at

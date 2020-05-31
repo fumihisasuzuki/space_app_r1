@@ -1,6 +1,16 @@
-<%= event.event_name %>のご案内
-<%= event.chouseisan_note %>
-開催は<%= event.station %>駅周辺の予定です。
+＜<%= event.event_name %>日程決定のご連絡＞
+下記URLにて日程調整しておりました<%= event.event_name %>の開催日が決定しましたのでご連絡致します。
+詳細につきましては、後日改めてご連絡致しますので、よろしくお願い申し上げます。
 
-下記のURLにアクセスし、各々の予定を入力してください。
-URL：<%= event.chouseisan_url %>
+記
+
+日時：<%= l(schedule.held_at, format: :longdate) %>(<%= $days_of_the_week[schedule.held_at.wday] %>) <%= l(schedule.held_at, format: :time) %>~
+場所：<%= event.station %>駅周辺<%= "の#{event.place}を予定" if event.place.present? %>
+お店：未定
+会費：未定
+<% if event.chouseisan_check? %>
+  下記のURLから皆様の回答状況を確認できます。
+  日程調整用URL：<%= event.chouseisan_url %>
+<% end %>
+
+以上
