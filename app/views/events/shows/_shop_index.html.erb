@@ -61,7 +61,7 @@
             
           <tr>
             <td colspan="2">
-              <%= link_to "① Web検索", current_user.web_search_url, class: "btn btn-danger btn-block", target: :_blank %>
+              <%= link_to "① Web検索", current_user.web_search_url, class: "btn btn-default btn-block", target: :_blank %>
             </td>
             <td>
               <%= render 'users/shared/error_messages', resource: @shop if @shop.present? && params[:id].blank? %>

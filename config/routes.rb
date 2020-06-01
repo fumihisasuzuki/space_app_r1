@@ -29,9 +29,10 @@ Rails.application.routes.draw do
       patch 'update_decision_of_schedule'
       patch 'update_chouseisan_check'
       get 'the_day'
+      patch 'finish'
       get 'invitations/edit'
       patch 'invitations/update'
-      #get 'fees/edit'
+      post 'fees/create'
       patch 'fees/update'
     end
     patch 'members/update_all'

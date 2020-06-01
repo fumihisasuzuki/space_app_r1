@@ -6,10 +6,8 @@ class FeesController < EventsController
   def edit
   end
   
-  def update
+  def create
     if @event.update_attributes(event_fee_params)
-      
-#      @total_fee_payed = @decided_schedule.member_schedules.where(attendance_status: "to_attend").group(:payment_status).sum(:fee)
       @fee_numbers = @decided_schedule.member_schedules.where(attendance_status: "to_attend", payment_status: "not_yet").count
       @fee_much_numbers = @decided_schedule.member_schedules.where(attendance_status: "to_attend", payment_status: "not_yet_much").count
       if @fee_numbers > 0 || @fee_much_numbers > 0
@@ -33,12 +31,31 @@ class FeesController < EventsController
       @total_fee_payed = @decided_schedule.member_schedules.where(attendance_status: "to_attend").group(:payment_status).sum(:fee)
       @the_day_check = true
       @sum = @fee*@fee_numbers + @fee_much*@fee_much_numbers
-      flash.now[:success] = @event.event_name + 'の会計計算結果が出ました。採用する場合は「反映」ボタンを押してください。'
+      flash.now[:success] = @event.event_name + 'の会計計算結果が出ました。採用する場合は「計算結果を反映」ボタンを押してください。'
       render action: :the_day
     else
       render action: :edit
     end
   end
+  
+  def update
+    if params[:fee].present? && params[:fee_much].present?
+      @fee_members = @decided_schedule.member_schedules.where(attendance_status: "to_attend", payment_status: "not_yet")
+      @fee_members.each do |m_s|
+        m_s.update_attribute(:fee, params[:fee])
+      end
+      @fee_much_members = @decided_schedule.member_schedules.where(attendance_status: "to_attend", payment_status: "not_yet_much")
+      @fee_much_members.each do |m_s|
+        m_s.update_attribute(:fee, params[:fee_much])
+      end
+      flash[:success] = @event.event_name + 'の会計計算結果を反映しました。'
+      redirect_to the_day_event_path(@event)
+    else
+      flash.now[:danger] = "反映に失敗しました。管理者にお問い合わせください。"
+      render action: :the_day
+    end
+  end
+    
   
   private
   

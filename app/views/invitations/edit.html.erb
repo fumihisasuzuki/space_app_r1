@@ -10,7 +10,7 @@
     <% if @decided_schedule.present? && @decided_shop.present? %>
       <% final_invitation_statement_value = 
           render 'invitations/final_invitation_statement',event: @event, schedule: @decided_schedule, shop: @decided_shop %>
-      <%= render 'invitations/invitation_form', model: @event, column_name: :initial_invitation_statement, 
+      <%= render 'invitations/invitation_form', model: @event, column_name: :final_invitation_statement, 
           message: "初期値に戻すにはこのまま保存", value: final_invitation_statement_value %>
       <br>
       <br>

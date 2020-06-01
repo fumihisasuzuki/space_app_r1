@@ -22,7 +22,7 @@
 
 <div>
   <h3 style="display:inline;">＜日程＞</h3>
-  <%= render 'events/shows/decided_schedule', model: @decided_schedule %>
+  <%= render 'events/shows/decided_schedule', model: @decided_schedule, the_day_check: true %>
 </div>
 <div><%= link_to "調整さんテーブルを見る", event_path(@event), class:"pull-right" if @event.chouseisan_check? %></div>
 
@@ -49,14 +49,7 @@
   <% if @decided_shop.blank? %>
     <%= render 'events/shows/pending_message', message: '調整中！' %>
   <% else %>
-    <h2 style="display:inline;"><%= @decided_shop.shop_name %></h2>
-    <%= link_to "WEBサイトを表示", @decided_shop.shop_url, class: "btn btn-primary btn-sm", target: :_blank if @decided_shop.shop_url %>
-    <%= link_to_map("地図を表示", [@decided_shop.shop_name, event_station]) %>
-    <%= link_to 'お店を選び直す', 
-      update_decision_event_shop_path(@event, @decided_shop),
-      method: :patch, 
-      data: {confirm: "「#{@event.event_name}」の開催場所を選び直しますか？"}
-    %>
+    <%= render 'events/shows/decided_shop', shop: @decided_shop %>
   <% end %>
 </div>
 <div>
@@ -71,6 +64,8 @@
     <%= render 'events/shows/shop_show', model: @decided_shop %>
   <% end %>
 </div>
+
+<%= link_to "完了！", finish_event_path(@event), method: :patch, class: "btn btn-danger btn-block" %>
 
 <%= link_to "戻る", :back %>
 
