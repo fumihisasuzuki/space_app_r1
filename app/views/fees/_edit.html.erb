@@ -4,52 +4,61 @@
   <table class="table table-hover table-condensed" id="table-fees">
     <thead>
       <tr>
-        <td colspan="1"><%= "空欄を埋めて、" if @fee.blank? %></td>
-        <td colspan="1"><%= "計算方法を選択" if @fee.blank? %></td>
-        <td colspan="1"></td>
-        <td><%= "計算結果(#{@event.calculation_method_type_i18n})" if @fee.present? %></td>
+        <td colspan="1"><%= "① 4つの欄を入力" if @fee.blank? %></td>
+        <td colspan="1"><%= "② 計算" if @fee.blank? %></td>
+        <td colspan="1"><%= "※必須" %></td>
+        <td colspan="1"><%= "③ 計算結果(#{@event.calculation_method_type_i18n})を確認" if @fee.present? %></td>
         <td>現状</td>
       </tr>
     </thead>
     <tbody>
         <tr>
+          <td class="text-changed">
+            <%= f.label :indication_price, class: "label-#{yield(:class_text)}" %>
+            <%= f.number_field :indication_price, min:0, max:1e6, step: "#{@event.fee_unit}", placeholder: "会費を指定", class: "form-control" %>円
+          </td>
+          <td><%= f.submit "会費を指定", class: "btn btn-sm btn-primary btn-form" %></td>
           <td>
             <%= f.label :total_payment, class: "label-#{yield(:class_text)}" %>
             <%= f.number_field :total_payment, min:0, max:1e6, placeholder: "入力必須", class: "form-control" %>円
           </td>
-          <td><%= f.submit "会費を指定", class: "btn btn-sm btn-primary btn-form" %></td>
-          <td class="text-changed">
-            （会費を<%= f.number_field :indication_price, min:0, max:1e6, step: "#{@event.fee_unit}", placeholder: "会費を指定", class: "form-control" %>円）
-          </td>
-          <%# debugger %>
-          <td>集金：<%= @sum if @event.total_payment.present? && @sum.present? %>円</td>
-          <td>集金予定総額：<%= @total_fee["to_attend"] || 0 %>円</td>
-        </tr>
-        <tr>
-          <td>
-            <%= f.label :fee_unit, class: "label-#{yield(:class_text)}" %>
-            <%= f.number_field :fee_unit, min:1, max:10000, placeholder: "入力必須", class: "form-control" %>円単位
-          </td>
-          <td><%= f.submit "割り勘計算", class: "btn btn-sm btn-primary btn-form" %></td>
-          <td>通常の方（<%= @fee_numbers if @fee_numbers.present? %>人）：<%= @fee if @fee.present? %>円</td>
-          <td>総支払額：<%= @event.total_payment || "（未定）" %>円</td>
+          <td>支払総額 - 集金済：<%= @total_payment_from_now_on || "（未定）" %>円</td>
           <td>集金済：<%= @total_fee_payed["already_payed"] || 0 %>円</td>
         </tr>
         <tr>
           <td>
+            <%= f.label :fee_unit, class: "label-#{yield(:class_text)}" %>
+            <%= f.number_field :fee_unit, min:1, max:10000, placeholder: "1", class: "form-control" %>円単位
+          </td>
+          <td><%= f.submit "割り勘計算", class: "btn btn-sm btn-primary btn-form" %></td>
+          <td>通常の方（<%= @fee_numbers if @fee_numbers.present? %>人）：<%= @fee if @fee.present? %>円</td>
+          <td><%= "要集金額：#{@sum}円" if @sum.present? %></td>
+          <td>集金予定総額：<%= @total_fee["to_attend"] || 0 %>円</td>
+        </tr>
+        <tr>
+          <td>
             <%= f.label :rate_of_fee_slope, class: "label-#{yield(:class_text)}" %>：約
-            <%= f.number_field :rate_of_fee_slope, min:0.1, max:100, step:0.1, placeholder: "入力必須（空欄不可）", class: "form-control" %>倍
+            <%= f.number_field :rate_of_fee_slope, min:0.1, max:100, step:0.1, placeholder: "1", class: "form-control" %>倍
           </td>
           <td><%= f.submit "傾斜で計算", class: "btn btn-sm btn-primary btn-form" %></td>
           <td>多めの方（<%= @fee_much_numbers if @fee_much_numbers.present? %>人）：<%= @fee_much if @fee_much.present? %>円</td>
-          <td>余り：<%= @sum - @event.total_payment if @event.total_payment.present? && @sum.present? %>円</td>
+          <td>
+            <% if @event.total_payment.present? && @sum.present? %>
+              余り：<%= @sum - @total_payment_from_now_on %>円
+              <% if @sum >= @total_payment_from_now_on %>
+                <%= render 'events/shows/pending_message', message: 'OK!' %>
+              <% else %>
+                <%= render 'events/shows/pending_message', message: '再計算を推奨' %>
+              <% end %>
+            <% end %>
+          </td>
           <td>残り：<%= (@total_fee_payed["not_yet"] || 0) + (@total_fee_payed["not_yet_much"] || 0) %>円未回収</td>
         </tr>
         <tr>
           <td></td>
           <td></td>
-          <td colspan="2"><%= link_to "計算結果を反映", fees_update_event_path(@event, fee: @fee, fee_much: @fee_much), method: :patch, class:"btn btn-primary btn-block" %></td>
-          <td></td>
+          <td colspan="2"><%= link_to "④ 計算結果を反映", fees_update_event_path(@event, fee: @fee, fee_much: @fee_much), method: :patch, class:"btn btn-primary btn-block" if @fee.present? %></td>
+          <td colspan="1"><%= link_to "反映しない（現状キープ）", the_day_event_path(@event), class:"btn btn-primary btn-block" if @fee.present? %></td>
         </tr>
     </tbody>
   </table>

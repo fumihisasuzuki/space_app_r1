@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get 'fees/edit'
-
-  get 'invitations/edit'
 
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
@@ -11,7 +8,6 @@ Rails.application.routes.draw do
     unlocks:       'users/unlocks',
     omniauth_callbacks: "users/omniauth_callbacks"
   }
-
   namespace :users do
     get 'contents/index'
     get 'contents/show'

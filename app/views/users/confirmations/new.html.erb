@@ -6,7 +6,7 @@
     <h5>登録確定用の確認メールが届かなかった方は、お手数ですが、正しいメールアドレスを入力してください。</h5>
     <h5>Gmailドメイン（@gmail.com）を受け取れるよう設定確認の上、迷惑メールボックスに入っていないか、合わせてご確認ください。</h5>
     
-    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: user_confirmation_url(resource_name), html: { method: :post }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
     
       <div class="field">

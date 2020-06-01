@@ -8,7 +8,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 
   # POST /resource/confirmation
   # def create
-  #   super
+  #  super
   # end
 
   # GET /resource/confirmation?confirmation_token=abcdef
@@ -25,6 +25,8 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 
   # The path used after confirmation.
   # def after_confirmation_path_for(resource_name, resource)
-  #   super(resource_name, resource)
+    #super(resource_name, resource)
+    #users_contents_show_url
+    #edit_user_registration_url
   # end
 end
