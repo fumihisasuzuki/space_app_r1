@@ -1,6 +1,6 @@
 <% provide(:title, @event.event_name) %>
 <p class="text-right">現在「当日モード」です。「通常モード」は<%= link_to "こちら", event_path(@event), class:"pull-right" %></p>
-<%= link_to "ページ更新", the_day_event_path(@event), class:"pull-right" %>
+<%= link_to image_tag("/event/koushin.png", :size => "30x30"), the_day_event_path(@event), class:"pull-right" %>
 
 <div class="text-center">
   <h1>
@@ -65,9 +65,8 @@
   <% end %>
 </div>
 
-<%= link_to "完了！", finish_event_path(@event), method: :patch, class: "btn btn-danger btn-block" %>
+<%= link_to "このイベントを完了する！", finish_event_path(@event), method: :patch, class: "btn btn-danger btn-block" %>
 
-<%= link_to "戻る", :back %>
 
 <!--モーダルウインドウ表示-->
 <div id="member-index" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

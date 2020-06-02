@@ -22,21 +22,24 @@
           render 'invitations/schedule_information_statement', event: @event, schedule: @decided_schedule %>
       <%= render 'invitations/invitation_form', model: @event, column_name: :schedule_information_statement, 
           message: "初期値に戻すにはこのまま保存", value: schedule_information_statement_value %>
-      <br>
-      <br>
-      <br>
+      <% if @event.chouseisan_check? && @event.chouseisan_url.present? %>
+        <br>
+        <br>
+        <br>
+      <% end %>
     <% end %>
     
-    <% initial_invitation_statement_value = 
-        render 'invitations/initial_invitation_statement_value', event: @event %>
-    <%= render 'invitations/invitation_form', model: @event, column_name: :initial_invitation_statement, 
-        message: "初期値に戻すにはこのまま保存", value: initial_invitation_statement_value %>
+    <% if @event.chouseisan_check? && @event.chouseisan_url.present? %>
+      <% initial_invitation_statement_value = 
+          render 'invitations/initial_invitation_statement_value', event: @event %>
+      <%= render 'invitations/invitation_form', model: @event, column_name: :initial_invitation_statement, 
+          message: "初期値に戻すにはこのまま保存", value: initial_invitation_statement_value %>
+    <% end %>
 
   </div>
 </div>
 
-<%= link_to "#{@event.event_name}のイベントページへ", event_path(@event), class:"pull-right" %>
-<%= link_to "戻る", :back %>
+<%= link_to "「#{@event.event_name}」のイベントページへ", event_path(@event), class:"pull-right" %>
 
 
 <script type="text/javascript">

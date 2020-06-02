@@ -43,7 +43,7 @@
           <td><%= f.submit "傾斜で計算", class: "btn btn-sm btn-primary btn-form" %></td>
           <td>多めの方（<%= @fee_much_numbers if @fee_much_numbers.present? %>人）：<%= @fee_much if @fee_much.present? %>円</td>
           <td>
-            <% if @event.total_payment.present? && @sum.present? %>
+            <% if @total_payment_from_now_on.present? && @sum.present? %>
               余り：<%= @sum - @total_payment_from_now_on %>円
               <% if @sum >= @total_payment_from_now_on %>
                 <%= render 'events/shows/pending_message', message: 'OK!' %>

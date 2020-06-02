@@ -1,6 +1,6 @@
 <% provide(:title, @event.event_name) %>
 <%= link_to "現在このイベントは開催中です。当日モードはこちら", the_day_event_path(@event), class:"pull-right" if @event.event_status == "being_held_now" %><br>
-<%= link_to "ページ更新", event_path(@event), class:"pull-right" %>
+<%= link_to image_tag("/event/koushin.png", :size => "30x30"), event_path(@event), class:"pull-right" %>
 <h4><%= "進捗：#{@event.event_status_i18n}" %></h4>
 
 <div class="text-center">
@@ -76,145 +76,8 @@
   <% end %>
 </div>
 
-<%= link_to "戻る", :back %>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-<%= debug(params) if Rails.env.development? %>
-      
-
-<div class="line-it-button" data-lang="ja" data-type="share-b" data-ver="3" data-url="https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com" data-color="default" data-size="small" data-count="false" style="display: none;"></div>
-<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-
-    <%= link_to "LINEで共有", "https://line.me/R/msg/text/?#{@event.event_name}" %>
 
 
-<div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" data-url="https://d17380f6aeae44d7b7d7f89e339a501a.vfs.cloud9.ap-northeast-1.amazonaws.com" data-color="default" data-size="large" data-count="false" style="display: none;"></div>
-<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
- 
-      
-      
-      
-<div>
-  <% if @decided_schedule.blank? %>
-  
-  <% elsif @event.chouseisan_check? %>
-  
-  <% else %>
-  
-  <% end %>
-</div>
-
-
-
-
-<div>
-  <% if @decided_schedule %>
-    <table class="table table-bordered table-condensed" id="event-table">
-      <tr>
-        <td>ユーザーID: <%= current_user.id %></td>
-        <td>user_id: <%= @event.user_id %></td>
-        <td>幹事名: <%= current_user.user_name %></td>
-      </tr>
-      <tr>
-        <td>イベントID: <%= @event.id %></td>
-        <td>event_id: <%= @decided_schedule.event_id %></td>
-        <td>イベント名: <%= @event.event_name %>
-          <%= link_to "削除", 
-            event_path(@event), 
-            method: :delete, 
-            data: {confirm: "「#{@event.event_name}」を削除します。よろしいですか？"}, 
-            class: "btn btn-danger"
-          %>
-        </td>
-      </tr>
-      <tr>
-        <td>日程ID: <%= @decided_schedule.id %></td>
-        <td>確定: <%= @decided_schedule.decided %></td>
-        <td>
-          日程: <%= l(@decided_schedule.held_at, format: :shortdate) %>
-          <span class="<%= css_class_of_the_day(@decided_schedule.held_at) %>">(<%= $days_of_the_week[@decided_schedule.held_at.wday] %>)</span>
-          <%= l(@decided_schedule.held_at, format: :time) %>~
-        </td>
-      </tr>
-      <tr>
-        <td>note: <%= @event.chouseisan_note %></td>
-        <td>check: <%= @event.chouseisan_check %></td>
-        <td>url: <%= @event.chouseisan_url %></td>
-      </tr>
-    </table>
-  <% else %>
-    <table class="table table-bordered table-condensed" id="event-table">
-      <tr>
-        <td>ユーザーID: <%= current_user.id %></td>
-        <td>user_id: <%= @event.user_id %></td>
-        <td>幹事名: <%= current_user.user_name %></td>
-      </tr>
-      <tr>
-        <td>イベントID: <%= @event.id %></td>
-        <td></td>
-        <td>イベント名: <%= @event.event_name %>
-          <%= link_to "削除", 
-            event_path(@event), 
-            method: :delete, 
-            data: {confirm: "「#{@event.event_name}」を削除します。よろしいですか？"}, 
-            class: "btn btn-danger"
-          %>
-        </td>
-      </tr>
-      <tr>
-        <td>note: <%= @event.chouseisan_note %></td>
-        <td>check: <%= @event.chouseisan_check %></td>
-        <td>url: <%= @event.chouseisan_url %></td>
-      </tr>
-    </table>
-    
-    <% #debugger %>
-    
-    <%= link_to "①調整さんのデータ取得", @export_csv_url %>
-    <%= form_with url: import_event_path(@event), method: :post, local: true do |f| %>
-      <%= f.file_field :file %>
-      <%= f.submit "③CSVをインポート", class: "btn btn-primary btn-sm" %>
-    <% end %>
-          <%= link_to "調整さんデータのリセット", 
-            destroy_members_and_schedules_event_path(@event), 
-            method: :delete, 
-            data: {confirm: "「#{@event.event_name}」のデータをリセットします。よろしいですか？"}, 
-            class: "btn btn-danger"
-          %>
-  <% end %>
-</div>
-
-
-
-
-
-<textarea class="text-right" id="bar" readonly rows="1" wrap="off" style="overflow: overlay;">
-  aaa
-</textarea>
-<button class="btn btn-secondary clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
-  共有用のリンクをコピーする
-</button>
-<button type="button" class="btn clipboard-btn" data-clipboard-action="copy" data-clipboard-text="URL">URLをコピー</button>
-    
-    
 <script type="text/javascript">
     var clipboard = new Clipboard('.btn');
     clipboard.on('success', function(e) {
@@ -226,11 +89,6 @@
       console.error('Trigger:', e.trigger);
     });
 </script>
-<button type="button" class="btn" data-clipboard-text="この内容をコピーします">コピー</button>
-
-
-
-
 
 <!--モーダルウインドウ表示-->
 <div id="member-index" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

@@ -16,13 +16,12 @@
             <p>
               <h4 style="display:inline;">＜URL＞</h4>
               <%= link_to model.shop_url, model.shop_url, target: :_blank %>
-              <%= link_to "URLへ飛ぶ", model.shop_url, class: "btn btn-primary btn-sm", target: :_blank if model.shop_url %>
+              <%= link_to "WEBサイト表示", model.shop_url, class: "btn btn-primary btn-sm", target: :_blank if model.shop_url %>
               <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= model.shop_url %>">URLコピー</button>
               <a class="btn btn-default" data-toggle="collapse" href="#collapse-decided-shop">
                 編集
               </a>
-              <% event_station = @event.station.present? ? @event.station : "" %>
-              <%= link_to_web_search("店名でweb検索", [model.shop_name, event_station]) %>
+              <%= link_to_web_search(image_tag("/event/color_search.png", :size => "40x40"), [model.shop_name, @event.station]) %>
             </p>
             <% if model.shop_address.present? %>
               <div>

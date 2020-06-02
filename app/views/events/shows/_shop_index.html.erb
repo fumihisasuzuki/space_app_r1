@@ -26,8 +26,8 @@
                 <div>
                   <h3 style="display:inline;"><%= shop.shop_name %></h3>
                   <%= link_to "編集", edit_event_shop_path(@event, shop), remote: true %>
-                  <%= link_to_map("地図を表示", [shop.shop_name, event_station]) %>
-                  <%= link_to_web_search("店名でweb再検索", [shop.shop_name, event_station]) %>
+                  <%= link_to_map(image_tag("/event/color_map.png", :size => "40x40"), [shop.shop_name, event_station]) %>
+                  <%= link_to_web_search(image_tag("/event/color_search.png", :size => "40x40"), [shop.shop_name, event_station]) %>
                 </div>
                 <p>
                   <%= link_to shop.shop_url, shop.shop_url, target: :_blank %>
@@ -61,13 +61,13 @@
             
           <tr>
             <td colspan="2">
-              <%= link_to "① Web検索", current_user.web_search_url, class: "btn btn-default btn-block", target: :_blank %>
+              <%= link_to image_tag("/event/simple_search.png", :size => "30x30"), current_user.web_search_url, class: "btn btn-default btn-sm pull-right", target: :_blank %>
             </td>
             <td>
               <%= render 'users/shared/error_messages', resource: @shop if @shop.present? && params[:id].blank? %>
               <%= link_to "OK", event_path(@event) if @shop.present? && params[:id].blank? %>
               <a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapse-new-shop">
-            	  ② 新しい候補を追加
+            	  新しい候補を追加
             	</a>
             </td>
           </tr>

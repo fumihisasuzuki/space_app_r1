@@ -15,7 +15,7 @@ class User < ApplicationRecord
   # ユーザー検索機能。
   def User.search(search)
     return User.all unless search
-    User.where(['name LIKE ?', "%#{search}%"])
+    User.where(['user_name LIKE ?', "%#{search}%"])
   end
   
   # SNSログインに必要。 

@@ -50,8 +50,8 @@
           <% @users.each do |user| %>
             <tr>
               <td><%= user.id %></td>
-              <td><%= link_to user.user_name, edit_user_registration_path(user) %></td>
-              <td><%= link_to user.email, edit_user_registration_path(user) %></td>
+              <td><%= user.user_name %></td>
+              <td><%= user.email %></td>
               <td>
                 <%= link_to "削除", 
                   user_registration_path(id: user.id), 

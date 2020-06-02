@@ -55,8 +55,8 @@
               <%= f.text_field :station, placeholder: "開催場所(駅名)を入力", class: "form-control" %>
               <h5 style="display:inline;">の</h5>
               <%= f.text_field :place, placeholder: "店の種類(居酒屋など)を入力", class: "form-control" %>
-              <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
-              <%= link_to_web_search("駅名でお店をWeb検索", [event_station, event_place]) %>
+              <%= f.submit "変更", class: "btn btn-sm btn-primary btn-inline" %>
+              <%= link_to_web_search(image_tag("/event/color_search.png", :size => "40x40"), [event_station, event_place]) %>
             <% end %>
           <% else # 店が決まっている場合 %>
             <h3 style="display:inline;">
@@ -66,7 +66,8 @@
                 <%= link_to decided_shop.shop_name, decided_shop.shop_url, target: :_blank %>
               <% end %>
             </h3>
-            <%= link_to_map("地図を表示", [decided_shop.shop_name, event_station]) %>
+            <%= link_to_web_search(image_tag("/event/color_search.png", :size => "40x40"), [decided_shop.shop_name, event_station, event_place]) %>
+            <%= link_to_map(image_tag("/event/color_map.png", :size => "40x40"), [decided_shop.shop_name, event_station]) %>
             <% if event_station.present? %>
               <h4 style="display:inline;"><%= "@#{event_station}" %></h4>
             <% end %>
@@ -74,9 +75,9 @@
           
           <% if decided_shop.present? || event_station.present? %>
             <% if current_user.station.present? && event_station.present? %>
-              <%= link_to_train_search("駅名で路線検索", current_user.station, event_station) %>
+              <%= link_to_train_search(image_tag("/event/color_train.png", :size => "40x40"), current_user.station, event_station) %>
             <% else %>
-              <%= link_to "路線検索", current_user.train_search_url, class: "btn btn-danger btn-sm", target: :_blank %>
+              <%= link_to image_tag("/event/simple_train.png", :size => "40x40"), current_user.train_search_url, class: "btn btn-sm", target: :_blank %>
               :「駅名で路線検索」を利用するには、
               <%= link_to "あなたの最寄り駅", edit_user_registration_path if current_user.station.blank? %>
               <%= "と" if current_user.station.blank? && event_station.blank? %>
@@ -98,16 +99,13 @@
                   <h5 style="display:inline;">
                     <%= form_with(model: event, local: true, class:"form-inline") do |f| %>
                       <% if decided_shop.present? || current_user.station.present? && event_station.present? %>
-                          <h5 style="display:inline;">@</h5>
-                          <%= f.text_field :station, placeholder: "開催場所(駅名)を入力", class: "form-control" %>
-                          <h5 style="display:inline;">の</h5>
-                          <%= f.text_field :place, placeholder: "店の種類(居酒屋など)を入力", class: "form-control" %>
-                          <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
-                          <%= link_to_web_search("お店をWeb検索", [decided_shop.shop_name, event_station, event_place]) if decided_shop %>
-                      <% else %>
-                        <%= link_to_web_search("お店をWeb検索", [decided_shop.shop_name, event_station, event_place]) if decided_shop %>
+                        <h5 style="display:inline;">@</h5>
+                        <%= f.text_field :station, placeholder: "開催場所(駅名)を入力", class: "form-control" %>
+                        <h5 style="display:inline;">の</h5>
+                        <%= f.text_field :place, placeholder: "店の種類(居酒屋など)を入力", class: "form-control" %>
+                        <%= f.submit "変更", class: "btn btn-sm btn-primary btn-inline" %>
                       <% end %>
-                      <%= link_to_web_search("駅名でお店を再検索", [event_station, event_place]) if decided_shop.present? %>
+                      <%= link_to_web_search(image_tag("/event/color_search.png", :size => "40x40"), [event_station, event_place]) if decided_shop.present? %>
                     <% end %>
                   </h5>
                 </td>

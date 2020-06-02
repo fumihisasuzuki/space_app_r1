@@ -2,7 +2,11 @@
   <%= render 'events/shows/chouseisan_url' %>
   <table class="table table-bordered table-condensed" id="chouseisan-table">
     <tr>
-      <td colspan="<%= 4 + @event.members.count %>">
+      <td colspan="1">
+        <%= link_to "更新：", "#", class: "btn btn-default pull-right", 
+            data: {confirm: "表を更新するには、「１．最新データ取得」→「２．取得したファイルを選択」→「３．CSVをインポート」の３STEPです。"} %>
+      </td>
+      <td colspan="<%= 3 + @event.members.count %>">
         <p>
           <div style="display:inline-flex">
             <%= link_to "１．最新データ取得", @export_csv_url, class: "btn btn-success btn-sm" %>

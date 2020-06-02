@@ -3,6 +3,15 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
+/* 入力フォーム */
+
+.label-new-event {
+  margin-top: 10px;
+}
+.btn-new-event {
+  margin-top: 10px;
+}
+
 /* モーダルウインドウの位置調整 */
 
 .modal-dialog-center {
@@ -35,8 +44,15 @@
 
 /* イベント詳細画面 */
 
+.bg_test {
+//    height: 250px;                  /* 高さ指定 */
+//    padding:  20px;                 /* 余白指定 */
+//    font-size: 20px;                /* 文字サイズ指定 */
+    background-color: powderblue;   /* 背景色指定 */
+}
 
-/* 調整中！など */
+
+/* ペンディングメッセージ */
 .pending_message {
   color:#ff0000; text-decoration:none;
   display: inline;

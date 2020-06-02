@@ -4,21 +4,19 @@
       <%= f.text_field :station, placeholder: "開催場所(駅名)を入力", class: "form-control" %>
       <h5 style="display:inline;">の</h5>
       <%= f.text_field :place, placeholder: "店の種類(居酒屋など)を入力", class: "form-control" %>
-      <%= f.submit "変更", class: "btn btn-sm btn-primary btn-form" %>
+      <%= f.submit "変更", class: "btn btn-sm btn-primary btn-inline" %>
       <button type="button" class="btn btn-info btn-sm clipboard-btn" data-clipboard-action="copy" data-clipboard-text="<%= @event.station %>">駅名コピー</button>
-      <% if current_user.station && @event.station %>
-        <%= link_to_train_search("駅名で路線検索", current_user.station, @event.station) %>
+      <%= link_to_web_search(image_tag("/event/color_search.png", :size => "40x40"), [@event.station, @event.place]) %>
+      <% if current_user.station.present? && @event.station.present? %>
+        <%= link_to_train_search(image_tag("/event/color_train.png", :size => "40x40"), current_user.station, @event.station) %>
       <% else %>
-        <%= link_to "路線検索", current_user.train_search_url, class: "btn btn-danger btn-sm", target: :_blank %>
+        <%= link_to image_tag("/event/simple_train.png", :size => "35x35"), current_user.train_search_url, class: "btn btn-sm", target: :_blank %>
             :「駅名で路線検索」を利用するには、
             <%= link_to "あなたの最寄り駅", edit_user_registration_path if current_user.station.blank? %>
             <%= "と" if current_user.station.blank? && @event.station.blank? %>
             <%= link_to "開催地の最寄り駅", edit_event_path(@event) if @event.station.blank? %>
             を登録してください
       <% end %>
-      <% event_station = @event.station.present? ? @event.station : "" %>
-      <% event_place = @event.place.present? ? @event.place : "" %>
-      <%= link_to_web_search("キーワードでWeb検索", [event_station, event_place]) %>
     <% end %>
   </div>
 </div>
