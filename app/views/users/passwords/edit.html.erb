@@ -3,22 +3,22 @@
   <h2>パスワードの変更</h2>
 
   <div class="col-md-4 col-md-offset-4">
-    <h5>Change your password</h5>
+    <h5>パスワードを変更します。新しいパスワードを設定してください。</h5>
     
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= f.hidden_field :reset_password_token %>
     
       <div class="field">
-        <%= f.label :password, "New password" %><br />
+        <%= f.label :password, "新しいパスワード" %>
         <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+          <em>(半角 <%= @minimum_password_length %> 文字以上)</em><br />
         <% end %>
         <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control" %>
       </div>
     
       <div class="field">
-        <%= f.label :password_confirmation, "Confirm new password" %><br />
+        <%= f.label :password_confirmation, "新しいパスワード（確認用）" %><br />
         <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
       </div>
     
