@@ -9,6 +9,7 @@
     </div>
     <nav>
       <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to "ログイン", new_user_session_path unless user_signed_in? %></li>
         <li><%= link_to "#{yield(:home_page_name)}", @home_page_path %></li>
         <% if user_signed_in? %>
           <li class="dropdown">

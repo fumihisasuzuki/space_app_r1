@@ -16,10 +16,27 @@
 
 /* layout */
 
-.container-body {
-  margin-top: 100px;
+.top-title {
+  color: white;
+  font-size: 50px;
+  text-shadow: 1px 1px 2px silver;
 }
 
+.main-container {
+  background-image: url("/layout/space_bg.png");
+  height: 600px;
+  background-size: cover;
+}
+
+.top-text {
+  color: silver;
+  text-align: right;
+}
+
+.top-icon {
+  margin-top: 20px;
+  margin-left: 20px;
+}
 
 /* 入力フォーム */
 
@@ -28,4 +45,10 @@
 }
 .btn-form {
   margin-top: 10px;
+}
+
+
+#app_explanation {
+  margin-top: 50px;
+  background-color: #E0FFFF;
 }

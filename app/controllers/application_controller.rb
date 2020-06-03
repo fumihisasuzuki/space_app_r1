@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
       end
     else
       @user_status = "guest-user"
-      @home_page_name = 'ログイン'
+      @home_page_name = 'トップ'
       @home_page_path = root_path
     end
 #    debugger

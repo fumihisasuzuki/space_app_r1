@@ -43,6 +43,11 @@ group :development do
   gem "letter_opener" # 開発環境でメールを送るとブラウザで別タブでメールが開くように設定
 end
 
+# Herokuへデプロイ
+group :production do
+  gem 'pg', '0.20.0'
+end
+
 # Windows環境ではtzinfo-dataというgemを含める必要があります
 # Mac環境でもこのままでOKです
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
