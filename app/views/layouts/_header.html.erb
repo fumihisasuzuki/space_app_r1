@@ -2,7 +2,7 @@
 
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
-    <%= link_to image_tag("/space_icon.png", :size => "30x30"), @home_page_path, id: "logo" %>
+    <%= link_to image_tag("/layout/simple_space_icon.png", :size => "30x30"), @home_page_path, id: "logo" %>
     <%= link_to "SPaCE", @home_page_path, id: "logo" %>
     <div id="welcome_message">
       へようこそ！<%= " 名幹事 #{current_user.user_name}さん！" if user_signed_in? %>

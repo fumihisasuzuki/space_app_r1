@@ -5,15 +5,15 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <% if @event.chouseisan_check? || @event.errors.present? %>
+    <% if @event.chouseisan_check? || @event.errors.messages[:chouseisan_url].present? %>
       <%= render 'chouseisan_form', model: @event, explanation_need: true %>
     <% else %>
       <%= render 'event_form', model: @event, schedule_model: @decided_schedule %>
     <% end %>
-    <% if @event.chouseisan_check? && @event.chouseisan_url.nil? %>
-      <%= link_to 'URLを登録せずに戻る（やっぱり直接編集する）', update_chouseisan_check_event_path(@event), method: :patch %><br>
-    <% else %>
-      <%= link_to "「#{@event.event_name}」のページへ戻る", event_path(@event) %>
-    <% end %>
   </div>
 </div>
+<% if @event.chouseisan_check? && @event.chouseisan_url.nil? %>
+  <%= link_to 'URLを登録せずに戻る（やっぱり直接編集する）', update_chouseisan_check_event_path(@event), method: :patch, class: "pull-right" %><br>
+<% else %>
+  <%= link_to "「#{@event.event_name}」のページへ戻る", event_path(@event), class: "pull-right" %>
+<% end %>
