@@ -6,8 +6,10 @@
           <td>
           </td>
           <td>
-            <%= render 'users/shared/error_messages', resource: model if model.present? && model.id.to_s == params[:id] %>
-            <%= link_to "OK", event_path(@event) if model.present? && model.id.to_s == params[:id] %>
+            <% if model.present? && model.id.to_s == params[:id] %>
+              <%= render 'users/shared/error_messages', resource: model %>
+              <%= link_to "OK", event_path(@event) if model.errors.present? %>
+            <% end %>
             <div>
               <h4 style="display:inline;">＜店名＞</h4>
               <h3 style="display:inline;"><%= model.shop_name %></h3>

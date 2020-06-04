@@ -36,26 +36,6 @@
 
 </div>
 
-
-<%= debug(params) if Rails.env.development? %>
-<div>
-  <table class="table table-bordered table-condensed" id="user-table">
-    <tr>
-      <td>氏名: <%= current_user.user_name %></td>
-      <td>E-mail: <%= current_user.email %></td>
-      <td>管理者: <%= current_user.admin %></td>
-      <td>インターネット検索: <%= current_user.web_search_url %></td>
-    </tr>
-    <tr>
-      <td>プロバイダー: <%= current_user.provider %></td>
-      <td>uid: <%= current_user.uid %></td>
-      <td>直前日数: <%= current_user.days_before %>日</td>
-      <td>路線検索: <%= current_user.train_search_url %></td>
-    </tr>
-  </table>
-</div>
-
-
 <!--モーダルウインドウ表示-->
 <div id="new-event" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 

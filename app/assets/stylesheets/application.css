@@ -23,19 +23,20 @@
 }
 
 .main-container {
-  background-image: url("/layout/space_bg.png");
-  height: 600px;
+  background-image: url("/layout/space_bg_free.png");
+  height: 800px;
   background-size: cover;
 }
 
 .top-text {
-  color: silver;
+  color: white;
   text-align: right;
+  text-shadow: 1px 1px 2px black;
 }
 
 .top-icon {
-  margin-top: 20px;
-  margin-left: 20px;
+  margin-top: 10px;
+  margin-right: 30px;
 }
 
 /* 入力フォーム */
