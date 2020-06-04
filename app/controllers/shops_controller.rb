@@ -24,7 +24,7 @@ class ShopsController < EventsController
       flash[:success] = @shop.shop_name + 'を更新しました。'
       redirect_to @event
     else
-      flash.now[:danger] = name + 'の更新に失敗しました。'
+      flash.now[:danger] = name + 'の更新に失敗しました。エラー文を参照してください。'
       render action: :show
     end
   end

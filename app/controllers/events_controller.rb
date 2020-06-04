@@ -49,7 +49,7 @@ class EventsController < ApplicationController
       @fee_much_numbers = @decided_schedule.member_schedules.where(attendance_status: "to_attend", payment_status: "not_yet_much").count
       @total_fee = @decided_schedule.member_schedules.group(:attendance_status).sum(:fee)
       @total_fee_payed = @decided_schedule.member_schedules.where(attendance_status: "to_attend").group(:payment_status).sum(:fee)
-      @total_payment_from_now_on = @event.total_payment - (@total_fee_payed["already_payed"] || 0)
+      @total_payment_from_now_on = (@event.total_payment || 0) - (@total_fee_payed["already_payed"] || 0)
       @the_day_check = true
       flash[:success] = @event.event_name + 'を開催しました。（当日モードです。）' unless first_time_check == "being_held_now"
     else

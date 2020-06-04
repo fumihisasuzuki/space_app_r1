@@ -8,7 +8,7 @@
           <td>
             <% if model.present? && model.id.to_s == params[:id] %>
               <%= render 'users/shared/error_messages', resource: model %>
-              <%= link_to "OK", event_path(@event) if model.errors.present? %>
+              <%= link_to "OK", event_path(@event), class: "pull-right" if model.errors.present? %>
             <% end %>
             <div>
               <h4 style="display:inline;">＜店名＞</h4>
@@ -28,7 +28,7 @@
             <% if model.shop_address.present? %>
               <div>
                 <h4 style="display:inline;">＜住所＞<%= model.shop_address %></h4>
-                <%= link_to_map("地図を表示", [model.shop_address]) %>
+                <%= link_to_map(image_tag("/event/color_map.png", :size => "40x40"), [model.shop_address]) %>
               </div>
             <% end %>
             <div>

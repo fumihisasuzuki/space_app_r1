@@ -44,6 +44,7 @@ group :development do
 end
 
 # Herokuへデプロイ
+# 本番環境(heroku)ではPostgreSQLを使用
 group :production do
   gem 'pg', '0.20.0'
 end

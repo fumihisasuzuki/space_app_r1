@@ -21,9 +21,9 @@
                 </div>
               </td>
               <td>
-                <% if model.present? && model.id.to_s == params[:id] %>
-                  <%= render 'users/shared/error_messages', resource: model %>
-                  <%= link_to "OK", event_path(@event) if model.errors.present? %>
+                <% if @shop.present? && shop.id.to_s == params[:id] %>
+                  <%= render 'users/shared/error_messages', resource: @shop %>
+                  <%= link_to "OK", event_path(@event), class: "pull-right" if @shop.errors.present? %>
                 <% end %>
                 <div>
                   <h3 style="display:inline;"><%= shop.shop_name %></h3>

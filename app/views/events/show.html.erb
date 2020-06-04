@@ -45,9 +45,12 @@
 <br>
 
 <div>
-  <h3 style="display:inline;">
-    ＜会費＞<%= @event.indication_price.present? ? "#{@event.indication_price}円" : "実費" %>
+  <h3 style="display:inline;">＜会費＞
+    <%= @event.indication_price.present? ? "#{@event.indication_price}円" : "実費" %>
   </h3>
+  <h5 style="display:inline;">
+    <%= link_to "編集", edit_event_path(@event) unless @event.chouseisan_check? %>
+  </h5>
 </div>
 
 <br>

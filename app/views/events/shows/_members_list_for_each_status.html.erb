@@ -1,4 +1,4 @@
-<% status_key = models.first.member_schedules.first.attendance_status %>
+<% status_key = models.first.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status %>
 <% colspan_number = @event.chouseisan_url.present? ? 6 : 5 %>
 <% first_number += (params[:page].to_i - 1)*10 if params[:page] %>
 <div class="row">
@@ -7,13 +7,13 @@
     <table class="table table-hover" id="table-members">
       <thead>
         <tr>
-          <td colspan="1"><%= models.first.member_schedules.first.attendance_status_i18n %></td>
+          <td colspan="1"><%= models.first.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status_i18n %></td>
           <td colspan="1">名前</td>
           <% if @event.chouseisan_url.present? %>
             <td colspan="1">本人コメント</td>
           <% end %>
           <td colspan="1">備考</td>
-          <td colspan="1">会費計：<%= @total_fee["#{status_key}"] %></td>
+          <td colspan="1">会費計：<%= @total_fee["#{status_key}"] if @total_fee.present? %></td>
           <td colspan="1">
             <% if @event.chouseisan_check? %>
               <%= link_to "編集(調整さん)", @event.chouseisan_url, target: :_blank %>

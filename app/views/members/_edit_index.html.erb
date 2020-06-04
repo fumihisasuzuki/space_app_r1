@@ -1,5 +1,5 @@
-<% attendance_status_symbol = models.first.member_schedules.first.attendance_status_i18n %>
-<% status_key = models.first.member_schedules.first.attendance_status %>
+<% attendance_status_symbol = models.first.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status_i18n %>
+<% status_key = models.first.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status %>
 <% first_number += (params[:page].to_i - 1)*10 if params[:page] %>
 
 <%= form_with(model: @event, url: event_members_update_all_url(@event), local: true, method: :patch, class:"form-inline") do |f| %>

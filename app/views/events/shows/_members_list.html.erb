@@ -11,7 +11,7 @@
             <h3 style="display:inline;"><%= "(あと#{@decided_members.where(attended: false).count}名参加予定)" if @decided_members.where(attended: false).count < @decided_schedule.attendance_numbers %></h3>
             <% if member_rendered %>
               <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "to_attend" %>
-              <%= link_to "OK", event_path(@event) if @member_rendered_status == "to_attend" %>
+              <%= link_to "OK", event_path(@event), class: "pull-right" if @member_rendered_status == "to_attend" %>
             <% end %>
           </div>
 				</a>
@@ -40,7 +40,7 @@
               <% #debugger %>
               <% if member_rendered %>
                 <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "on_hold" %>
-                <%= link_to "OK", event_path(@event) if @member_rendered_status == "on_hold" %>
+                <%= link_to "OK", event_path(@event), class: "pull-right" if @member_rendered_status == "on_hold" %>
               <% end %>
             </div>
   				</a>
@@ -68,7 +68,7 @@
               <h4 style="display:inline;"><%= @to_be_absent_members.count %>名</h4>
               <% if member_rendered %>
                 <%= render 'users/shared/error_messages', resource: member_rendered if @member_rendered_status == "to_be_absent" %>
-                <%= link_to "OK", event_path(@event) if @member_rendered_status == "to_be_absent" %>
+                <%= link_to "OK", event_path(@event), class: "pull-right" if @member_rendered_status == "to_be_absent" %>
               <% end %>
             </div>
   				</a>
