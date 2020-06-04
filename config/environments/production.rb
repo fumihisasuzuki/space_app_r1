@@ -88,4 +88,19 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  
+  # deviseの設定
+  # default url
+  config.action_mailer.default_url_options = {  host: 'https://space-app-from-2020.herokuapp.com/' }
+  # mail setting
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :user_name => ENV["DEV_SMTP_USER_NAME"],
+    :password => ENV["DEV_SMTP_PASSWORD"],
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 end
