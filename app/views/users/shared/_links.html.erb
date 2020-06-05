@@ -19,7 +19,7 @@
 <% end %>
 
 <%- if devise_mapping.omniauthable? %>
-  <h2>Lineでお手軽名幹事！</h2>
+  <h2>LINEでお手軽名幹事！</h2>
   <%- resource_class.omniauth_providers.each do |provider| %>
     <%= link_to omniauth_authorize_path(resource_name, provider) do %>
       <li class="sns_login_btn" id="<%= provider %>_login" >

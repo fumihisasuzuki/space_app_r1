@@ -23,7 +23,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
     # debugger
     if current_user.email == "#{@omniauth['uid'].downcase}-#{@omniauth['provider']}@example.com"
-      flash[:info] = "万が一の際の連絡先として、ぜひ、メールアドレスを登録ください！"
+      flash[:info] = "LINEでログインしました。万が一の際の連絡先として、ぜひ、メールアドレスを登録ください！（メールアドレスでもログインできるようになります。）"
     else
       flash[:success] = "LINEでログインしました。"
     end
