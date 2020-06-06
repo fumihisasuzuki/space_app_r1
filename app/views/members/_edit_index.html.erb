@@ -1,6 +1,7 @@
 <% attendance_status_symbol = models.first.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status_i18n %>
 <% status_key = models.first.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status %>
-<% first_number += (params[:page].to_i - 1)*10 if params[:page] %>
+<% number_key = params[:number_key].present? ? params[:number_key].to_i : first_number %>
+<% first_number = number_key + (params[:page].to_i - 1)*10 if params[:page] %>
 
 <%= form_with(model: @event, url: event_members_update_all_url(@event), local: true, method: :patch, class:"form-inline") do |f| %>
   <%= will_paginate models %><br>
@@ -85,4 +86,7 @@
   
   <%= will_paginate models %>
   <%= f.submit "#{attendance_status_symbol}の変更を保存", class: "btn btn-sm btn-primary btn-form pull-right" %>
+<% end %>
+<% unless @the_day_check %>
+  <%= link_to "イベントページへ戻る", event_path(@event), class:"pull-right" %>
 <% end %>

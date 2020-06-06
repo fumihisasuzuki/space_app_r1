@@ -1,5 +1,6 @@
 <% status_key = models.first.member_schedules.find_by(schedule_id: @decided_schedule.id).attendance_status %>
 <% colspan_number = @event.chouseisan_url.present? ? 6 : 5 %>
+<% number_key = first_number %>
 <% first_number += (params[:page].to_i - 1)*10 if params[:page] %>
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
@@ -18,7 +19,7 @@
             <% if @event.chouseisan_check? %>
               <%= link_to "編集(調整さん)", @event.chouseisan_url, target: :_blank %>
             <% else %>
-              <%= link_to "まとめて編集", event_members_path(@event, status_key: status_key, number_key: first_number), remote: true %>
+              <%= link_to "まとめて編集", event_members_path(@event, status_key: status_key, number_key: number_key), remote: true %>
             <% end %>
           </td>
         </tr>

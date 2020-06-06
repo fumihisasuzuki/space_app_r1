@@ -1,5 +1,5 @@
 <% provide(:title, 'Sign Up') %>
-<div class="container">
+<div class="main-container">
 
   <div class="col-md-4 col-md-offset-2">
     <div id="app_explanation">
@@ -20,35 +20,40 @@
   </div>
   
   <div class="col-md-4">
-    <h2>メールアドレスで名幹事</h2>
+    <div id="new_user_registration">
+      <h2>メールアドレスで名幹事</h2>
+  
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+      
+        <div class="field">
+          <%= f.label :email, class: "label-user--edit" %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+        </div>
+      
+        <div class="field">
+          <%= f.label :password, class: "label-user--edit" %>
+          <% if @minimum_password_length %>
+            <em>（半角 <%= @minimum_password_length %> 文字以上）</em>
+          <% end %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+        </div>
+      
+        <div class="field">
+          <%= f.label :password_confirmation, class: "label-user--edit" %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+        </div>
+      
+        <div class="actions">
+          <%= f.submit "名幹事への一歩を踏み出す", class: "btn btn-primary btn-block btn-user--edit" %>
+        </div>
+      <% end %>
+      
+      <%= render "users/shared/links" %>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-    
-      <div class="field">
-        <%= f.label :email, class: "label-user--edit" %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
-      </div>
-    
-      <div class="field">
-        <%= f.label :password, class: "label-user--edit" %>
-        <% if @minimum_password_length %>
-          <em>（半角 <%= @minimum_password_length %> 文字以上）</em>
-        <% end %>
-        <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-      </div>
-    
-      <div class="field">
-        <%= f.label :password_confirmation, class: "label-user--edit" %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
-      </div>
-    
-      <div class="actions">
-        <%= f.submit "名幹事への一歩を踏み出す", class: "btn btn-primary btn-block btn-user--edit" %>
-      </div>
-    <% end %>
-    
-    <%= render "users/shared/links" %>
-
+    </div>
   </div>
+</div>
+
+<div class="main-container-2">
 </div>

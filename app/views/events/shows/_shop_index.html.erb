@@ -23,11 +23,11 @@
               <td>
                 <% if @shop.present? && shop.id.to_s == params[:id] %>
                   <%= render 'users/shared/error_messages', resource: @shop %>
-                  <%= link_to "OK", event_path(@event), class: "pull-right" if @shop.errors.present? %>
+                  <%= link_to "OK", event_path(@event), class: "btn btn-default btn-xs pull-right" if @shop.errors.present? %>
                 <% end %>
                 <div>
                   <h3 style="display:inline;"><%= shop.shop_name %></h3>
-                  <%= link_to "編集", edit_event_shop_path(@event, shop), remote: true %>
+                  <%= link_to image_tag("/event/edit.png", :size => "20x20"), edit_event_shop_path(@event, shop), remote: true %>
                   <%= link_to_map(image_tag("/event/color_map.png", :size => "40x40"), [shop.shop_name, event_station]) %>
                   <%= link_to_web_search(image_tag("/event/color_search.png", :size => "40x40"), [shop.shop_name, event_station]) %>
                 </div>

@@ -6,14 +6,14 @@
           <td>
           </td>
           <td>
-            <% if model.present? && model.id.to_s == params[:id] %>
-              <%= render 'users/shared/error_messages', resource: model %>
-              <%= link_to "OK", event_path(@event), class: "pull-right" if model.errors.present? %>
+            <% if @shop.present? && @shop.id.to_s == params[:id] %>
+              <%= render 'users/shared/error_messages', resource: @shop %>
+              <%= link_to "OK", event_path(@event), class: "btn btn-default btn-xs pull-right" if @shop.errors.present? %>
             <% end %>
             <div>
               <h4 style="display:inline;">＜店名＞</h4>
               <h3 style="display:inline;"><%= model.shop_name %></h3>
-              <%= link_to "編集", edit_event_shop_path(@event, model), remote: true %>
+              <%= link_to image_tag("/event/edit.png", :size => "20x20"), edit_event_shop_path(@event, model), remote: true %>
             </div>
             <p>
               <h4 style="display:inline;">＜URL＞</h4>

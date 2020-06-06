@@ -2,10 +2,13 @@
 
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
-    <%= link_to image_tag("/layout/simple_space_icon.png", :size => "30x30"), @home_page_path, id: "logo" %>
-    <%= link_to "SPaCE", @home_page_path, id: "logo" %>
+    <% if user_signed_in? %>
+      <%= link_to image_tag("/layout/space_icon_color_heir.png", :size => "35x35"), @home_page_path, id: "logo" %>
+    <% else %>
+      <%= link_to image_tag("/layout/space_icon_color.png", :size => "35x35"), @home_page_path, id: "logo" %>
+    <% end %>
+    <%= link_to image_tag("/layout/space_header_logo_v2.png", :size => "100x35"), @home_page_path, id: "logo" %>
     <div id="welcome_message">
-      <%#= "名幹事 #{current_user.user_name}さん！" if user_signed_in? %>
     </div>
     <nav>
       <ul class="nav navbar-nav navbar-right">

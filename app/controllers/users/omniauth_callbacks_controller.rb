@@ -24,10 +24,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # debugger
     if current_user.email == "#{@omniauth['uid'].downcase}-#{@omniauth['provider']}@example.com"
       flash[:info] = "LINEでログインしました。万が一の際の連絡先として、ぜひ、メールアドレスを登録ください！（メールアドレスでもログインできるようになります。）"
+      redirect_to edit_user_registration_path
     else
       flash[:success] = "LINEでログインしました。"
+      redirect_to_home_page_url
     end
-    redirect_to edit_user_registration_path
   end
 
   def fake_email(uid,provider)
