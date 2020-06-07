@@ -13,7 +13,9 @@
               <%= link_to "開始！", the_day_event_path(event), class: "btn btn-info btn-lg", target: :_blank if decided_schedule && decided_schedule.held_at.between?(@past_time, @future_time) %>
               <%= link_to event.event_name, event_path(event) %>
             </h2>
-            <%= render 'events/shows/pending_message', message: "【#{event.event_status_i18n}】" %>
+            <h3 style="display:inline;">
+              <%= "【#{event.event_status_i18n}】" %>
+            </h3>
             <a class="btn btn-default pull-right" data-toggle="collapse" href="#collapse-event-index-<%= event.id %>-<%= counter %>">
               詳細
             </a>

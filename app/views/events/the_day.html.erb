@@ -1,5 +1,5 @@
 <% provide(:title, @event.event_name) %>
-<p class="text-right">現在「当日モード」です。「通常モード」は<%= link_to "こちら", event_path(@event), class:"pull-right" %></p>
+<p class="text-right">現在「当日モード」です。「調整モード」は<%= link_to "こちら", event_path(@event), class:"pull-right" %></p>
 <%= link_to image_tag("/event/koushin.png", :size => "30x30"), the_day_event_path(@event), class:"pull-right" %>
 
 <div class="text-center">
@@ -10,11 +10,7 @@
   <br>
   <h4 style="display:inline;"><%= show_text_of(@event.chouseisan_note) %></h4>
   <h5 style="display:inline;">
-    <% if @event.chouseisan_check? %>
-      <%= link_to "編集（調整さん）", @event.chouseisan_url, target: :_blank %>
-    <% else %>
-      <%= link_to "編集", edit_event_path(@event) %>
-    <% end %>
+    <%= link_to image_tag("/event/edit.png", :size => "20x20"), edit_event_path(@event) %>
   </h5>
 </div>
 

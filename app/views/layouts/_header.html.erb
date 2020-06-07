@@ -20,6 +20,7 @@
             </a>
             <ul class="dropdown-menu">
               <% unless current_user.admin? %>
+                <li><%= link_to "イベント新規作成", new_event_path, remote: true %></li>
                 <li><%= link_to "過去のイベント", users_contents_past_events_list_path %></li>
               <% end %>
               <li><%= link_to "アカウント", edit_user_registration_path %></li>
@@ -35,3 +36,6 @@
     </nav>
   </div>
 </header>
+
+<!--モーダルウインドウ表示-->
+<div id="new-event" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
