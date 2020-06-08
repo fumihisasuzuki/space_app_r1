@@ -2,6 +2,11 @@
 <html>
   <head>
     <title><%= full_title(yield(:title)) %></title>
+    <% if user_signed_in? %>
+      <%= favicon_link_tag '/layout/space_icon_color_heir.png'%>
+    <% else %>
+      <%= favicon_link_tag '/layout/space_icon_color.png'%>
+    <% end %>
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>

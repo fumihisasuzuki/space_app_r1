@@ -13,7 +13,7 @@ class Users::ContentsController < ApplicationController
   def show
     @events_soon = current_user.events.joins(:schedules).where(schedules: { decided: true}).where(schedules: { held_at: @past_time..@future_time }).order("schedules.held_at ASC")
     @events_after_a_few_days = current_user.events.joins(:schedules).where(schedules: { decided: true}).where(schedules: { held_at: @future_time...@last_max_time }).order("schedules.held_at ASC")
-    @events_pending = current_user.events.where(event_status: "pending")
+    @events_pending = current_user.events.where(event_status: "pending").order(:id)
 #    debugger
   end
   

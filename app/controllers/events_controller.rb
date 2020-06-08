@@ -201,15 +201,15 @@ class EventsController < ApplicationController
       if Event.exists?(set_id)
         @event = Event.find(set_id)
         if @decided_schedule = @event.schedules.find_by(event_id: @event.id, decided: true)
-          @decided_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_attend", schedule_id: @decided_schedule.id }).paginate(page: params[:page], per_page: 10)
-          @on_hold_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "on_hold", schedule_id: @decided_schedule.id }).paginate(page: params[:page], per_page: 10)
-          @to_be_absent_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_be_absent", schedule_id: @decided_schedule.id }).paginate(page: params[:page], per_page: 10)
+          @decided_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_attend", schedule_id: @decided_schedule.id }).order(:id).paginate(page: params[:page], per_page: 10)
+          @on_hold_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "on_hold", schedule_id: @decided_schedule.id }).order(:id).paginate(page: params[:page], per_page: 10)
+          @to_be_absent_members = @event.members.joins(:member_schedules).where(member_schedules: { attendance_status: "to_be_absent", schedule_id: @decided_schedule.id }).order(:id).paginate(page: params[:page], per_page: 10)
         else
           @event.update_attribute(:event_status, "pending")
         end
-        @schedules = @decided_schedule ? @event.schedules.where(event_id: @event.id, decided: true) : @event.schedules.all
+        @schedules = @decided_schedule.present? ? @event.schedules.where(event_id: @event.id, decided: true).order(:held_at) : @event.schedules.all
         @decided_shop = @event.shops.find_by(event_id: @event.id, decided: true)
-        @shops = @event.shops.all.paginate(page: params[:page], per_page: 10)
+        @shops = @event.shops.all.paginate(page: params[:page], per_page: 10).order(:id)
       else
         flash[:danger] = 'set_event:error; id=' + set_id + 'のデータは存在しません。'
         redirect_to_home_page_url

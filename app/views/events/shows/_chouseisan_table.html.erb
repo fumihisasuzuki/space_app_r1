@@ -25,7 +25,7 @@
       <td>〇</td>
       <td>△</td>
       <td>×</td>
-      <% @event.members.each do |member| %>
+      <% @event.members.order(:column_number).each do |member| %>
         <td><%= member.member_name %></td>
       <% end %>
     </tr>
@@ -60,7 +60,7 @@
     <% end %>
     <tr>
       <td colspan="4">コメント</td>
-      <% @event.members.each do |member| %>
+      <% @event.members.order(:column_number).each do |member| %>
         <td><%= member.comment %></td>
       <% end %>
     </tr>
