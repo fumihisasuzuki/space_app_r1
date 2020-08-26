@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20200531092119) do
     t.string "initial_invitation_statement"
     t.string "schedule_information_statement"
     t.string "final_invitation_statement"
-    t.integer "total_payment"
+    t.integer "total_payment", default: 0
     t.integer "fee_unit", default: 100
     t.float "rate_of_fee_slope", default: 1.5
     t.integer "calculation_method_type", default: 0

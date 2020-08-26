@@ -30,9 +30,13 @@ gem 'omniauth-line' # 既に登録済みのLINEアカウントを利用して、
 # 環境変数の設定
 gem 'dotenv-rails'
 
+# local化した際に追加
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+
 group :development, :test do
   gem 'sqlite3'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails', '~> 4.0.1'
 end
 
 group :development do
@@ -40,13 +44,14 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-commands-rspec'
   gem "letter_opener" # 開発環境でメールを送るとブラウザで別タブでメールが開くように設定
 end
 
 # Herokuへデプロイ
 # 本番環境(heroku)ではPostgreSQLを使用
 group :production do
-  gem 'pg', '0.20.0'
+  gem 'pg', '~> 1.2', '>= 1.2.3'#gem 'pg', '0.20.0'
 end
 
 # Windows環境ではtzinfo-dataというgemを含める必要があります
