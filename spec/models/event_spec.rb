@@ -1,23 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
+  if User.find_by(email: "sample@email.com").blank?
+    debugger
+    FactoryBot.build(:user)
+    # User.create!(
+    #   id: 1,
+    #   user_name: "ユーザーA",
+    #   email: "sample@email.com",
+    #   password: "password",
+    #   admin: false,
+    # )
+  end
   # 姓、名、メール、パスワードがあれば有効な状態であること
   it "is valid with a event_name, event_status, and chouseisan_check" do
-    User.create!(
-      id: 1,
-      user_name: "ユーザーA",
-      email: "sample@email.com",
-      password: "password",
-      admin: false,
-    )
-    event = Event.new(
-      id: 1,
-      user_id: 1,
-      event_name: "イベントA",
-      event_status:  0,
-      chouseisan_check: true,
-    )
-    expect(event).to be_valid
+    expect(FactoryBot.build(:event)).to be_valid
   end
 
   # 名がなければ無効な状態であること
