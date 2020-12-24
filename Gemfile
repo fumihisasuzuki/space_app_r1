@@ -49,6 +49,11 @@ group :development do
   gem "letter_opener" # 開発環境でメールを送るとブラウザで別タブでメールが開くように設定
 end
 
+group :test do
+  # 手書きだと長くて複雑でエラーが起きやすいRailsのテストを、1行で書けるようになる。(RspecとMinitestに対応)
+  gem 'shoulda-matchers', '~> 4.0'
+end
+
 # Herokuへデプロイ
 # 本番環境(heroku)ではPostgreSQLを使用
 group :production do
