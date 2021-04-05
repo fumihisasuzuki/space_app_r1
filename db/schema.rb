@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20200531092119) do
 
-  create_table "events", force: :cascade do |t|
+  create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "event_name", default: "", null: false
     t.string "chouseisan_note"
     t.string "chouseisan_url"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20200531092119) do
     t.string "reserved_by"
     t.integer "reserved_number_of_members"
     t.string "reference"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "station", default: ""
@@ -34,30 +34,30 @@ ActiveRecord::Schema.define(version: 20200531092119) do
     t.string "final_invitation_statement"
     t.integer "total_payment", default: 0
     t.integer "fee_unit", default: 100
-    t.float "rate_of_fee_slope", default: 1.5
+    t.float "rate_of_fee_slope", limit: 24, default: 1.5
     t.integer "calculation_method_type", default: 0
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
-  create_table "member_schedules", force: :cascade do |t|
+  create_table "member_schedules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "attendance_status", default: 0
     t.integer "payment_status", default: 1
     t.integer "fee"
-    t.integer "member_id"
-    t.integer "schedule_id"
+    t.bigint "member_id"
+    t.bigint "schedule_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["member_id"], name: "index_member_schedules_on_member_id"
     t.index ["schedule_id"], name: "index_member_schedules_on_schedule_id"
   end
 
-  create_table "members", force: :cascade do |t|
+  create_table "members", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "member_name", null: false
     t.string "email"
     t.string "line"
     t.string "comment"
     t.integer "column_number"
-    t.integer "event_id"
+    t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "remark"
@@ -65,17 +65,17 @@ ActiveRecord::Schema.define(version: 20200531092119) do
     t.index ["event_id"], name: "index_members_on_event_id"
   end
 
-  create_table "schedules", force: :cascade do |t|
+  create_table "schedules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "held_at", null: false
     t.boolean "decided"
     t.integer "attendance_numbers", default: 0, null: false
-    t.integer "event_id"
+    t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_schedules_on_event_id"
   end
 
-  create_table "shops", force: :cascade do |t|
+  create_table "shops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "shop_name"
     t.string "shop_url"
     t.string "shop_station"
@@ -85,13 +85,13 @@ ActiveRecord::Schema.define(version: 20200531092119) do
     t.string "remark"
     t.boolean "decided"
     t.integer "price"
-    t.integer "event_id"
+    t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_shops_on_event_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -127,4 +127,10 @@ ActiveRecord::Schema.define(version: 20200531092119) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "events", "users"
+  add_foreign_key "member_schedules", "members"
+  add_foreign_key "member_schedules", "schedules"
+  add_foreign_key "members", "events"
+  add_foreign_key "schedules", "events"
+  add_foreign_key "shops", "events"
 end

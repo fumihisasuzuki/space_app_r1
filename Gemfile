@@ -34,7 +34,8 @@ gem 'dotenv-rails'
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 group :development, :test do
-  gem 'sqlite3'
+  # gem 'sqlite3'
+  gem 'mysql2'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 4.0.1'
   gem "factory_bot_rails"

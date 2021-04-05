@@ -14,12 +14,4 @@ RSpec.describe Event, type: :model do
     it { should validate_presence_of(:event_name) }
   end
 
-  # 姓がなければ無効な状態であること
-  it "is invalid without a event_status"
-  # メールアドレスがなければ無効な状態であること
-  it "is invalid without an chouseisan_check"
-  # 重複したメールアドレスなら無効な状態であること
-  it "is invalid with a duplicate chouseisan_url"
-  # ユーザーのフルネームを文字列として返すこと
-  it "returns a event_name as a string"
 end
